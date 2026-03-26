@@ -1,0 +1,123 @@
+import { NextRequest } from "next/server"
+import { z } from "zod"
+import { auth } from "@/lib/auth"
+import { prisma } from "@/lib/db/client"
+import { errorResponse, successResponse } from "@/lib/api/responses"
+
+const playerSchema = z.object({
+  name: z.string().min(1),
+  email: z.string().email().optional().nullable(),
+  mobileNumber: z.string().optional().nullable(),
+  age: z.number().int().positive().optional().nullable(),
+  gender: z.enum(["MALE", "FEMALE", "OTHER"]).optional().nullable(),
+  yearsOfExperience: z.number().int().min(0).optional().nullable(),
+  skillRating: z.number().int().min(0).max(100).optional().nullable(),
+  profilePhoto: z.string().optional().nullable(),
+})
+
+const bulkImportSchema = z.object({
+  players: z.array(playerSchema).min(1, "At least one player is required"),
+})
+
+export async function POST(
+  request: NextRequest,
+  { params }: { params: { tournamentId: string } }
+) {
+  try {
+    const session = await auth()
+    if (!session?.user) {
+      return errorResponse("Unauthorized", 401)
+    }
+
+    const tournament = await prisma.tournament.findUnique({
+      where: { id: params.tournamentId },
+    })
+    if (!tournament) {
+      return errorResponse("Tournament not found", 404)
+    }
+
+    const body = await request.json()
+    const { players } = bulkImportSchema.parse(body)
+
+    let added = 0
+    let reused = 0
+    let created = 0
+
+    for (const playerData of players) {
+      // Try to find existing player: match by (name + email), (name + mobile), or name-only
+      let existingPlayer = null
+
+      if (playerData.email) {
+        existingPlayer = await prisma.player.findFirst({
+          where: {
+            name: { equals: playerData.name, mode: "insensitive" },
+            email: playerData.email,
+          },
+        })
+      }
+
+      if (!existingPlayer && playerData.mobileNumber) {
+        existingPlayer = await prisma.player.findFirst({
+          where: {
+            name: { equals: playerData.name, mode: "insensitive" },
+            mobileNumber: playerData.mobileNumber,
+          },
+        })
+      }
+
+      if (!existingPlayer) {
+        existingPlayer = await prisma.player.findFirst({
+          where: { name: { equals: playerData.name, mode: "insensitive" } },
+        })
+      }
+
+      let player
+      if (existingPlayer) {
+        player = existingPlayer
+        reused++
+      } else {
+        player = await prisma.player.create({
+          data: {
+            name: playerData.name,
+            email: playerData.email || null,
+            mobileNumber: playerData.mobileNumber || null,
+            age: playerData.age || null,
+            gender: playerData.gender || null,
+            yearsOfExperience: playerData.yearsOfExperience || null,
+            skillRating: playerData.skillRating || null,
+            profilePhoto: playerData.profilePhoto || null,
+          },
+        })
+        created++
+      }
+
+      // Add to tournament (skip if already registered)
+      try {
+        await prisma.tournamentPlayer.create({
+          data: {
+            tournamentId: params.tournamentId,
+            playerId: player.id,
+          },
+        })
+        added++
+      } catch (e: any) {
+        if (e.code !== "P2002") throw e
+        // Already in tournament — still count as processed
+      }
+    }
+
+    return successResponse({
+      message: `Processed ${players.length} players: ${created} new, ${reused} existing, ${added} added to tournament`,
+      total: players.length,
+      created,
+      reused,
+      added,
+    }, 201)
+  } catch (error) {
+    if (error instanceof z.ZodError) {
+      return errorResponse(error.errors[0].message, 400)
+    }
+    console.error("Bulk import tournament players error:", error)
+    return errorResponse("Internal server error", 500)
+  }
+}

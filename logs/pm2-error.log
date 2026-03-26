@@ -1,0 +1,47 @@
+2026-03-26 11:50:08 +05:30:  ⨯ Failed to start server
+2026-03-26 11:50:08 +05:30:  ⨯ Failed to start server
+2026-03-26 11:50:12 +05:30:  ⨯ Failed to start server
+2026-03-26 11:50:12 +05:30:  ⨯ Failed to start server
+2026-03-26 11:50:16 +05:30:  ⨯ Failed to start server
+2026-03-26 11:50:16 +05:30:  ⨯ Failed to start server
+2026-03-26 11:50:21 +05:30:  ⨯ Failed to start server
+2026-03-26 11:50:21 +05:30:  ⨯ Failed to start server
+2026-03-26 11:50:25 +05:30:  ⨯ Failed to start server
+2026-03-26 11:50:25 +05:30:  ⨯ Failed to start server
+2026-03-26 11:50:29 +05:30:  ⨯ Failed to start server
+2026-03-26 11:50:29 +05:30:  ⨯ Failed to start server
+2026-03-26 11:50:34 +05:30:  ⨯ Failed to start server
+2026-03-26 11:50:34 +05:30:  ⨯ Failed to start server
+2026-03-26 11:50:38 +05:30:  ⨯ Failed to start server
+2026-03-26 11:50:38 +05:30:  ⨯ Failed to start server
+2026-03-26 11:50:42 +05:30:  ⨯ Failed to start server
+2026-03-26 11:50:42 +05:30:  ⨯ Failed to start server
+2026-03-26 11:50:47 +05:30:  ⨯ Failed to start server
+2026-03-26 11:50:47 +05:30:  ⨯ Failed to start server
+2026-03-26 11:51:53 +05:30: [33m[auth][warn][debug-enabled][0m Read more: https://warnings.authjs.dev
+2026-03-26 11:51:53 +05:30: [31m[auth][error][0m JWTSessionError: Read more at https://errors.authjs.dev#jwtsessionerror
+2026-03-26 11:51:53 +05:30: [31m[auth][cause][0m: Error: no matching decryption secret
+    at tB.clockTolerance (/Users/rahul.gupta/Desktop/devTree/myproject/Badminton_world/.next/server/chunks/8104.js:1:59207)
+    at tJ (/Users/rahul.gupta/Desktop/devTree/myproject/Badminton_world/.next/server/chunks/8104.js:1:52368)
+    at tN (/Users/rahul.gupta/Desktop/devTree/myproject/Badminton_world/.next/server/chunks/8104.js:1:53505)
+    at tB (/Users/rahul.gupta/Desktop/devTree/myproject/Badminton_world/.next/server/chunks/8104.js:1:53734)
+    at Object.t3 [as decode] (/Users/rahul.gupta/Desktop/devTree/myproject/Badminton_world/.next/server/chunks/8104.js:1:59047)
+    at aN (/Users/rahul.gupta/Desktop/devTree/myproject/Badminton_world/.next/server/chunks/8104.js:404:46224)
+    at aX (/Users/rahul.gupta/Desktop/devTree/myproject/Badminton_world/.next/server/chunks/8104.js:404:52766)
+    at aY (/Users/rahul.gupta/Desktop/devTree/myproject/Badminton_world/.next/server/chunks/8104.js:404:57312)
+    at ey (/Users/rahul.gupta/Desktop/devTree/myproject/Badminton_world/.next/server/app/page.js:1:32234)
+2026-03-26 11:51:53 +05:30: [31m[auth][details][0m: {}
+2026-03-26 11:51:54 +05:30: [33m[auth][warn][debug-enabled][0m Read more: https://warnings.authjs.dev
+2026-03-26 11:51:54 +05:30: [31m[auth][error][0m JWTSessionError: Read more at https://errors.authjs.dev#jwtsessionerror
+2026-03-26 11:51:54 +05:30: [31m[auth][cause][0m: Error: no matching decryption secret
+    at tB.clockTolerance (/Users/rahul.gupta/Desktop/devTree/myproject/Badminton_world/.next/server/chunks/8104.js:1:59207)
+    at tJ (/Users/rahul.gupta/Desktop/devTree/myproject/Badminton_world/.next/server/chunks/8104.js:1:52368)
+    at tN (/Users/rahul.gupta/Desktop/devTree/myproject/Badminton_world/.next/server/chunks/8104.js:1:53505)
+    at tB (/Users/rahul.gupta/Desktop/devTree/myproject/Badminton_world/.next/server/chunks/8104.js:1:53734)
+    at Object.t3 [as decode] (/Users/rahul.gupta/Desktop/devTree/myproject/Badminton_world/.next/server/chunks/8104.js:1:59047)
+    at aN (/Users/rahul.gupta/Desktop/devTree/myproject/Badminton_world/.next/server/chunks/8104.js:404:46224)
+    at aX (/Users/rahul.gupta/Desktop/devTree/myproject/Badminton_world/.next/server/chunks/8104.js:404:52766)
+    at aY (/Users/rahul.gupta/Desktop/devTree/myproject/Badminton_world/.next/server/chunks/8104.js:404:57312)
+    at /Users/rahul.gupta/Desktop/devTree/myproject/Badminton_world/node_modules/.pnpm/next@14.2.35_@babel+core@7.29.0_@playwright+test@1.58.1_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/webpack:/next/dist/esm/server/future/route-modules/app-route/module.js:195:37
+    at e_.execute (/Users/rahul.gupta/Desktop/devTree/myproject/Badminton_world/node_modules/.pnpm/next@14.2.35_@babel+core@7.29.0_@playwright+test@1.58.1_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/webpack:/next/dist/esm/server/future/route-modules/app-route/module.js:124:26)
+2026-03-26 11:51:54 +05:30: [31m[auth][details][0m: {}

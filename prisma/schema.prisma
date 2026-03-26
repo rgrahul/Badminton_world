@@ -1,0 +1,601 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// User model for authentication
+model User {
+  id           String    @id @default(cuid())
+  email        String    @unique
+  passwordHash String
+  name         String?
+  role         UserRole  @default(UMPIRE)
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+
+  matches      Match[]
+  tournaments  Tournament[]
+  sessions     Session[]
+  auctions     Auction[]
+
+  @@index([email])
+}
+
+// Player model for player management
+model Player {
+  id                String    @id @default(cuid())
+  name              String
+  email             String?
+  mobileNumber      String?
+  age               Int?
+  gender            Gender?
+  yearsOfExperience Int?
+  skillRating       Int?      // Rating from 1-10 or 1-100
+  profilePhoto      String?   // URL or base64 encoded image
+
+  createdAt         DateTime  @default(now())
+  updatedAt         DateTime  @updatedAt
+
+  teams               TeamPlayer[]
+  tournamentPlayers   TournamentPlayer[]
+  fixturesAsA1        Fixture[]   @relation("FixtureTeamAPlayer1")
+  fixturesAsA2        Fixture[]   @relation("FixtureTeamAPlayer2")
+  fixturesAsB1        Fixture[]   @relation("FixtureTeamBPlayer1")
+  fixturesAsB2        Fixture[]   @relation("FixtureTeamBPlayer2")
+  auctionPlayers      AuctionPlayer[]
+
+  @@index([name])
+  @@index([email])
+}
+
+enum Gender {
+  MALE
+  FEMALE
+  OTHER
+}
+
+enum UserRole {
+  PLAYER
+  UMPIRE
+  ADMIN
+}
+
+// Session model for NextAuth
+model Session {
+  id           String   @id @default(cuid())
+  userId       String
+  sessionToken String   @unique
+  expires      DateTime
+
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([sessionToken])
+}
+
+enum TournamentFormat {
+  CUSTOM
+  LEAGUE_KNOCKOUT
+  KNOCKOUT_ONLY
+}
+
+enum KnockoutRound {
+  ROUND_OF_32
+  ROUND_OF_16
+  QUARTER_FINAL
+  SEMI_FINAL
+  FINAL
+}
+
+// Tournament model - represents a badminton tournament
+model Tournament {
+  id                String      @id @default(cuid())
+  name              String
+  description       String?
+
+  // Tournament dates
+  dateFrom          DateTime
+  dateTo            DateTime
+
+  // Organizer details
+  organizerName     String
+  organizerEmail    String?
+  organizerPhone    String?
+
+  // Venue details
+  venue             String?
+  city              String?
+
+  // Branding
+  titlePhoto        String?
+  titlePhotoPosition String? @default("center")
+
+  // Other details
+  category          String?     // e.g., "Open", "U19", "Veterans"
+  requiresTeams     Boolean     @default(false)
+  format            TournamentFormat @default(CUSTOM)
+  status            TournamentStatus @default(UPCOMING)
+
+  // League config
+  numberOfGroups    Int?
+  qualifyPerGroup   Int?
+
+  // Default match format for auto-generated team matches
+  defaultMenDoubles   Int?  @default(0)
+  defaultWomenDoubles Int?  @default(0)
+  defaultMixedDoubles Int?  @default(0)
+  defaultMenSingles   Int?  @default(0)
+  defaultWomenSingles Int?  @default(0)
+  defaultKidsSingles  Int?  @default(0)
+  defaultKidsDoubles  Int?  @default(0)
+  defaultSetsCount    Int?  @default(3)
+  defaultPointsToWin  Int?  @default(21)
+  defaultDeuceCap     Int?  @default(30)
+
+  // Metadata
+  createdById       String?
+  createdBy         User?       @relation(fields: [createdById], references: [id])
+  createdAt         DateTime    @default(now())
+  updatedAt         DateTime    @updatedAt
+
+  // Relations
+  matches           Match[]
+  teams             Team[]
+  teamMatches       TeamMatch[]
+  groups            TournamentGroup[]
+  knockoutMatches   KnockoutMatch[]
+  tournamentPlayers TournamentPlayer[]
+  auction           Auction?
+
+  @@index([status])
+  @@index([dateFrom])
+  @@index([createdById])
+}
+
+enum TournamentStatus {
+  UPCOMING
+  ONGOING
+  COMPLETED
+  CANCELLED
+}
+
+// Match model - represents a complete badminton match
+model Match {
+  id                String      @id @default(cuid())
+  name              String
+  type              MatchType
+  status            MatchStatus @default(NOT_STARTED)
+
+  // Match configuration (stored as JSON)
+  setsCount         Int         @default(3)      // Best of 3 or 5
+  pointsToWin       Int         @default(21)     // Points needed to win a set
+  deuceCap          Int         @default(30)     // Maximum points in deuce
+
+  // Players
+  sideAPlayer1      String
+  sideAPlayer2      String?                      // null for singles
+  sideBPlayer1      String
+  sideBPlayer2      String?                      // null for singles
+
+  // Current match state
+  currentSetNumber  Int         @default(1)
+  setsWonBySideA    Int         @default(0)
+  setsWonBySideB    Int         @default(0)
+  winningSide       String?                      // "A" or "B" when match is complete
+
+  // Toss and initial server selection
+  tossWonBy          String?                     // "A" or "B" - who won the toss
+  tossChoice         String?                     // "SERVE" or "SIDE" - what toss winner chose
+  courtSwapped       Boolean   @default(false)   // if true, Side A displayed on right, Side B on left
+  initialServingSide String?                     // "A" or "B" - selected at match start
+  initialServerName  String?                     // Name of initial server
+  initialReceiverName String?                    // Name of initial receiver (doubles)
+
+  // Tournament association
+  tournamentId      String?
+  tournament        Tournament? @relation(fields: [tournamentId], references: [id])
+
+  // Metadata
+  umpireId          String?
+  umpire            User?       @relation(fields: [umpireId], references: [id])
+  startedAt         DateTime?
+  completedAt       DateTime?
+  createdAt         DateTime    @default(now())
+  updatedAt         DateTime    @updatedAt
+
+  // Relations
+  sets              Set[]
+  rallies           Rally[]
+  fixture           Fixture?
+
+  @@index([status])
+  @@index([umpireId])
+  @@index([tournamentId])
+  @@index([createdAt])
+}
+
+enum MatchType {
+  SINGLES
+  DOUBLES
+}
+
+enum MatchStatus {
+  NOT_STARTED
+  IN_PROGRESS
+  COMPLETED
+  ABANDONED
+}
+
+// Set model - represents a single set within a match
+model Set {
+  id              String    @id @default(cuid())
+  matchId         String
+  setNumber       Int
+
+  scoreA          Int       @default(0)
+  scoreB          Int       @default(0)
+  winningSide     String?   // "A" or "B" when set is complete
+
+  startedAt       DateTime  @default(now())
+  completedAt     DateTime?
+
+  // Relations
+  match           Match     @relation(fields: [matchId], references: [id], onDelete: Cascade)
+  rallies         Rally[]
+
+  @@unique([matchId, setNumber])
+  @@index([matchId])
+}
+
+// Rally model - represents a single rally (point)
+model Rally {
+  id              String    @id @default(cuid())
+  matchId         String
+  setId           String
+  rallyNumber     Int       // Global rally number in match
+  setRallyNum     Int       // Rally number within current set
+
+  scoringSide     String    // "A" or "B" - who scored this point
+  scoreA          Int       // Score snapshot after this rally
+  scoreB          Int       // Score snapshot after this rally
+
+  servingSide     String    // "A" or "B" - who was serving
+  serverName      String    // Name of the actual server
+  serverPositions Json?     // Court positions for doubles: { sideA: { rightCourt, leftCourt }, sideB: { rightCourt, leftCourt } }
+
+  timestamp       DateTime  @default(now())
+
+  // Soft delete for undo functionality
+  isDeleted       Boolean   @default(false)
+  deletedAt       DateTime?
+
+  // Relations
+  match           Match     @relation(fields: [matchId], references: [id], onDelete: Cascade)
+  set             Set       @relation(fields: [setId], references: [id], onDelete: Cascade)
+
+  @@index([matchId])
+  @@index([setId])
+  @@index([isDeleted])
+}
+
+enum PlayerCategory {
+  MALE
+  FEMALE
+  KID
+}
+
+enum TeamMatchCategory {
+  ADULT
+  KIDS
+}
+
+enum FixtureType {
+  MEN_DOUBLES
+  WOMEN_DOUBLES
+  MIXED_DOUBLES
+  MEN_SINGLES
+  WOMEN_SINGLES
+  KIDS_SINGLES
+  KIDS_DOUBLES
+}
+
+enum TeamMatchStatus {
+  DRAFT
+  READY
+  IN_PROGRESS
+  COMPLETED
+}
+
+// Tournament Group model - represents a group in league stage
+model TournamentGroup {
+  id            String    @id @default(cuid())
+  tournamentId  String
+  name          String    // "Group A", "Group B"
+  sortOrder     Int
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  tournament    Tournament @relation(fields: [tournamentId], references: [id], onDelete: Cascade)
+  groupTeams    GroupTeam[]
+  teamMatches   TeamMatch[]
+
+  @@unique([tournamentId, name])
+  @@index([tournamentId])
+}
+
+// GroupTeam join model - links teams to groups
+model GroupTeam {
+  id          String          @id @default(cuid())
+  groupId     String
+  teamId      String
+  seedOrder   Int
+  createdAt   DateTime        @default(now())
+
+  group       TournamentGroup @relation(fields: [groupId], references: [id], onDelete: Cascade)
+  team        Team            @relation(fields: [teamId], references: [id], onDelete: Cascade)
+
+  @@unique([groupId, teamId])
+  @@index([groupId])
+  @@index([teamId])
+}
+
+// KnockoutMatch model - represents a match slot in the knockout bracket
+model KnockoutMatch {
+  id                  String        @id @default(cuid())
+  tournamentId        String
+  round               KnockoutRound
+  matchNumber         Int
+  teamAId             String?
+  teamBId             String?
+  teamASourceMatchId  String?       // KnockoutMatch id feeding teamA
+  teamBSourceMatchId  String?       // KnockoutMatch id feeding teamB
+  teamASourceLabel    String?       // e.g. "Group A #1", "Winner QF-1"
+  teamBSourceLabel    String?
+  teamMatchId         String?       @unique
+  winnerTeamId        String?
+  createdAt           DateTime      @default(now())
+  updatedAt           DateTime      @updatedAt
+
+  tournament          Tournament    @relation(fields: [tournamentId], references: [id], onDelete: Cascade)
+  teamA               Team?         @relation("KnockoutTeamA", fields: [teamAId], references: [id])
+  teamB               Team?         @relation("KnockoutTeamB", fields: [teamBId], references: [id])
+  winnerTeam          Team?         @relation("KnockoutWinner", fields: [winnerTeamId], references: [id])
+  teamMatch           TeamMatch?    @relation(fields: [teamMatchId], references: [id])
+  teamASourceMatch    KnockoutMatch? @relation("KnockoutFeedA", fields: [teamASourceMatchId], references: [id])
+  teamBSourceMatch    KnockoutMatch? @relation("KnockoutFeedB", fields: [teamBSourceMatchId], references: [id])
+  feedsAsTeamA        KnockoutMatch[] @relation("KnockoutFeedA")
+  feedsAsTeamB        KnockoutMatch[] @relation("KnockoutFeedB")
+
+  @@unique([tournamentId, round, matchNumber])
+  @@index([tournamentId])
+}
+
+// Team model - represents a team within a tournament
+model Team {
+  id              String      @id @default(cuid())
+  name            String
+  tournamentId    String
+  teamSize        Int
+  requiredMale    Int
+  requiredFemale  Int
+  requiredKid     Int
+  logoUrl         String?
+
+  createdAt       DateTime    @default(now())
+  updatedAt       DateTime    @updatedAt
+
+  // Relations
+  tournament      Tournament  @relation(fields: [tournamentId], references: [id], onDelete: Cascade)
+  players         TeamPlayer[]
+  teamMatchesAsA  TeamMatch[] @relation("TeamMatchTeamA")
+  teamMatchesAsB  TeamMatch[] @relation("TeamMatchTeamB")
+  teamMatchWins   TeamMatch[] @relation("TeamMatchWinner")
+  groupTeams      GroupTeam[]
+  knockoutMatchesAsA KnockoutMatch[] @relation("KnockoutTeamA")
+  knockoutMatchesAsB KnockoutMatch[] @relation("KnockoutTeamB")
+  knockoutMatchWins  KnockoutMatch[] @relation("KnockoutWinner")
+
+  @@index([tournamentId])
+  @@index([name])
+}
+
+// TeamMatch model - structured match between two teams
+model TeamMatch {
+  id                  String            @id @default(cuid())
+  name                String
+  tournamentId        String
+  teamAId             String
+  teamBId             String
+  category            TeamMatchCategory
+  genderRestriction   Boolean?
+
+  // Format counts
+  menDoublesCount     Int               @default(0)
+  womenDoublesCount   Int               @default(0)
+  mixedDoublesCount   Int               @default(0)
+  menSinglesCount     Int               @default(0)
+  womenSinglesCount   Int               @default(0)
+  kidsSinglesCount    Int               @default(0)
+  kidsDoublesCount    Int               @default(0)
+
+  // Scoring format (applied to all fixture matches)
+  setsCount           Int               @default(3)
+  pointsToWin         Int               @default(21)
+  deuceCap            Int               @default(30)
+
+  allowPlayerReuse    Boolean           @default(false)
+  status              TeamMatchStatus   @default(DRAFT)
+
+  // Result fields
+  fixturesWonByTeamA  Int               @default(0)
+  fixturesWonByTeamB  Int               @default(0)
+  totalPointsTeamA    Int               @default(0)
+  totalPointsTeamB    Int               @default(0)
+  winningTeamId       String?
+  winningTeam         Team?             @relation("TeamMatchWinner", fields: [winningTeamId], references: [id])
+
+  // Group association (for league matches)
+  groupId             String?
+  group               TournamentGroup?  @relation(fields: [groupId], references: [id])
+
+  createdAt           DateTime          @default(now())
+  updatedAt           DateTime          @updatedAt
+
+  // Relations
+  tournament          Tournament        @relation(fields: [tournamentId], references: [id], onDelete: Cascade)
+  teamA               Team              @relation("TeamMatchTeamA", fields: [teamAId], references: [id], onDelete: Cascade)
+  teamB               Team              @relation("TeamMatchTeamB", fields: [teamBId], references: [id], onDelete: Cascade)
+  fixtures            Fixture[]
+  knockoutMatch       KnockoutMatch?
+
+  @@index([tournamentId])
+  @@index([groupId])
+}
+
+// Fixture model - individual fixture within a team match
+model Fixture {
+  id                  String            @id @default(cuid())
+  teamMatchId         String
+  fixtureNumber       Int
+  fixtureType         FixtureType
+
+  // Player assignments (nullable, assigned later)
+  teamAPlayer1Id      String?
+  teamAPlayer2Id      String?
+  teamBPlayer1Id      String?
+  teamBPlayer2Id      String?
+
+  // Link to actual Match for scoring
+  matchId             String?           @unique
+
+  imageUrl            String?
+
+  createdAt           DateTime          @default(now())
+  updatedAt           DateTime          @updatedAt
+
+  // Relations
+  teamMatch           TeamMatch         @relation(fields: [teamMatchId], references: [id], onDelete: Cascade)
+  match               Match?            @relation(fields: [matchId], references: [id])
+  teamAPlayer1        Player?           @relation("FixtureTeamAPlayer1", fields: [teamAPlayer1Id], references: [id])
+  teamAPlayer2        Player?           @relation("FixtureTeamAPlayer2", fields: [teamAPlayer2Id], references: [id])
+  teamBPlayer1        Player?           @relation("FixtureTeamBPlayer1", fields: [teamBPlayer1Id], references: [id])
+  teamBPlayer2        Player?           @relation("FixtureTeamBPlayer2", fields: [teamBPlayer2Id], references: [id])
+
+  @@unique([teamMatchId, fixtureNumber])
+  @@index([teamMatchId])
+}
+
+// TeamPlayer join model - links players to teams with their category
+model TeamPlayer {
+  id              String          @id @default(cuid())
+  teamId          String
+  playerId        String
+  category        PlayerCategory
+
+  createdAt       DateTime        @default(now())
+
+  // Relations
+  team            Team            @relation(fields: [teamId], references: [id], onDelete: Cascade)
+  player          Player          @relation(fields: [playerId], references: [id], onDelete: Cascade)
+
+  @@unique([teamId, playerId])
+  @@index([teamId])
+  @@index([playerId])
+}
+
+// TournamentPlayer join model - registers players for a specific tournament
+model TournamentPlayer {
+  id            String    @id @default(cuid())
+  tournamentId  String
+  playerId      String
+  createdAt     DateTime  @default(now())
+
+  tournament    Tournament @relation(fields: [tournamentId], references: [id], onDelete: Cascade)
+  player        Player     @relation(fields: [playerId], references: [id], onDelete: Cascade)
+
+  @@unique([tournamentId, playerId])
+  @@index([tournamentId])
+  @@index([playerId])
+}
+
+// ==================== AUCTION MODELS ====================
+
+enum AuctionStatus {
+  SETUP
+  LIVE
+  PAUSED
+  COMPLETED
+}
+
+enum AuctionPlayerStatus {
+  AVAILABLE
+  SOLD
+  UNSOLD
+}
+
+// Auction model - represents a player auction/draft
+model Auction {
+  id            String        @id @default(cuid())
+  name          String
+  tournamentId  String?       @unique
+  status        AuctionStatus @default(SETUP)
+  createdById   String?
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+
+  tournament    Tournament?   @relation(fields: [tournamentId], references: [id])
+  createdBy     User?         @relation(fields: [createdById], references: [id])
+  teams         AuctionTeam[]
+  players       AuctionPlayer[]
+
+  @@index([status])
+  @@index([createdById])
+}
+
+// AuctionTeam model - a team participating in the auction
+model AuctionTeam {
+  id            String          @id @default(cuid())
+  auctionId     String
+  name          String
+  budget        Float           @default(0)
+  spent         Float           @default(0)
+  logoUrl       String?
+  createdAt     DateTime        @default(now())
+  updatedAt     DateTime        @updatedAt
+
+  auction       Auction         @relation(fields: [auctionId], references: [id], onDelete: Cascade)
+  soldPlayers   AuctionPlayer[]
+
+  @@index([auctionId])
+}
+
+// AuctionPlayer model - a player in the auction pool
+model AuctionPlayer {
+  id            String              @id @default(cuid())
+  auctionId     String
+  playerId      String
+  basePrice     Float               @default(0)
+  status        AuctionPlayerStatus @default(AVAILABLE)
+  soldPrice     Float?
+  soldToTeamId  String?
+  soldAt        DateTime?
+  sortOrder     Int                 @default(0)
+  createdAt     DateTime            @default(now())
+  updatedAt     DateTime            @updatedAt
+
+  auction       Auction             @relation(fields: [auctionId], references: [id], onDelete: Cascade)
+  player        Player              @relation(fields: [playerId], references: [id])
+  soldToTeam    AuctionTeam?        @relation(fields: [soldToTeamId], references: [id])
+
+  @@unique([auctionId, playerId])
+  @@index([auctionId])
+  @@index([playerId])
+  @@index([soldToTeamId])
+}
