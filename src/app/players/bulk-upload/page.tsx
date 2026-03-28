@@ -111,7 +111,10 @@ export default function BulkUploadPage() {
       const players = await parseExcelFile(file)
 
       if (players.length === 0) {
-        alert("No valid players found in the file. Make sure the 'name' column is present.", "Parse Error")
+        alert(
+          "No valid players found in the file. Make sure the 'name' column is present.",
+          "Parse Error"
+        )
         return
       }
 
@@ -142,6 +145,7 @@ export default function BulkUploadPage() {
         headers: {
           "Content-Type": "application/json",
         },
+        credentials: "include",
         body: JSON.stringify({ players: parsedPlayers }),
       })
 
