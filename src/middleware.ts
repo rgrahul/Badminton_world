@@ -11,27 +11,38 @@ export async function middleware(request: NextRequest) {
     return NextResponse.next()
   }
 
+  // Skip middleware auth checks for endpoints that handle their own auth
+  const skipAuthCheckEndpoints = ["/api/players/bulk-upload"]
+  if (skipAuthCheckEndpoints.some((endpoint) => pathname.startsWith(endpoint))) {
+    return NextResponse.next()
+  }
+
   // For API write methods (POST, PATCH, PUT, DELETE), check role
   if (pathname.startsWith("/api") && ["POST", "PATCH", "PUT", "DELETE"].includes(method)) {
-    const token = await getToken({ req: request, secret: process.env.NEXTAUTH_SECRET })
+    try {
+      const token = await getToken({ req: request, secret: process.env.NEXTAUTH_SECRET })
 
-    if (!token) {
-      console.warn(
-        "[Middleware] No token found for:",
-        pathname,
-        "- NEXTAUTH_SECRET:",
-        process.env.NEXTAUTH_SECRET ? "SET" : "MISSING"
-      )
-      return NextResponse.json({ success: false, error: "Unauthorized" }, { status: 401 })
-    }
+      if (!token) {
+        console.warn(
+          "[Middleware] No token found for:",
+          pathname,
+          "- NEXTAUTH_SECRET:",
+          process.env.NEXTAUTH_SECRET ? "SET" : "MISSING"
+        )
+        return NextResponse.json({ success: false, error: "Unauthorized" }, { status: 401 })
+      }
 
-    console.log("[Middleware] Token found with role:", token.role)
+      console.log("[Middleware] Token found with role:", token.role)
 
-    if (token.role === "PLAYER") {
-      return NextResponse.json(
-        { success: false, error: "You do not have permission to perform this action" },
-        { status: 403 }
-      )
+      if (token.role === "PLAYER") {
+        return NextResponse.json(
+          { success: false, error: "You do not have permission to perform this action" },
+          { status: 403 }
+        )
+      }
+    } catch (error) {
+      console.error("[Middleware] Error verifying token:", error)
+      return NextResponse.json({ success: false, error: "Authentication error" }, { status: 401 })
     }
   }
 
