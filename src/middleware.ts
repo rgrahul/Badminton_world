@@ -13,7 +13,7 @@ export async function middleware(request: NextRequest) {
 
   // Skip middleware auth checks for endpoints that handle their own auth
   // These endpoints use auth() directly in their handlers, so we let them pass through
-  const skipAuthCheckEndpoints = ["/api/players/bulk-upload", "/api/tournaments/"]
+  const skipAuthCheckEndpoints = ["/api/players/bulk-upload", "/api/tournaments/", "/api/auctions"]
   if (skipAuthCheckEndpoints.some((endpoint) => pathname.startsWith(endpoint))) {
     return NextResponse.next()
   }
