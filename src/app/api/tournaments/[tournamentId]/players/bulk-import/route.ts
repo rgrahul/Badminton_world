@@ -19,14 +19,15 @@ const bulkImportSchema = z.object({
   players: z.array(playerSchema).min(1, "At least one player is required"),
 })
 
-export async function POST(
-  request: NextRequest,
-  { params }: { params: { tournamentId: string } }
-) {
+export async function POST(request: NextRequest, { params }: { params: { tournamentId: string } }) {
   try {
     const session = await auth()
     if (!session?.user) {
       return errorResponse("Unauthorized", 401)
+    }
+
+    if (session.user.role !== "ADMIN") {
+      return errorResponse("Only admins can perform bulk imports", 403)
     }
 
     const tournament = await prisma.tournament.findUnique({
@@ -106,13 +107,16 @@ export async function POST(
       }
     }
 
-    return successResponse({
-      message: `Processed ${players.length} players: ${created} new, ${reused} existing, ${added} added to tournament`,
-      total: players.length,
-      created,
-      reused,
-      added,
-    }, 201)
+    return successResponse(
+      {
+        message: `Processed ${players.length} players: ${created} new, ${reused} existing, ${added} added to tournament`,
+        total: players.length,
+        created,
+        reused,
+        added,
+      },
+      201
+    )
   } catch (error) {
     if (error instanceof z.ZodError) {
       return errorResponse(error.errors[0].message, 400)

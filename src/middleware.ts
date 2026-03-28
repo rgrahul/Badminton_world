@@ -12,7 +12,8 @@ export async function middleware(request: NextRequest) {
   }
 
   // Skip middleware auth checks for endpoints that handle their own auth
-  const skipAuthCheckEndpoints = ["/api/players/bulk-upload"]
+  // These endpoints use auth() directly in their handlers, so we let them pass through
+  const skipAuthCheckEndpoints = ["/api/players/bulk-upload", "/api/tournaments/"]
   if (skipAuthCheckEndpoints.some((endpoint) => pathname.startsWith(endpoint))) {
     return NextResponse.next()
   }
@@ -34,9 +35,9 @@ export async function middleware(request: NextRequest) {
 
       console.log("[Middleware] Token found with role:", token.role)
 
-      if (token.role === "PLAYER") {
+      if (token.role !== "ADMIN") {
         return NextResponse.json(
-          { success: false, error: "You do not have permission to perform this action" },
+          { success: false, error: "Only admins can perform write operations" },
           { status: 403 }
         )
       }
