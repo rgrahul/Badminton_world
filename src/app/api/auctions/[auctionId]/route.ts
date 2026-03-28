@@ -9,10 +9,7 @@ const updateSchema = z.object({
   status: z.enum(["SETUP", "LIVE", "PAUSED", "COMPLETED"]).optional(),
 })
 
-export async function GET(
-  request: NextRequest,
-  { params }: { params: { auctionId: string } }
-) {
+export async function GET(request: NextRequest, { params }: { params: { auctionId: string } }) {
   try {
     const session = await auth()
     if (!session?.user) {
@@ -31,14 +28,15 @@ export async function GET(
   }
 }
 
-export async function PATCH(
-  request: NextRequest,
-  { params }: { params: { auctionId: string } }
-) {
+export async function PATCH(request: NextRequest, { params }: { params: { auctionId: string } }) {
   try {
     const session = await auth()
     if (!session?.user) {
       return errorResponse("Unauthorized", 401)
+    }
+
+    if (session.user.role !== "ADMIN") {
+      return errorResponse("Only admins can update auctions", 403)
     }
 
     const auction = await AuctionRepository.findById(params.auctionId)
@@ -60,14 +58,15 @@ export async function PATCH(
   }
 }
 
-export async function DELETE(
-  request: NextRequest,
-  { params }: { params: { auctionId: string } }
-) {
+export async function DELETE(request: NextRequest, { params }: { params: { auctionId: string } }) {
   try {
     const session = await auth()
     if (!session?.user) {
       return errorResponse("Unauthorized", 401)
+    }
+
+    if (session.user.role !== "ADMIN") {
+      return errorResponse("Only admins can delete auctions", 403)
     }
 
     const auction = await AuctionRepository.findById(params.auctionId)

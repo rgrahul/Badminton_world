@@ -6,19 +6,18 @@ import { AuctionTeamRepository } from "@/lib/db/repositories/AuctionTeamReposito
 import { errorResponse, successResponse } from "@/lib/api/responses"
 
 const createSchema = z.object({
-  teams: z.array(
-    z.object({
-      name: z.string().min(1, "Team name is required"),
-      budget: z.number().min(0, "Budget must be non-negative"),
-      logoUrl: z.string().optional(),
-    })
-  ).min(1, "At least one team is required"),
+  teams: z
+    .array(
+      z.object({
+        name: z.string().min(1, "Team name is required"),
+        budget: z.number().min(0, "Budget must be non-negative"),
+        logoUrl: z.string().optional(),
+      })
+    )
+    .min(1, "At least one team is required"),
 })
 
-export async function GET(
-  request: NextRequest,
-  { params }: { params: { auctionId: string } }
-) {
+export async function GET(request: NextRequest, { params }: { params: { auctionId: string } }) {
   try {
     const session = await auth()
     if (!session?.user) {
@@ -38,14 +37,15 @@ export async function GET(
   }
 }
 
-export async function POST(
-  request: NextRequest,
-  { params }: { params: { auctionId: string } }
-) {
+export async function POST(request: NextRequest, { params }: { params: { auctionId: string } }) {
   try {
     const session = await auth()
     if (!session?.user) {
       return errorResponse("Unauthorized", 401)
+    }
+
+    if (session.user.role !== "ADMIN") {
+      return errorResponse("Only admins can create auction teams", 403)
     }
 
     const auction = await AuctionRepository.findById(params.auctionId)
@@ -59,10 +59,7 @@ export async function POST(
       return errorResponse(parsed.error.errors[0].message, 400)
     }
 
-    const teams = await AuctionTeamRepository.createMany(
-      params.auctionId,
-      parsed.data.teams
-    )
+    const teams = await AuctionTeamRepository.createMany(params.auctionId, parsed.data.teams)
 
     return successResponse({ teams }, 201)
   } catch (error) {

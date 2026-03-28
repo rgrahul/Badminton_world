@@ -6,29 +6,32 @@ import { errorResponse, successResponse } from "@/lib/api/responses"
 import { prisma } from "@/lib/db/client"
 
 const importSchema = z.object({
-  players: z.array(
-    z.object({
-      name: z.string().min(1, "Name is required"),
-      email: z.string().email().optional().nullable(),
-      mobileNumber: z.string().optional().nullable(),
-      age: z.number().int().optional().nullable(),
-      gender: z.enum(["MALE", "FEMALE", "OTHER"]).optional().nullable(),
-      yearsOfExperience: z.number().int().optional().nullable(),
-      skillRating: z.number().int().optional().nullable(),
-      profilePhoto: z.string().optional().nullable(),
-      basePrice: z.number().min(0).default(0),
-    })
-  ).min(1, "At least one player is required"),
+  players: z
+    .array(
+      z.object({
+        name: z.string().min(1, "Name is required"),
+        email: z.string().email().optional().nullable(),
+        mobileNumber: z.string().optional().nullable(),
+        age: z.number().int().optional().nullable(),
+        gender: z.enum(["MALE", "FEMALE", "OTHER"]).optional().nullable(),
+        yearsOfExperience: z.number().int().optional().nullable(),
+        skillRating: z.number().int().optional().nullable(),
+        profilePhoto: z.string().optional().nullable(),
+        basePrice: z.number().min(0).default(0),
+      })
+    )
+    .min(1, "At least one player is required"),
 })
 
-export async function POST(
-  request: NextRequest,
-  { params }: { params: { auctionId: string } }
-) {
+export async function POST(request: NextRequest, { params }: { params: { auctionId: string } }) {
   try {
     const session = await auth()
     if (!session?.user) {
       return errorResponse("Unauthorized", 401)
+    }
+
+    if (session.user.role !== "ADMIN") {
+      return errorResponse("Only admins can import auction players", 403)
     }
 
     const auction = await AuctionRepository.findById(params.auctionId)
@@ -132,10 +135,13 @@ export async function POST(
       return { count: createdPlayers.length }
     })
 
-    return successResponse({
-      message: `Imported ${result.count} players`,
-      count: result.count,
-    }, 201)
+    return successResponse(
+      {
+        message: `Imported ${result.count} players`,
+        count: result.count,
+      },
+      201
+    )
   } catch (error) {
     console.error("Import auction players error:", error)
     return errorResponse("Internal server error", 500)
