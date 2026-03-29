@@ -15,6 +15,8 @@ import {
   SelectValue,
 } from "@/components/ui/select"
 import { useAlertDialog } from "@/hooks/useAlertDialog"
+import type { SkillCategory } from "@prisma/client"
+import { SkillCategorySelect } from "@/components/player/SkillCategorySelect"
 
 export default function NewPlayerPage() {
   const router = useRouter()
@@ -28,7 +30,7 @@ export default function NewPlayerPage() {
     age: "",
     gender: "",
     yearsOfExperience: "",
-    skillRating: "",
+    skillCategory: null as SkillCategory | null,
     profilePhoto: "",
   })
   const [previewUrl, setPreviewUrl] = useState<string>("")
@@ -112,7 +114,7 @@ export default function NewPlayerPage() {
         age: formData.age ? parseInt(formData.age) : null,
         gender: formData.gender || null,
         yearsOfExperience: formData.yearsOfExperience ? parseInt(formData.yearsOfExperience) : null,
-        skillRating: formData.skillRating ? parseInt(formData.skillRating) : null,
+        skillCategory: formData.skillCategory,
         profilePhoto: formData.profilePhoto || null,
       }
 
@@ -240,7 +242,7 @@ export default function NewPlayerPage() {
               {/* Experience and Rating */}
               <div className="space-y-4 bg-gradient-to-br from-purple-50 to-purple-100 p-4 rounded-lg border-2 border-purple-200">
                 <h3 className="font-bold text-purple-800 flex items-center gap-2 text-lg">
-                  <span>⭐</span> Experience and Rating
+                  <span>⭐</span> Experience and skill level
                 </h3>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div className="space-y-2">
@@ -258,19 +260,11 @@ export default function NewPlayerPage() {
                     />
                   </div>
 
-                  <div className="space-y-2">
-                    <Label htmlFor="skillRating" className="text-purple-700 font-semibold">Skill Rating (1-100)</Label>
-                    <Input
-                      id="skillRating"
-                      type="number"
-                      min="1"
-                      max="100"
-                      value={formData.skillRating}
-                      onChange={(e) => setFormData({ ...formData, skillRating: e.target.value })}
-                      placeholder="75"
-                      className="border-2 focus:border-purple-500"
-                    />
-                  </div>
+                  <SkillCategorySelect
+                    id="skillCategory"
+                    value={formData.skillCategory}
+                    onChange={(v) => setFormData({ ...formData, skillCategory: v })}
+                  />
                 </div>
               </div>
 

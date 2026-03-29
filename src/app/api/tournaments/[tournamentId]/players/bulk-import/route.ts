@@ -3,6 +3,7 @@ import { z } from "zod"
 import { auth } from "@/lib/auth"
 import { prisma } from "@/lib/db/client"
 import { errorResponse, successResponse } from "@/lib/api/responses"
+import { optionalImportedSkillCategorySchema } from "@/lib/skillCategory"
 
 const playerSchema = z.object({
   name: z.string().min(1),
@@ -11,7 +12,7 @@ const playerSchema = z.object({
   age: z.number().int().positive().optional().nullable(),
   gender: z.enum(["MALE", "FEMALE", "OTHER"]).optional().nullable(),
   yearsOfExperience: z.number().int().min(0).optional().nullable(),
-  skillRating: z.number().int().min(0).max(100).optional().nullable(),
+  skillCategory: optionalImportedSkillCategorySchema,
   profilePhoto: z.string().optional().nullable(),
 })
 
@@ -38,7 +39,11 @@ export async function POST(request: NextRequest, { params }: { params: { tournam
     }
 
     const body = await request.json()
-    const { players } = bulkImportSchema.parse(body)
+    const rawPlayers = (body.players as Record<string, unknown>[]).map((row) => ({
+      ...row,
+      skillCategory: row.skillCategory ?? row.skillRating,
+    }))
+    const { players } = bulkImportSchema.parse({ players: rawPlayers })
 
     let added = 0
     let reused = 0
@@ -85,7 +90,7 @@ export async function POST(request: NextRequest, { params }: { params: { tournam
             age: playerData.age || null,
             gender: playerData.gender || null,
             yearsOfExperience: playerData.yearsOfExperience || null,
-            skillRating: playerData.skillRating || null,
+            skillCategory: playerData.skillCategory ?? null,
             profilePhoto: playerData.profilePhoto || null,
           },
         })

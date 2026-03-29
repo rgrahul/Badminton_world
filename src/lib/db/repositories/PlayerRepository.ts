@@ -1,5 +1,5 @@
 import { prisma } from "../client"
-import type { Prisma } from "@prisma/client"
+import type { Prisma, SkillCategory } from "@prisma/client"
 
 export interface CreatePlayerInput {
   name: string
@@ -8,7 +8,7 @@ export interface CreatePlayerInput {
   age?: number | null
   gender?: "MALE" | "FEMALE" | "OTHER" | null
   yearsOfExperience?: number | null
-  skillRating?: number | null
+  skillCategory?: SkillCategory | null
   profilePhoto?: string | null
 }
 
@@ -19,7 +19,7 @@ export interface UpdatePlayerInput {
   age?: number | null
   gender?: "MALE" | "FEMALE" | "OTHER" | null
   yearsOfExperience?: number | null
-  skillRating?: number | null
+  skillCategory?: SkillCategory | null
   profilePhoto?: string | null
 }
 
@@ -28,8 +28,7 @@ export interface PlayerFilters {
   gender?: "MALE" | "FEMALE" | "OTHER"
   minAge?: number
   maxAge?: number
-  minSkillRating?: number
-  maxSkillRating?: number
+  skillCategory?: SkillCategory
 }
 
 export class PlayerRepository {
@@ -64,14 +63,8 @@ export class PlayerRepository {
       }
     }
 
-    if (filters?.minSkillRating !== undefined || filters?.maxSkillRating !== undefined) {
-      where.skillRating = {}
-      if (filters.minSkillRating !== undefined) {
-        where.skillRating.gte = filters.minSkillRating
-      }
-      if (filters.maxSkillRating !== undefined) {
-        where.skillRating.lte = filters.maxSkillRating
-      }
+    if (filters?.skillCategory) {
+      where.skillCategory = filters.skillCategory
     }
 
     const skip = (page - 1) * limit

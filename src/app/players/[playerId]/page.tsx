@@ -9,6 +9,8 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { PlayerAvatar } from "@/components/player/PlayerAvatar"
 import { useAlertDialog } from "@/hooks/useAlertDialog"
 import { useRole } from "@/hooks/useRole"
+import type { SkillCategory } from "@prisma/client"
+import { skillCategoryLabel } from "@/lib/skillCategory"
 
 interface Player {
   id: string
@@ -18,7 +20,7 @@ interface Player {
   age?: number | null
   gender?: string | null
   yearsOfExperience?: number | null
-  skillRating?: number | null
+  skillCategory?: string | null
   profilePhoto?: string | null
   createdAt: string
   updatedAt: string
@@ -209,9 +211,9 @@ export default function PlayerDetailPage({ params }: { params: { playerId: strin
                   </div>
                 </div>
                 <div>
-                  <div className="text-sm text-muted-foreground">Skill Rating</div>
+                  <div className="text-sm text-muted-foreground">Skill level</div>
                   <div className="font-medium">
-                    {player.skillRating ? `${player.skillRating}/100` : "N/A"}
+                    {skillCategoryLabel(player.skillCategory as SkillCategory | null) || "N/A"}
                   </div>
                 </div>
               </div>

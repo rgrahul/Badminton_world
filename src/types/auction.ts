@@ -26,7 +26,7 @@ export interface AuctionPlayerWithDetails {
     age?: number | null
     gender?: string | null
     yearsOfExperience?: number | null
-    skillRating?: number | null
+    skillCategory?: string | null
     profilePhoto?: string | null
   }
   soldToTeam?: { id: string; name: string } | null

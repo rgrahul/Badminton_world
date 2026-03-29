@@ -25,6 +25,7 @@ import { derivePlayerCategory } from "@/lib/constants"
 import { PlayerAvatar } from "@/components/player/PlayerLink"
 import { useRole } from "@/hooks/useRole"
 import * as XLSX from "xlsx"
+import { parseSkillCategory } from "@/lib/skillCategory"
 
 interface Player {
   id: string
@@ -247,7 +248,16 @@ export function TournamentPlayerManager({ tournamentId, onPlayersChanged }: Tour
               age: row.age || row.Age ? parseInt(row.age || row.Age) : null,
               gender,
               yearsOfExperience: row.yearsOfExperience || row.YearsOfExperience || row.experience ? parseInt(row.yearsOfExperience || row.YearsOfExperience || row.experience) : null,
-              skillRating: row.skillRating || row.SkillRating || row.rating ? parseInt(row.skillRating || row.SkillRating || row.rating) : null,
+              skillCategory: parseSkillCategory(
+                row.skillCategory ??
+                  row.SkillCategory ??
+                  row.skillRating ??
+                  row.SkillRating ??
+                  row.rating ??
+                  row.Rating ??
+                  row.level ??
+                  row.Level
+              ),
               profilePhoto: row.profilePhoto || row.ProfilePhoto || row.photo || row.Photo || null,
             }
           }).filter((p: any) => p.name && p.name.trim() !== "")
@@ -591,7 +601,7 @@ export function TournamentPlayerManager({ tournamentId, onPlayersChanged }: Tour
               {/* Column info */}
               <div className="text-xs text-muted-foreground">
                 <p className="font-medium text-foreground mb-1">Required: name</p>
-                <p>Optional: email, mobileNumber, age, gender (MALE/FEMALE), yearsOfExperience, skillRating</p>
+                <p>Optional: email, mobileNumber, age, gender (MALE/FEMALE), yearsOfExperience, skillCategory (or skillRating/rating/level)</p>
                 <p className="mt-1 text-green-700">Existing players (matched by name) will be reused, not duplicated.</p>
               </div>
 

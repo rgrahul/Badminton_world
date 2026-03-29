@@ -38,7 +38,7 @@ model Player {
   age               Int?
   gender            Gender?
   yearsOfExperience Int?
-  skillRating       Int?      // Rating from 1-10 or 1-100
+  skillCategory     SkillCategory?
   profilePhoto      String?   // URL or base64 encoded image
 
   createdAt         DateTime  @default(now())
@@ -60,6 +60,13 @@ enum Gender {
   MALE
   FEMALE
   OTHER
+}
+
+enum SkillCategory {
+  BEGINNER
+  INTERMEDIATE
+  INTERMEDIATE_PLUS
+  ADVANCED
 }
 
 enum UserRole {

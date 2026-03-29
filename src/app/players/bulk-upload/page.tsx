@@ -9,6 +9,8 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { useAlertDialog } from "@/hooks/useAlertDialog"
 import * as XLSX from "xlsx"
+import type { SkillCategory } from "@prisma/client"
+import { parseSkillCategory } from "@/lib/skillCategory"
 
 interface ParsedPlayer {
   name: string
@@ -17,7 +19,7 @@ interface ParsedPlayer {
   age?: number | null
   gender?: "MALE" | "FEMALE" | "OTHER" | null
   yearsOfExperience?: number | null
-  skillRating?: number | null
+  skillCategory?: SkillCategory | null
   profilePhoto?: string | null
 }
 
@@ -78,10 +80,16 @@ export default function BulkUploadPage() {
                         row.Experience
                     )
                   : null,
-              skillRating:
-                row.skillRating || row.SkillRating || row.rating || row.Rating
-                  ? parseInt(row.skillRating || row.SkillRating || row.rating || row.Rating)
-                  : null,
+              skillCategory: parseSkillCategory(
+                row.skillCategory ??
+                  row.SkillCategory ??
+                  row.skillRating ??
+                  row.SkillRating ??
+                  row.rating ??
+                  row.Rating ??
+                  row.level ??
+                  row.Level
+              ),
               profilePhoto: row.profilePhoto || row.ProfilePhoto || row.photo || row.Photo || null,
             }
           })
@@ -186,7 +194,7 @@ export default function BulkUploadPage() {
         age: 25,
         gender: "MALE",
         yearsOfExperience: 5,
-        skillRating: 75,
+        skillCategory: "INTERMEDIATE_PLUS",
         profilePhoto: "",
       },
       {
@@ -196,7 +204,7 @@ export default function BulkUploadPage() {
         age: 28,
         gender: "FEMALE",
         yearsOfExperience: 7,
-        skillRating: 85,
+        skillCategory: "ADVANCED",
         profilePhoto: "",
       },
     ]
@@ -251,7 +259,10 @@ export default function BulkUploadPage() {
                 <li>age (optional) - Age as number</li>
                 <li>gender (optional) - MALE, FEMALE, or OTHER</li>
                 <li>yearsOfExperience (optional) - Years as number</li>
-                <li>skillRating (optional) - Rating from 1-100</li>
+                <li>
+                  skillCategory (optional) — Beginner, Intermediate, Intermediate+, Advanced (column
+                  names skillRating/rating/level still work; legacy 1–100 maps to a band)
+                </li>
                 <li>profilePhoto (optional) - URL or base64 string</li>
               </ul>
             </div>

@@ -12,6 +12,8 @@ import {
   DialogFooter,
 } from "@/components/ui/dialog"
 import * as XLSX from "xlsx"
+import type { SkillCategory } from "@prisma/client"
+import { parseSkillCategory, skillCategoryLabel } from "@/lib/skillCategory"
 
 interface ImportRow {
   name: string
@@ -20,7 +22,7 @@ interface ImportRow {
   age?: number | null
   gender?: string | null
   yearsOfExperience?: number | null
-  skillRating?: number | null
+  skillCategory?: SkillCategory | null
   profilePhoto?: string | null
   basePrice: number
 }
@@ -38,7 +40,7 @@ const COL_MAP: Record<string, string[]> = {
   age: ["age"],
   email: ["email", "email address"],
   mobileNumber: ["mobile", "phone", "mobile number", "contact"],
-  skillRating: ["skill", "skill rating", "rating", "level"],
+  skillCategory: ["skill", "skill rating", "rating", "level", "skill category", "skill level"],
   yearsOfExperience: ["experience", "years of experience", "exp"],
   profilePhoto: ["photo", "photo url", "image", "profile photo"],
   basePrice: ["base price", "baseprice", "starting price", "price"],
@@ -63,9 +65,9 @@ function normalizeGender(val: string | undefined | null): string | null {
 function downloadTemplate() {
   const wb = XLSX.utils.book_new()
   const ws = XLSX.utils.aoa_to_sheet([
-    ["Name", "Gender", "Age", "Email", "Mobile Number", "Skill Rating", "Experience", "Base Price"],
-    ["John Doe", "Male", 28, "john@example.com", "9876543210", 7, 5, 50000],
-    ["Jane Smith", "Female", 25, "jane@example.com", "9876543211", 8, 3, 60000],
+    ["Name", "Gender", "Age", "Email", "Mobile Number", "Skill level", "Experience", "Base Price"],
+    ["John Doe", "Male", 28, "john@example.com", "9876543210", "Intermediate+", 5, 50000],
+    ["Jane Smith", "Female", 25, "jane@example.com", "9876543211", "Advanced", 3, 60000],
   ])
   XLSX.utils.book_append_sheet(wb, ws, "Players")
   XLSX.writeFile(wb, "auction_players_template.xlsx")
@@ -133,9 +135,7 @@ export function ExcelImportDialog({
               yearsOfExperience: get("yearsOfExperience")
                 ? parseInt(String(get("yearsOfExperience"))) || null
                 : null,
-              skillRating: get("skillRating")
-                ? parseInt(String(get("skillRating"))) || null
-                : null,
+              skillCategory: parseSkillCategory(get("skillCategory")),
               profilePhoto: get("profilePhoto") ? String(get("profilePhoto")) : null,
               basePrice: get("basePrice")
                 ? parseFloat(String(get("basePrice"))) || basePriceDefault
@@ -251,7 +251,9 @@ export function ExcelImportDialog({
                       <td className="px-3 py-1.5 font-medium">{r.name}</td>
                       <td className="px-3 py-1.5">{r.gender || "—"}</td>
                       <td className="px-3 py-1.5">{r.age || "—"}</td>
-                      <td className="px-3 py-1.5">{r.skillRating || "—"}</td>
+                      <td className="px-3 py-1.5">
+                        {r.skillCategory ? skillCategoryLabel(r.skillCategory) : "—"}
+                      </td>
                       <td className="px-3 py-1.5 text-right">{r.basePrice.toLocaleString()}</td>
                     </tr>
                   ))}

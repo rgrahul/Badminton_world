@@ -28,7 +28,7 @@ Players are auto-categorized:
 
 ### Bulk Upload Players
 1. Go to **Players** > **Bulk Upload**
-2. Upload a CSV or Excel file with columns: name, email, mobileNumber, age, gender, skillRating
+2. Upload a CSV or Excel file with columns: name, email, mobileNumber, age, gender, skillCategory (Beginner / Intermediate / Intermediate+ / Advanced; legacy skillRating 1–100 is mapped when importing)
 3. Review the preview and confirm the import
 
 ---

@@ -3,6 +3,7 @@ import { auth } from "@/lib/auth"
 import { PlayerRepository } from "@/lib/db/repositories/PlayerRepository"
 import { errorResponse, successResponse } from "@/lib/api/responses"
 import { z } from "zod"
+import { optionalImportedSkillCategorySchema } from "@/lib/skillCategory"
 
 const bulkPlayerSchema = z.object({
   name: z.string().min(1, "Name is required"),
@@ -11,7 +12,7 @@ const bulkPlayerSchema = z.object({
   age: z.number().int().positive().optional().nullable(),
   gender: z.enum(["MALE", "FEMALE", "OTHER"]).optional().nullable(),
   yearsOfExperience: z.number().int().min(0).optional().nullable(),
-  skillRating: z.number().int().min(1).max(100).optional().nullable(),
+  skillCategory: optionalImportedSkillCategorySchema,
   profilePhoto: z.string().optional().nullable(),
 })
 
@@ -30,8 +31,12 @@ export async function POST(request: NextRequest) {
 
     const body = await request.json()
 
-    // Validate the array of players
-    const validatedPlayers = bulkUploadSchema.parse(body.players)
+    const rows = (body.players as Record<string, unknown>[]).map((row) => ({
+      ...row,
+      skillCategory: row.skillCategory ?? row.skillRating,
+    }))
+
+    const validatedPlayers = bulkUploadSchema.parse(rows)
 
     // Bulk create players
     const result = await PlayerRepository.bulkCreate(validatedPlayers)

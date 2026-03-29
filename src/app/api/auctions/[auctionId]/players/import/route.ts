@@ -4,6 +4,7 @@ import { auth } from "@/lib/auth"
 import { AuctionRepository } from "@/lib/db/repositories/AuctionRepository"
 import { errorResponse, successResponse } from "@/lib/api/responses"
 import { prisma } from "@/lib/db/client"
+import { optionalImportedSkillCategorySchema } from "@/lib/skillCategory"
 
 const importSchema = z.object({
   players: z
@@ -15,7 +16,7 @@ const importSchema = z.object({
         age: z.number().int().optional().nullable(),
         gender: z.enum(["MALE", "FEMALE", "OTHER"]).optional().nullable(),
         yearsOfExperience: z.number().int().optional().nullable(),
-        skillRating: z.number().int().optional().nullable(),
+        skillCategory: optionalImportedSkillCategorySchema,
         profilePhoto: z.string().optional().nullable(),
         basePrice: z.number().min(0).default(0),
       })
@@ -40,7 +41,13 @@ export async function POST(request: NextRequest, { params }: { params: { auction
     }
 
     const body = await request.json()
-    const parsed = importSchema.safeParse(body)
+    const merged = {
+      players: (body.players as Record<string, unknown>[]).map((row) => ({
+        ...row,
+        skillCategory: row.skillCategory ?? row.skillRating,
+      })),
+    }
+    const parsed = importSchema.safeParse(merged)
     if (!parsed.success) {
       return errorResponse(parsed.error.errors[0].message, 400)
     }
@@ -87,7 +94,7 @@ export async function POST(request: NextRequest, { params }: { params: { auction
               age: row.age ?? existingPlayer.age,
               gender: row.gender || existingPlayer.gender,
               yearsOfExperience: row.yearsOfExperience ?? existingPlayer.yearsOfExperience,
-              skillRating: row.skillRating ?? existingPlayer.skillRating,
+              skillCategory: row.skillCategory ?? existingPlayer.skillCategory,
               profilePhoto: row.profilePhoto || existingPlayer.profilePhoto,
             },
           })
@@ -101,7 +108,7 @@ export async function POST(request: NextRequest, { params }: { params: { auction
               age: row.age || undefined,
               gender: row.gender || undefined,
               yearsOfExperience: row.yearsOfExperience || undefined,
-              skillRating: row.skillRating || undefined,
+              skillCategory: row.skillCategory || undefined,
               profilePhoto: row.profilePhoto || undefined,
             },
           })

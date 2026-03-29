@@ -14,6 +14,8 @@ import {
   SelectValue,
 } from "@/components/ui/select"
 import { useRole } from "@/hooks/useRole"
+import type { SkillCategory } from "@prisma/client"
+import { skillCategoryLabel } from "@/lib/skillCategory"
 
 function PlayerPhoto({ name, src, size }: { name: string; src?: string | null; size: "sm" | "md" }) {
   const [error, setError] = useState(false)
@@ -37,7 +39,7 @@ interface Player {
   age?: number | null
   gender?: string | null
   yearsOfExperience?: number | null
-  skillRating?: number | null
+  skillCategory?: SkillCategory | null
   profilePhoto?: string | null
   createdAt: string
 }
@@ -253,10 +255,10 @@ export default function PlayersPage() {
                             <div className="font-black text-gray-800">{player.yearsOfExperience}y</div>
                           </div>
                         )}
-                      {player.skillRating && (
+                      {player.skillCategory && (
                         <div className="bg-gradient-to-br from-purple-50 to-purple-100 p-2 rounded-lg border border-purple-200">
-                          <div className="text-purple-700 text-xs font-bold">Rating</div>
-                          <div className="font-black text-gray-800">{player.skillRating}</div>
+                          <div className="text-purple-700 text-xs font-bold">Level</div>
+                          <div className="font-black text-gray-800">{skillCategoryLabel(player.skillCategory)}</div>
                         </div>
                       )}
                     </div>
@@ -316,10 +318,10 @@ export default function PlayersPage() {
                           <div className="font-black text-gray-800">{player.yearsOfExperience}y</div>
                         </div>
                       )}
-                      {player.skillRating && (
+                      {player.skillCategory && (
                         <div className="text-center bg-gradient-to-br from-purple-50 to-purple-100 px-3 py-2 rounded-lg border border-purple-200">
-                          <div className="text-purple-700 text-xs font-bold">Rating</div>
-                          <div className="font-black text-gray-800">{player.skillRating}</div>
+                          <div className="text-purple-700 text-xs font-bold">Level</div>
+                          <div className="font-black text-gray-800">{skillCategoryLabel(player.skillCategory)}</div>
                         </div>
                       )}
                     </div>
@@ -382,10 +384,10 @@ export default function PlayersPage() {
                             <div className="font-black text-gray-800">{player.yearsOfExperience}y</div>
                           </div>
                         )}
-                      {player.skillRating && (
+                      {player.skillCategory && (
                         <div className="text-center bg-gradient-to-br from-purple-50 to-purple-100 px-3 py-2 rounded-lg border border-purple-200">
-                          <div className="text-purple-700 text-xs font-bold">Rating</div>
-                          <div className="font-black text-gray-800">{player.skillRating}</div>
+                          <div className="text-purple-700 text-xs font-bold">Level</div>
+                          <div className="font-black text-gray-800">{skillCategoryLabel(player.skillCategory)}</div>
                         </div>
                       )}
                     </div>

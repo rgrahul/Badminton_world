@@ -12,7 +12,7 @@ interface Player {
   age: number | null
   gender: string | null
   email?: string | null
-  skillRating?: number | null
+  skillCategory?: string | null
   profilePhoto?: string | null
 }
 

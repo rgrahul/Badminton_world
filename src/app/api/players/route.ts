@@ -3,6 +3,7 @@ import { auth } from "@/lib/auth"
 import { PlayerRepository } from "@/lib/db/repositories/PlayerRepository"
 import { errorResponse, successResponse } from "@/lib/api/responses"
 import { z } from "zod"
+import { skillCategoryEnumSchema } from "@/lib/skillCategory"
 
 const createPlayerSchema = z.object({
   name: z.string().min(1, "Name is required"),
@@ -11,7 +12,7 @@ const createPlayerSchema = z.object({
   age: z.number().int().positive().optional().nullable(),
   gender: z.enum(["MALE", "FEMALE", "OTHER"]).optional().nullable(),
   yearsOfExperience: z.number().int().min(0).optional().nullable(),
-  skillRating: z.number().int().min(1).max(100).optional().nullable(),
+  skillCategory: skillCategoryEnumSchema.optional().nullable(),
   profilePhoto: z.string().optional().nullable(),
 })
 
@@ -56,12 +57,12 @@ export async function GET(request: NextRequest) {
       gender: searchParams.get("gender") as "MALE" | "FEMALE" | "OTHER" | undefined,
       minAge: searchParams.get("minAge") ? parseInt(searchParams.get("minAge")!) : undefined,
       maxAge: searchParams.get("maxAge") ? parseInt(searchParams.get("maxAge")!) : undefined,
-      minSkillRating: searchParams.get("minSkillRating")
-        ? parseInt(searchParams.get("minSkillRating")!)
-        : undefined,
-      maxSkillRating: searchParams.get("maxSkillRating")
-        ? parseInt(searchParams.get("maxSkillRating")!)
-        : undefined,
+      skillCategory: (() => {
+        const raw = searchParams.get("skillCategory")
+        if (!raw) return undefined
+        const r = skillCategoryEnumSchema.safeParse(raw)
+        return r.success ? r.data : undefined
+      })(),
     }
 
     const page = searchParams.get("page") ? parseInt(searchParams.get("page")!) : 1

@@ -5,6 +5,8 @@ import { Input } from "@/components/ui/input"
 import { PlayerAvatar } from "@/components/player/PlayerAvatar"
 import { useState } from "react"
 import { AuctionPlayerWithDetails } from "@/types/auction"
+import type { SkillCategory } from "@prisma/client"
+import { skillCategoryLabel } from "@/lib/skillCategory"
 
 interface PlayerQueueProps {
   players: AuctionPlayerWithDetails[]
@@ -57,7 +59,9 @@ export function PlayerQueue({ players, currentPlayerId, onSelectPlayer }: Player
                     <div className="font-medium text-sm truncate">{ap.player.name}</div>
                     <div className="flex items-center gap-2 text-xs text-muted-foreground">
                       {ap.player.gender && <span>{ap.player.gender}</span>}
-                      {ap.player.skillRating && <span>Skill: {ap.player.skillRating}</span>}
+                      {ap.player.skillCategory && (
+                        <span>{skillCategoryLabel(ap.player.skillCategory as SkillCategory)}</span>
+                      )}
                     </div>
                   </div>
                   <div className="text-sm font-semibold text-right flex-shrink-0">

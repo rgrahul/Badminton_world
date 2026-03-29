@@ -23,6 +23,8 @@ import {
   SelectValue,
 } from "@/components/ui/select"
 import { useAlertDialog } from "@/hooks/useAlertDialog"
+import type { SkillCategory } from "@prisma/client"
+import { SkillCategorySelect } from "@/components/player/SkillCategorySelect"
 
 interface Player {
   id: string
@@ -53,7 +55,7 @@ export function AddPlayerDialog({
     age: "",
     gender: "",
     yearsOfExperience: "",
-    skillRating: "",
+    skillCategory: null as SkillCategory | null,
   })
 
   // Reset form when dialog opens
@@ -66,7 +68,7 @@ export function AddPlayerDialog({
         age: "",
         gender: "",
         yearsOfExperience: "",
-        skillRating: "",
+        skillCategory: null,
       })
     } else if (initialName) {
       setFormData((prev) => ({ ...prev, name: initialName }))
@@ -92,7 +94,7 @@ export function AddPlayerDialog({
         age: formData.age ? parseInt(formData.age) : null,
         gender: formData.gender || null,
         yearsOfExperience: formData.yearsOfExperience ? parseInt(formData.yearsOfExperience) : null,
-        skillRating: formData.skillRating ? parseInt(formData.skillRating) : null,
+        skillCategory: formData.skillCategory,
       }
 
       const response = await fetch("/api/players", {
@@ -211,18 +213,14 @@ export function AddPlayerDialog({
               />
             </div>
 
-            <div className="space-y-2">
-              <Label htmlFor="dialog-skillRating">Skill Rating (1-100)</Label>
-              <Input
-                id="dialog-skillRating"
-                type="number"
-                min="1"
-                max="100"
-                value={formData.skillRating}
-                onChange={(e) => setFormData({ ...formData, skillRating: e.target.value })}
-                placeholder="75"
-              />
-            </div>
+            <SkillCategorySelect
+              id="dialog-skillCategory"
+              label="Skill level"
+              labelClassName=""
+              triggerClassName=""
+              value={formData.skillCategory}
+              onChange={(v) => setFormData({ ...formData, skillCategory: v })}
+            />
           </div>
 
           {/* Submit Button */}
