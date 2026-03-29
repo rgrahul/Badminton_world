@@ -9,6 +9,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Header } from "@/components/layout/Header"
 import { TeamPlayerPicker } from "@/components/team/TeamPlayerPicker"
 import { useAlertDialog } from "@/hooks/useAlertDialog"
+import { toGoogleDriveDisplayUrl } from "@/lib/googleDriveImageUrl"
 
 interface TeamPlayer {
   playerId: string
@@ -226,7 +227,7 @@ export default function EditTeamPage({
                   {logoPreview ? (
                     <div className="relative">
                       <img
-                        src={logoPreview}
+                        src={toGoogleDriveDisplayUrl(logoPreview)}
                         alt="Team logo preview"
                         className="w-16 h-16 rounded-full object-cover border-2 border-purple-300"
                       />

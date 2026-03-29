@@ -2,23 +2,53 @@ import { PrismaClient } from "@prisma/client"
 
 const prisma = new PrismaClient()
 
-// ABL 2026 Teams with logo paths
+// ABL 2026 Teams — logoUrl: /public paths or any Google Drive link.
+// Drive files must be shared as "Anyone with the link" (Viewer) so the site can show them.
+// Supported Drive forms: .../file/d/FILE_ID/view, .../open?id=FILE_ID, .../uc?export=view&id=FILE_ID,
+// or store only the FILE_ID. The app converts these to thumbnail URLs for reliable <img> display.
 const ABL_TEAMS = [
-  { name: "Backhand Brigade", logoUrl: "/TeamLogos/Backhand Brigade.PNG" },
-  { name: "Club Shakti", logoUrl: "/TeamLogos/Club Shakti.PNG" },
-  { name: "Court Commanders", logoUrl: "/TeamLogos/Court Commanders.PNG" },
-  { name: "Assetz Endless Rally", logoUrl: "/TeamLogos/Assetz Endless Rally.PNG" },
-  { name: "Mavericks 63", logoUrl: "/TeamLogos/Mavericks 63.jpg" },
-  { name: "Dhurandhar Smash Squad", logoUrl: "/TeamLogos/Dhurandhar Smash Squad.JPG" },
-  { name: "Netflicks & Kill", logoUrl: "/TeamLogos/Netflicks & Kill.PNG" },
-  { name: "Shuttle Strikers", logoUrl: "/TeamLogos/Shuttle Strikers.PNG" },
-  { name: "Smash Syndicate", logoUrl: "/TeamLogos/Smash Syndicate.JPG" },
-  { name: "Supersonic", logoUrl: "/TeamLogos/Supersonic.PNG" },
+  { name: "Backhand Brigade", logoUrl: "1rlOih8rU5vVqlJO6GYheGKEgzXnkKgUf" },
+  { name: "Club Shakti", logoUrl: "1lpV226kcptyHktYjOMATDzGAntSSu0Tp" },
+  {
+    name: "Court Commanders",
+    logoUrl: "https://drive.google.com/file/d/1vK97tcF64Q7Uat9yGEHe5dfKUiSvk7WF/view?usp=sharing",
+  },
+  {
+    name: "Assetz Endless Rally",
+    logoUrl: "https://drive.google.com/file/d/1rlOih8rU5vVqlJO6GYheGKEgzXnkKgUf/view?usp=sharing",
+  },
+  {
+    name: "Mavericks 63",
+    logoUrl: "https://drive.google.com/file/d/1W06aih38tScagABJWxK1oP7aHSTlERmc/view?usp=sharing",
+  },
+  {
+    name: "Dhurandhar Smash Squad",
+    logoUrl: "https://drive.google.com/file/d/1NMYNGXl242f6f5p0dKw7rrULfNw57ke2/view?usp=sharing",
+  },
+  {
+    name: "Netflicks & Kill",
+    logoUrl: "https://drive.google.com/file/d/1VnA9XjMbzWeYpt6AI_5F25SW1Dgp0-BO/view?usp=sharing",
+  },
+  {
+    name: "Shuttle Strikers",
+    logoUrl: "https://drive.google.com/file/d/19KvLPn9F1WXVsEbdzF1fjFB8v0isP5SX/view?usp=sharing",
+  },
+  {
+    name: "Smash Syndicate",
+    logoUrl: "https://drive.google.com/file/d/1uj2aP89NzgFfOxCi444UwZjsgXkWYer8/view?usp=sharing",
+  },
+  {
+    name: "Supersonic",
+    logoUrl: "https://drive.google.com/file/d/1Y9GFsyD2Nr-G0TlbBp_9OXnKfk9WARem/view?usp=sharing",
+  },
   {
     name: "Assetz Challengers",
     logoUrl: "https://drive.google.com/uc?export=view&id=1DEXzgjOcAUenMAfOYYQqMFMy_pU_qH6z",
   },
-  { name: "Big Dawgs", logoUrl: "/TeamLogos/Big Dawgs.JPG" },
+  {
+    name: "Big Dawgs",
+    logoUrl: "https://drive.google.com/file/d/1xpYtaTy9NQMpXboqrN9L82wxXBaPojVA/view?usp=sharing",
+  },
 ]
 
 async function main() {
