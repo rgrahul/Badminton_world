@@ -19,6 +19,7 @@ import { KnockoutBracket } from "@/components/tournament/KnockoutBracket"
 import { TournamentPlayerManager } from "@/components/tournament/TournamentPlayerManager"
 import { AuctionTeamSetup } from "@/components/auction/AuctionTeamSetup"
 import { GavelIcon } from "@/components/icons/GavelIcon"
+import { toGoogleDriveDisplayUrl } from "@/lib/googleDriveImageUrl"
 
 interface Match {
   id: string
@@ -880,17 +881,6 @@ export default function TournamentDetailPage({ params }: { params: { tournamentI
     }
   }
 
-  const convertGoogleDriveUrl = (url: string): string => {
-    if (!url) return url
-    const fileIdMatch = url.match(/drive\.google\.com\/file\/d\/([^/?]+)/)
-    const openIdMatch = url.match(/drive\.google\.com\/open\?id=([^&]+)/)
-    const idParam = url.match(/[?&]id=([^&]+)/)
-    const fileId = fileIdMatch?.[1] || openIdMatch?.[1] || idParam?.[1]
-    if (fileId) return `https://drive.google.com/thumbnail?id=${fileId}&sz=w4000`
-    if (/^[a-zA-Z0-9_-]{20,}$/.test(url.trim())) return `https://drive.google.com/thumbnail?id=${url.trim()}&sz=w4000`
-    return url
-  }
-
   const handleSaveTitlePhoto = async (url: string | null) => {
     if (!tournament) return
     setTitlePhotoSaving(true)
@@ -1003,7 +993,7 @@ export default function TournamentDetailPage({ params }: { params: { tournamentI
             <div className="relative w-full h-48 sm:h-64 overflow-hidden rounded-t-lg group">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
-                src={convertGoogleDriveUrl(tournament.titlePhoto)}
+                src={toGoogleDriveDisplayUrl(tournament.titlePhoto)}
                 alt={tournament.name}
                 className={`w-full h-full object-cover ${
                   tournament.titlePhotoPosition === "top" ? "object-top" :
@@ -1451,7 +1441,7 @@ export default function TournamentDetailPage({ params }: { params: { tournamentI
                               <div className="flex items-center gap-3 flex-1 min-w-0">
                                 {team.logoUrl ? (
                                   <img
-                                    src={team.logoUrl}
+                                    src={toGoogleDriveDisplayUrl(team.logoUrl)}
                                     alt={`${team.name} logo`}
                                     className="w-10 h-10 rounded-full object-cover border-2 border-gray-200 flex-shrink-0"
                                     onError={(e) => { (e.target as HTMLImageElement).style.display = "none" }}
@@ -2106,7 +2096,7 @@ export default function TournamentDetailPage({ params }: { params: { tournamentI
                 <div className="w-full h-32 overflow-hidden rounded-lg border">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img
-                    src={convertGoogleDriveUrl(titlePhotoUrl)}
+                    src={toGoogleDriveDisplayUrl(titlePhotoUrl)}
                     alt="Preview"
                     className="w-full h-full object-cover"
                     referrerPolicy="no-referrer"

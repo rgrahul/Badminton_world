@@ -9,6 +9,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { PlayerLink, PlayerAvatar } from "@/components/player/PlayerLink"
 import { useAlertDialog } from "@/hooks/useAlertDialog"
 import { useRole } from "@/hooks/useRole"
+import { toGoogleDriveDisplayUrl } from "@/lib/googleDriveImageUrl"
 
 interface Player {
   id: string
@@ -215,7 +216,7 @@ export default function TeamDetailPage({
             <div className="flex items-center gap-4">
               {team.logoUrl ? (
                 <img
-                  src={team.logoUrl}
+                  src={toGoogleDriveDisplayUrl(team.logoUrl)}
                   alt={`${team.name} logo`}
                   className="w-16 h-16 rounded-full object-cover border-2 border-gray-200 flex-shrink-0"
                   onError={(e) => { (e.target as HTMLImageElement).style.display = "none" }}

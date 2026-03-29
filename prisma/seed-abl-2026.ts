@@ -2,7 +2,10 @@ import { PrismaClient } from "@prisma/client"
 
 const prisma = new PrismaClient()
 
-// ABL 2026 Teams with logo paths
+// ABL 2026 Teams — logoUrl: /public paths or any Google Drive link.
+// Drive files must be shared as "Anyone with the link" (Viewer) so the site can show them.
+// Supported Drive forms: .../file/d/FILE_ID/view, .../open?id=FILE_ID, .../uc?export=view&id=FILE_ID,
+// or store only the FILE_ID. The app converts these to thumbnail URLs for reliable <img> display.
 const ABL_TEAMS = [
   { name: "Backhand Brigade", logoUrl: "/TeamLogos/Backhand Brigade.PNG" },
   { name: "Club Shakti", logoUrl: "/TeamLogos/Club Shakti.PNG" },
