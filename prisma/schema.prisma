@@ -403,6 +403,7 @@ model Team {
   knockoutMatchesAsB KnockoutMatch[] @relation("KnockoutTeamB")
   knockoutMatchWins  KnockoutMatch[] @relation("KnockoutWinner")
 
+  @@unique([name, tournamentId])
   @@index([tournamentId])
   @@index([name])
 }
