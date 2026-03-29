@@ -62,12 +62,14 @@ async function main() {
   const tournament = await prisma.tournament.create({
     data: {
       name: "ABL 2026",
+      titlePhoto:
+        "https://drive.google.com/file/d/1mYTKrW4VeYsN0CNY868yoVdKbMXOW_mj/view?usp=sharing",
       description: "Asia Badminton League 2026 - A premium 12-team league-knockout tournament.",
       dateFrom: new Date("2026-05-01"),
       dateTo: new Date("2026-06-30"),
-      organizerName: "Asia Badminton League",
+      organizerName: "ABL Organizing Committee",
       organizerEmail: "info@abl2026.in",
-      organizerPhone: "+91 9876543210",
+      organizerPhone: "+91 9404420049",
       venue: "Assetz 63 Degree East Clubhouse",
       city: "Bangalore",
       category: "Open",

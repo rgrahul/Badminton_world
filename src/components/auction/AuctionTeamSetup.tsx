@@ -17,7 +17,7 @@ interface AuctionTeamSetupProps {
 
 export function AuctionTeamSetup({ teams, onChange }: AuctionTeamSetupProps) {
   const addTeam = () => {
-    onChange([...teams, { name: "", budget: "800000" }])
+    onChange([...teams, { name: "", budget: "100000" }])
   }
 
   const removeTeam = (index: number) => {
