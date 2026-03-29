@@ -15,6 +15,7 @@ const updateTeamSchema = z.object({
   requiredKid: z.number().int().min(0).optional(),
   playerIds: z.array(z.string()).optional(),
   logoUrl: z.string().nullable().optional(),
+  captainId: z.string().min(1).nullable().optional(),
 })
 
 export async function GET(
@@ -139,6 +140,17 @@ export async function PATCH(
         )
       }
 
+      let resolvedCaptain: string | null
+      if (validatedData.captainId !== undefined) {
+        resolvedCaptain = validatedData.captainId
+      } else {
+        const prev = existingTeam.captainId
+        resolvedCaptain = prev && playerIds.includes(prev) ? prev : null
+      }
+      if (resolvedCaptain && !playerIds.includes(resolvedCaptain)) {
+        return errorResponse("Captain must be on the team roster", 400)
+      }
+
       const team = await TeamRepository.updateWithPlayers(params.teamId, {
         name: validatedData.name,
         teamSize,
@@ -146,6 +158,7 @@ export async function PATCH(
         requiredFemale,
         requiredKid,
         logoUrl: validatedData.logoUrl,
+        captainId: resolvedCaptain,
         players: playerAssignments,
       })
 
@@ -160,8 +173,8 @@ export async function PATCH(
 
       return successResponse({ team })
     } else {
-      // Metadata-only update (name, composition)
-      const updateData: any = {}
+      // Metadata-only update (name, composition, captain)
+      const updateData: Record<string, unknown> = {}
       if (validatedData.name !== undefined) updateData.name = validatedData.name
       if (validatedData.teamSize !== undefined) updateData.teamSize = validatedData.teamSize
       if (validatedData.requiredMale !== undefined) updateData.requiredMale = validatedData.requiredMale
@@ -169,7 +182,19 @@ export async function PATCH(
       if (validatedData.requiredKid !== undefined) updateData.requiredKid = validatedData.requiredKid
       if (validatedData.logoUrl !== undefined) updateData.logoUrl = validatedData.logoUrl
 
-      const team = await TeamRepository.update(params.teamId, updateData)
+      if (validatedData.captainId !== undefined) {
+        if (validatedData.captainId !== null) {
+          const onTeam = await prisma.teamPlayer.findFirst({
+            where: { teamId: params.teamId, playerId: validatedData.captainId },
+          })
+          if (!onTeam) {
+            return errorResponse("Captain must be a player on this team", 400)
+          }
+        }
+        updateData.captainId = validatedData.captainId
+      }
+
+      const team = await TeamRepository.update(params.teamId, updateData as import("@/lib/db/repositories/TeamRepository").UpdateTeamInput)
       return successResponse({ team })
     }
   } catch (error) {

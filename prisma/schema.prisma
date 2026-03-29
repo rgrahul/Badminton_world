@@ -51,6 +51,7 @@ model Player {
   fixturesAsB1        Fixture[]   @relation("FixtureTeamBPlayer1")
   fixturesAsB2        Fixture[]   @relation("FixtureTeamBPlayer2")
   auctionPlayers      AuctionPlayer[]
+  teamsAsCaptain      Team[]            @relation("TeamCaptain")
 
   @@index([name])
   @@index([email])
@@ -395,6 +396,8 @@ model Team {
   requiredFemale  Int
   requiredKid     Int
   logoUrl         String?
+  captainId       String?
+  captain         Player?     @relation("TeamCaptain", fields: [captainId], references: [id], onDelete: SetNull)
 
   createdAt       DateTime    @default(now())
   updatedAt       DateTime    @updatedAt
@@ -413,6 +416,7 @@ model Team {
   @@unique([name, tournamentId])
   @@index([tournamentId])
   @@index([name])
+  @@index([captainId])
 }
 
 // TeamMatch model - structured match between two teams

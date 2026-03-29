@@ -63,6 +63,8 @@ interface Team {
   requiredFemale: number
   requiredKid: number
   logoUrl: string | null
+  captainId: string | null
+  captain: { id: string; name: string } | null
   players: TeamPlayerInfo[]
   _count: {
     players: number
@@ -1526,6 +1528,11 @@ export default function TournamentDetailPage({ params }: { params: { tournamentI
                                       ({team._count.players} players)
                                     </span>
                                   </div>
+                                  {team.captain && (
+                                    <div className="text-xs text-amber-800 mb-1">
+                                      Captain: <span className="font-medium">{team.captain.name}</span>
+                                    </div>
+                                  )}
                                   <div className="flex flex-wrap gap-1.5">
                                     {team.requiredMale > 0 && (
                                       <span className="inline-flex items-center rounded-full px-2 py-0.5 text-xs font-medium bg-blue-100 text-blue-800">

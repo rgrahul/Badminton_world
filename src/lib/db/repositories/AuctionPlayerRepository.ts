@@ -42,12 +42,16 @@ export class AuctionPlayerRepository {
 
   static async findByAuctionId(
     auctionId: string,
-    filters?: { status?: string; search?: string }
+    filters?: { status?: string; search?: string; excludePlayerIds?: string[] }
   ) {
     const where: Record<string, unknown> = { auctionId }
 
     if (filters?.status) {
       where.status = filters.status
+    }
+
+    if (filters?.excludePlayerIds?.length) {
+      where.playerId = { notIn: filters.excludePlayerIds }
     }
 
     if (filters?.search) {
@@ -146,14 +150,19 @@ export class AuctionPlayerRepository {
     })
   }
 
-  static async getStats(auctionId: string) {
+  static async getStats(auctionId: string, excludePlayerIds?: string[]) {
+    const baseWhere =
+      excludePlayerIds?.length ?
+        { auctionId, playerId: { notIn: excludePlayerIds } }
+      : { auctionId }
+
     const [total, available, sold, unsold, spentResult] = await Promise.all([
-      prisma.auctionPlayer.count({ where: { auctionId } }),
-      prisma.auctionPlayer.count({ where: { auctionId, status: "AVAILABLE" } }),
-      prisma.auctionPlayer.count({ where: { auctionId, status: "SOLD" } }),
-      prisma.auctionPlayer.count({ where: { auctionId, status: "UNSOLD" } }),
+      prisma.auctionPlayer.count({ where: baseWhere }),
+      prisma.auctionPlayer.count({ where: { ...baseWhere, status: "AVAILABLE" } }),
+      prisma.auctionPlayer.count({ where: { ...baseWhere, status: "SOLD" } }),
+      prisma.auctionPlayer.count({ where: { ...baseWhere, status: "UNSOLD" } }),
       prisma.auctionPlayer.aggregate({
-        where: { auctionId, status: "SOLD" },
+        where: { ...baseWhere, status: "SOLD" },
         _sum: { soldPrice: true },
       }),
     ])

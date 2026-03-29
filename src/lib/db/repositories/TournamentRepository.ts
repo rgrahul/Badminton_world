@@ -112,6 +112,9 @@ export class TournamentRepository {
               },
               orderBy: { createdAt: "asc" },
             },
+            captain: {
+              select: { id: true, name: true, profilePhoto: true },
+            },
             _count: {
               select: { players: true },
             },

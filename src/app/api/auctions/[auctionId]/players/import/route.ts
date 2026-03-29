@@ -5,6 +5,7 @@ import { AuctionRepository } from "@/lib/db/repositories/AuctionRepository"
 import { errorResponse, successResponse } from "@/lib/api/responses"
 import { prisma } from "@/lib/db/client"
 import { optionalImportedSkillCategorySchema } from "@/lib/skillCategory"
+import { getTournamentCaptainPlayerIds } from "@/lib/tournamentCaptainPlayers"
 
 const importSchema = z.object({
   players: z
@@ -51,6 +52,11 @@ export async function POST(request: NextRequest, { params }: { params: { auction
     if (!parsed.success) {
       return errorResponse(parsed.error.errors[0].message, 400)
     }
+
+    const captainSet =
+      auction.tournamentId ?
+        new Set(await getTournamentCaptainPlayerIds(auction.tournamentId))
+      : new Set<string>()
 
     const result = await prisma.$transaction(async (tx) => {
       const createdPlayers: { playerId: string; basePrice: number }[] = []
@@ -122,10 +128,12 @@ export async function POST(request: NextRequest, { params }: { params: { auction
           })
         }
 
-        createdPlayers.push({
-          playerId: player.id,
-          basePrice: row.basePrice,
-        })
+        if (!captainSet.has(player.id)) {
+          createdPlayers.push({
+            playerId: player.id,
+            basePrice: row.basePrice,
+          })
+        }
       }
 
       // Create AuctionPlayer records
@@ -141,6 +149,13 @@ export async function POST(request: NextRequest, { params }: { params: { auction
 
       return { count: createdPlayers.length }
     })
+
+    if (result.count === 0 && captainSet.size > 0 && parsed.data.players.length > 0) {
+      return errorResponse(
+        "No players were added to the auction: all matched rows are tournament team captains (captains are not auctioned).",
+        400
+      )
+    }
 
     return successResponse(
       {

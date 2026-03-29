@@ -3,6 +3,7 @@ import { z } from "zod"
 import { auth } from "@/lib/auth"
 import { AuctionRepository } from "@/lib/db/repositories/AuctionRepository"
 import { errorResponse, successResponse } from "@/lib/api/responses"
+import { getTournamentCaptainPlayerIds } from "@/lib/tournamentCaptainPlayers"
 
 const updateSchema = z.object({
   name: z.string().min(1).optional(),
@@ -21,7 +22,20 @@ export async function GET(request: NextRequest, { params }: { params: { auctionI
       return errorResponse("Auction not found", 404)
     }
 
-    return successResponse({ auction })
+    const captainIds =
+      auction.tournamentId ?
+        await getTournamentCaptainPlayerIds(auction.tournamentId)
+      : []
+    const captainSet = new Set(captainIds)
+    const auctionResponse =
+      captainSet.size === 0 ?
+        auction
+      : {
+          ...auction,
+          players: auction.players.filter((ap) => !captainSet.has(ap.playerId)),
+        }
+
+    return successResponse({ auction: auctionResponse })
   } catch (error) {
     console.error("Get auction error:", error)
     return errorResponse("Internal server error", 500)

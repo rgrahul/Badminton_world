@@ -17,6 +17,7 @@ const createTeamSchema = z.object({
   playerIds: z.array(z.string()),
   logoUrl: z.string().optional(),
   skipCompositionValidation: z.boolean().optional(),
+  captainId: z.string().min(1).nullable().optional(),
 })
 
 export async function GET(
@@ -61,7 +62,21 @@ export async function POST(
     const body = await request.json()
     const validatedData = createTeamSchema.parse(body)
 
-    const { requiredMale, requiredFemale, requiredKid, teamSize, playerIds, skipCompositionValidation } = validatedData
+    const {
+      requiredMale,
+      requiredFemale,
+      requiredKid,
+      teamSize,
+      playerIds,
+      skipCompositionValidation,
+      captainId: captainIdRaw,
+    } = validatedData
+
+    if (captainIdRaw) {
+      if (!playerIds.includes(captainIdRaw)) {
+        return errorResponse("Captain must be one of the players on this team", 400)
+      }
+    }
 
     // Check for duplicate player IDs
     const uniqueIds = new Set(playerIds)
@@ -142,6 +157,7 @@ export async function POST(
       requiredKid,
       players: playerAssignments,
       logoUrl: validatedData.logoUrl,
+      captainId: captainIdRaw ?? null,
     })
 
     // Auto-register players to tournament pool (skip if already registered)

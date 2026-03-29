@@ -63,6 +63,8 @@ interface Team {
   requiredFemale: number
   requiredKid: number
   logoUrl: string | null
+  captainId: string | null
+  captain: { id: string; name: string; profilePhoto: string | null } | null
   createdAt: string
   updatedAt: string
   tournament: {
@@ -261,6 +263,17 @@ export default function TeamDetailPage({
             {/* Players */}
             <div>
               <h3 className="font-semibold mb-3">Players ({team._count.players})</h3>
+              {team.captain && (
+                <p className="text-sm text-muted-foreground mb-3">
+                  Captain:{" "}
+                  <span className="font-medium text-foreground">
+                    <PlayerLink name={team.captain.name} playerId={team.captain.id} />
+                  </span>
+                  <span className="ml-2 inline-flex items-center rounded-full bg-amber-100 text-amber-900 px-2 py-0.5 text-xs font-medium">
+                    Not in auction pool
+                  </span>
+                </p>
+              )}
               <div className="space-y-2">
                 {team.players.map((tp) => (
                   <div
@@ -270,8 +283,13 @@ export default function TeamDetailPage({
                     <div className="flex items-center gap-3">
                       <PlayerAvatar name={tp.player.name} profilePhoto={tp.player.profilePhoto} size="lg" />
                       <div>
-                        <div className="font-medium">
+                        <div className="font-medium flex items-center gap-2 flex-wrap">
                           <PlayerLink name={tp.player.name} playerId={tp.player.id} />
+                          {team.captainId === tp.playerId && (
+                            <span className="inline-flex items-center rounded-full bg-amber-100 text-amber-900 px-2 py-0.5 text-xs font-medium">
+                              Captain
+                            </span>
+                          )}
                         </div>
                         <div className="text-sm text-muted-foreground">
                           {tp.player.gender || "N/A"}

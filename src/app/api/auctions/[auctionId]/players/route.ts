@@ -5,6 +5,7 @@ import { AuctionRepository } from "@/lib/db/repositories/AuctionRepository"
 import { AuctionPlayerRepository } from "@/lib/db/repositories/AuctionPlayerRepository"
 import { errorResponse, successResponse } from "@/lib/api/responses"
 import { prisma } from "@/lib/db/client"
+import { getTournamentCaptainPlayerIds } from "@/lib/tournamentCaptainPlayers"
 
 const addPlayersSchema = z.union([
   z.object({
@@ -31,11 +32,21 @@ export async function GET(
     const status = searchParams.get("status") || undefined
     const search = searchParams.get("search") || undefined
 
-    const players = await AuctionPlayerRepository.findByAuctionId(
-      params.auctionId,
-      { status, search }
-    )
-    const stats = await AuctionPlayerRepository.getStats(params.auctionId)
+    const auctionRow = await prisma.auction.findUnique({
+      where: { id: params.auctionId },
+      select: { tournamentId: true },
+    })
+    const excludePlayerIds =
+      auctionRow?.tournamentId ?
+        await getTournamentCaptainPlayerIds(auctionRow.tournamentId)
+      : []
+
+    const players = await AuctionPlayerRepository.findByAuctionId(params.auctionId, {
+      status,
+      search,
+      excludePlayerIds,
+    })
+    const stats = await AuctionPlayerRepository.getStats(params.auctionId, excludePlayerIds)
 
     return successResponse({ players, stats })
   } catch (error) {
@@ -84,6 +95,18 @@ export async function POST(
       }
     } else {
       playerIds = parsed.data.playerIds
+    }
+
+    if (auction.tournamentId) {
+      const captainIds = await getTournamentCaptainPlayerIds(auction.tournamentId)
+      if (captainIds.length > 0) {
+        const block = new Set(captainIds)
+        playerIds = playerIds.filter((id) => !block.has(id))
+      }
+    }
+
+    if (playerIds.length === 0) {
+      return errorResponse("No players to add after excluding tournament captains", 400)
     }
 
     const players = await AuctionPlayerRepository.createMany(

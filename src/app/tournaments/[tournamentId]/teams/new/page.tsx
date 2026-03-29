@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { useRouter } from "next/navigation"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -8,6 +8,7 @@ import { Label } from "@/components/ui/label"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Header } from "@/components/layout/Header"
 import { TeamPlayerPicker } from "@/components/team/TeamPlayerPicker"
+import { TeamCaptainSelect } from "@/components/team/TeamCaptainSelect"
 import { useAlertDialog } from "@/hooks/useAlertDialog"
 
 export default function NewTeamPage({ params }: { params: { tournamentId: string } }) {
@@ -24,11 +25,18 @@ export default function NewTeamPage({ params }: { params: { tournamentId: string
   })
 
   const [selectedPlayerIds, setSelectedPlayerIds] = useState<string[]>([])
+  const [captainId, setCaptainId] = useState<string | null>(null)
   const [logoPreview, setLogoPreview] = useState<string | null>(null)
   const [logoBase64, setLogoBase64] = useState<string | null>(null)
   const [isAuctionMode, setIsAuctionMode] = useState(false)
 
   const teamSize = formData.requiredMale + formData.requiredFemale + formData.requiredKid
+
+  useEffect(() => {
+    if (captainId && !selectedPlayerIds.includes(captainId)) {
+      setCaptainId(null)
+    }
+  }, [selectedPlayerIds, captainId])
 
   const handleLogoUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0]
@@ -93,6 +101,7 @@ export default function NewTeamPage({ params }: { params: { tournamentId: string
           playerIds: selectedPlayerIds,
           logoUrl: logoBase64 || undefined,
           skipCompositionValidation: isAuctionMode,
+          captainId: captainId || null,
         }),
       })
 
@@ -284,6 +293,14 @@ export default function NewTeamPage({ params }: { params: { tournamentId: string
                   }}
                   tournamentId={params.tournamentId}
                 />
+                <div className="mt-4 p-3 rounded-lg border border-amber-200 bg-amber-50/80">
+                  <TeamCaptainSelect
+                    selectedPlayerIds={selectedPlayerIds}
+                    value={captainId}
+                    onChange={setCaptainId}
+                    disabled={isLoading}
+                  />
+                </div>
               </div>
 
               {/* Actions */}

@@ -8,6 +8,7 @@ export interface CreateTeamInput {
   requiredFemale: number
   requiredKid: number
   logoUrl?: string
+  captainId?: string | null
   players: {
     playerId: string
     category: "MALE" | "FEMALE" | "KID"
@@ -21,6 +22,7 @@ export interface UpdateTeamInput {
   requiredFemale?: number
   requiredKid?: number
   logoUrl?: string | null
+  captainId?: string | null
 }
 
 export interface TeamFilters {
@@ -34,6 +36,9 @@ const teamInclude = {
       player: true,
     },
     orderBy: { createdAt: "asc" as const },
+  },
+  captain: {
+    select: { id: true, name: true, profilePhoto: true },
   },
   tournament: {
     select: { id: true, name: true },
@@ -55,6 +60,7 @@ export class TeamRepository {
           requiredFemale: data.requiredFemale,
           requiredKid: data.requiredKid,
           logoUrl: data.logoUrl,
+          captainId: data.captainId ?? null,
           players: {
             create: data.players.map((p) => ({
               playerId: p.playerId,
@@ -166,15 +172,17 @@ export class TeamRepository {
     id: string,
     data: UpdateTeamInput & {
       players: { playerId: string; category: "MALE" | "FEMALE" | "KID" }[]
+      captainId?: string | null
     }
   ) {
-    const { players, ...teamData } = data
+    const { players, captainId, ...teamData } = data
     return prisma.$transaction(async (tx) => {
       await tx.teamPlayer.deleteMany({ where: { teamId: id } })
       const team = await tx.team.update({
         where: { id },
         data: {
           ...teamData,
+          ...(captainId !== undefined ? { captainId } : {}),
           players: {
             create: players.map((p) => ({
               playerId: p.playerId,

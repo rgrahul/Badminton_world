@@ -272,7 +272,7 @@ export default function AuctionPage({ params }: { params: { auctionId: string } 
     }
 
     const confirmed = await confirm(
-      "Import all players from the linked tournament into this auction?",
+      "Import all players from the linked tournament into this auction? Team captains are excluded from the auction pool.",
       "Import Tournament Players"
     )
     if (!confirmed) return
