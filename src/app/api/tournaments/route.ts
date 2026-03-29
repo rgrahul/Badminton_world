@@ -39,6 +39,10 @@ export async function POST(request: NextRequest) {
       return errorResponse("Unauthorized", 401)
     }
 
+    if (session.user.role !== "ADMIN") {
+      return errorResponse("Only admins can create tournaments", 403)
+    }
+
     const body = await request.json()
     const validatedData = createTournamentSchema.parse(body)
 
