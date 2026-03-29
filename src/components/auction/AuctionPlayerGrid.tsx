@@ -7,8 +7,7 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { PlayerAvatar } from "@/components/player/PlayerAvatar"
 import { AuctionPlayerWithDetails } from "@/types/auction"
-import type { SkillCategory } from "@prisma/client"
-import { skillCategoryLabel } from "@/lib/skillCategory"
+import { SkillCategoryBadge } from "@/components/player/SkillCategoryBadge"
 
 interface AuctionPlayerGridProps {
   players: AuctionPlayerWithDetails[]
@@ -91,11 +90,7 @@ export function AuctionPlayerGrid({ players, onReset }: AuctionPlayerGridProps) 
                           {ap.player.gender}
                         </span>
                       )}
-                      {ap.player.skillCategory && (
-                        <span className="inline-flex items-center rounded-full px-2 py-0.5 text-[10px] font-medium bg-amber-100 text-amber-800">
-                          {skillCategoryLabel(ap.player.skillCategory as SkillCategory)}
-                        </span>
-                      )}
+                      <SkillCategoryBadge category={ap.player.skillCategory} size="sm" />
                     </div>
                     {ap.status === "SOLD" && ap.soldToTeam && (
                       <div className="mt-1.5 text-xs">

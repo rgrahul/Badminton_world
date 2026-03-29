@@ -3,8 +3,7 @@
 import { Card, CardContent } from "@/components/ui/card"
 import { PlayerAvatar } from "@/components/player/PlayerAvatar"
 import { AuctionPlayerWithDetails } from "@/types/auction"
-import type { SkillCategory } from "@prisma/client"
-import { skillCategoryLabel } from "@/lib/skillCategory"
+import { SkillCategoryBadge } from "@/components/player/SkillCategoryBadge"
 
 interface PlayerSpotlightProps {
   player: AuctionPlayerWithDetails | null
@@ -55,11 +54,7 @@ export function PlayerSpotlight({ player, currentBid }: PlayerSpotlightProps) {
               Age: {p.age}
             </span>
           )}
-          {p.skillCategory && (
-            <span className="inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium bg-amber-100 text-amber-800">
-              {skillCategoryLabel(p.skillCategory as SkillCategory)}
-            </span>
-          )}
+          <SkillCategoryBadge category={p.skillCategory} size="md" />
           {p.yearsOfExperience && (
             <span className="inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium bg-green-100 text-green-800">
               {p.yearsOfExperience}yr exp

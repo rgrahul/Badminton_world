@@ -13,7 +13,8 @@ import {
 } from "@/components/ui/dialog"
 import * as XLSX from "xlsx"
 import type { SkillCategory } from "@prisma/client"
-import { parseSkillCategory, skillCategoryLabel } from "@/lib/skillCategory"
+import { parseSkillCategory } from "@/lib/skillCategory"
+import { SkillCategoryBadge } from "@/components/player/SkillCategoryBadge"
 
 interface ImportRow {
   name: string
@@ -252,7 +253,11 @@ export function ExcelImportDialog({
                       <td className="px-3 py-1.5">{r.gender || "—"}</td>
                       <td className="px-3 py-1.5">{r.age || "—"}</td>
                       <td className="px-3 py-1.5">
-                        {r.skillCategory ? skillCategoryLabel(r.skillCategory) : "—"}
+                        {r.skillCategory ? (
+                          <SkillCategoryBadge category={r.skillCategory} size="sm" />
+                        ) : (
+                          "—"
+                        )}
                       </td>
                       <td className="px-3 py-1.5 text-right">{r.basePrice.toLocaleString()}</td>
                     </tr>

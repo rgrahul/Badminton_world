@@ -20,6 +20,19 @@ export function skillCategoryLabel(value: SkillCategory | null | undefined): str
   return SKILL_CATEGORY_LABELS[value] ?? value
 }
 
+/** Tailwind bg/text for pills (pair with rounded-full, font-medium, etc.) */
+export const SKILL_CATEGORY_BADGE_CLASSES: Record<SkillCategory, string> = {
+  BEGINNER: "bg-teal-100 text-teal-900",
+  INTERMEDIATE: "bg-sky-100 text-sky-900",
+  INTERMEDIATE_PLUS: "bg-violet-100 text-violet-900",
+  ADVANCED: "bg-amber-100 text-amber-950",
+}
+
+export function skillCategoryBadgeClassName(value: SkillCategory | null | undefined): string {
+  if (value == null) return "bg-muted text-muted-foreground"
+  return SKILL_CATEGORY_BADGE_CLASSES[value] ?? "bg-slate-100 text-slate-800"
+}
+
 const NORMALIZE = (s: string) =>
   s
     .trim()
