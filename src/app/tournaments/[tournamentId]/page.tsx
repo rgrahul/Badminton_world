@@ -7,7 +7,14 @@ import { Header } from "@/components/layout/Header"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog"
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { PlayerLink } from "@/components/player/PlayerLink"
@@ -334,11 +341,14 @@ export default function TournamentDetailPage({ params }: { params: { tournamentI
       const reader = new FileReader()
       reader.onload = async () => {
         const base64 = reader.result as string
-        const response = await fetch(`/api/tournaments/${params.tournamentId}/fixtures/${fixtureId}`, {
-          method: "PATCH",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ imageUrl: base64 }),
-        })
+        const response = await fetch(
+          `/api/tournaments/${params.tournamentId}/fixtures/${fixtureId}`,
+          {
+            method: "PATCH",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ imageUrl: base64 }),
+          }
+        )
         if (response.ok) {
           await fetchFixtures()
         } else {
@@ -357,11 +367,14 @@ export default function TournamentDetailPage({ params }: { params: { tournamentI
   const handleRemoveFixtureImage = async (fixtureId: string) => {
     try {
       setUploadingFixtureId(fixtureId)
-      const response = await fetch(`/api/tournaments/${params.tournamentId}/fixtures/${fixtureId}`, {
-        method: "PATCH",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ imageUrl: null }),
-      })
+      const response = await fetch(
+        `/api/tournaments/${params.tournamentId}/fixtures/${fixtureId}`,
+        {
+          method: "PATCH",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ imageUrl: null }),
+        }
+      )
       if (response.ok) {
         await fetchFixtures()
       }
@@ -377,7 +390,7 @@ export default function TournamentDetailPage({ params }: { params: { tournamentI
     setAuctionName(`${tournament.name} Auction`)
     setAuctionTeams(
       tournament.teams.length > 0
-        ? tournament.teams.map((t) => ({ name: t.name, budget: "800000" }))
+        ? tournament.teams.map((t) => ({ name: t.name, budget: "100000" }))
         : []
     )
     setAuctionDialogOpen(true)
@@ -414,7 +427,7 @@ export default function TournamentDetailPage({ params }: { params: { tournamentI
           body: JSON.stringify({
             teams: validTeams.map((t) => ({
               name: t.name.trim(),
-              budget: parseInt(t.budget) || 800000,
+              budget: parseInt(t.budget) || 100000,
             })),
           }),
         })
@@ -446,10 +459,7 @@ export default function TournamentDetailPage({ params }: { params: { tournamentI
 
     try {
       setSyncingTeams(true)
-      const response = await fetch(
-        `/api/auctions/${auctionData.id}/sync-teams`,
-        { method: "POST" }
-      )
+      const response = await fetch(`/api/auctions/${auctionData.id}/sync-teams`, { method: "POST" })
       const data = await response.json()
 
       if (response.ok) {
@@ -588,10 +598,9 @@ export default function TournamentDetailPage({ params }: { params: { tournamentI
     if (!confirmed) return
 
     try {
-      const response = await fetch(
-        `/api/tournaments/${params.tournamentId}/teams/${teamId}`,
-        { method: "DELETE" }
-      )
+      const response = await fetch(`/api/tournaments/${params.tournamentId}/teams/${teamId}`, {
+        method: "DELETE",
+      })
 
       if (response.ok) {
         await fetchTournament()
@@ -643,14 +652,11 @@ export default function TournamentDetailPage({ params }: { params: { tournamentI
 
     try {
       setGeneratingGroups(true)
-      const response = await fetch(
-        `/api/tournaments/${params.tournamentId}/groups/generate`,
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ numberOfGroups: numGroups }),
-        }
-      )
+      const response = await fetch(`/api/tournaments/${params.tournamentId}/groups/generate`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ numberOfGroups: numGroups }),
+      })
 
       if (response.ok) {
         await fetchTournament()
@@ -710,14 +716,11 @@ export default function TournamentDetailPage({ params }: { params: { tournamentI
 
       try {
         setGeneratingBracket(true)
-        const response = await fetch(
-          `/api/tournaments/${params.tournamentId}/knockout/generate`,
-          {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ seedFromGroups: true }),
-          }
-        )
+        const response = await fetch(`/api/tournaments/${params.tournamentId}/knockout/generate`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ seedFromGroups: true }),
+        })
 
         if (response.ok) {
           await fetchTournament()
@@ -748,14 +751,11 @@ export default function TournamentDetailPage({ params }: { params: { tournamentI
 
       try {
         setGeneratingBracket(true)
-        const response = await fetch(
-          `/api/tournaments/${params.tournamentId}/knockout/generate`,
-          {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ teamIds }),
-          }
-        )
+        const response = await fetch(`/api/tournaments/${params.tournamentId}/knockout/generate`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ teamIds }),
+        })
 
         if (response.ok) {
           await fetchTournament()
@@ -776,18 +776,21 @@ export default function TournamentDetailPage({ params }: { params: { tournamentI
   const computeStandings = () => {
     if (!tournament || !tournament.requiresTeams) return []
 
-    const teamStats: Record<string, {
-      teamId: string
-      teamName: string
-      played: number
-      won: number
-      lost: number
-      drawn: number
-      fixturesWon: number
-      fixturesLost: number
-      pointsFor: number
-      pointsAgainst: number
-    }> = {}
+    const teamStats: Record<
+      string,
+      {
+        teamId: string
+        teamName: string
+        played: number
+        won: number
+        lost: number
+        drawn: number
+        fixturesWon: number
+        fixturesLost: number
+        pointsFor: number
+        pointsAgainst: number
+      }
+    > = {}
 
     for (const team of tournament.teams) {
       teamStats[team.id] = {
@@ -875,9 +878,12 @@ export default function TournamentDetailPage({ params }: { params: { tournamentI
 
   const getFormatLabel = (format?: string) => {
     switch (format) {
-      case "LEAGUE_KNOCKOUT": return "League + Knockout"
-      case "KNOCKOUT_ONLY": return "Knockout Only"
-      default: return "Custom"
+      case "LEAGUE_KNOCKOUT":
+        return "League + Knockout"
+      case "KNOCKOUT_ONLY":
+        return "Knockout Only"
+      default:
+        return "Custom"
     }
   }
 
@@ -891,7 +897,7 @@ export default function TournamentDetailPage({ params }: { params: { tournamentI
         body: JSON.stringify({ titlePhoto: url }),
       })
       if (res.ok) {
-        setTournament((prev) => prev ? { ...prev, titlePhoto: url ?? undefined } : prev)
+        setTournament((prev) => (prev ? { ...prev, titlePhoto: url ?? undefined } : prev))
         setTitlePhotoDialogOpen(false)
         setTitlePhotoUrl("")
       }
@@ -928,16 +934,19 @@ export default function TournamentDetailPage({ params }: { params: { tournamentI
   const defaultTab = isLeagueKnockout
     ? "groups"
     : isKnockoutOnly
-    ? "knockout"
-    : tournament.requiresTeams
-    ? "teams"
-    : "matches"
+      ? "knockout"
+      : tournament.requiresTeams
+        ? "teams"
+        : "matches"
 
   const hasGroups = (tournament.groups?.length ?? 0) > 0
   const hasKnockoutMatches = (tournament.knockoutMatches?.length ?? 0) > 0
-  const allLeagueMatchesDone = isLeagueKnockout && groupStandings.length > 0 &&
+  const allLeagueMatchesDone =
+    isLeagueKnockout &&
+    groupStandings.length > 0 &&
     groupStandings.every((g) => {
-      const teamsInGroup = tournament.groups?.find((gr) => gr.id === g.groupId)?.groupTeams.length ?? 0
+      const teamsInGroup =
+        tournament.groups?.find((gr) => gr.id === g.groupId)?.groupTeams.length ?? 0
       const expectedMatches = (teamsInGroup * (teamsInGroup - 1)) / 2
       const completedCount = g.standings.reduce((sum, s) => sum + s.played, 0) / 2
       return expectedMatches > 0 && completedCount >= expectedMatches
@@ -996,12 +1005,16 @@ export default function TournamentDetailPage({ params }: { params: { tournamentI
                 src={toGoogleDriveDisplayUrl(tournament.titlePhoto)}
                 alt={tournament.name}
                 className={`w-full h-full object-cover ${
-                  tournament.titlePhotoPosition === "top" ? "object-top" :
-                  tournament.titlePhotoPosition === "bottom" ? "object-bottom" :
-                  "object-center"
+                  tournament.titlePhotoPosition === "top"
+                    ? "object-top"
+                    : tournament.titlePhotoPosition === "bottom"
+                      ? "object-bottom"
+                      : "object-center"
                 }`}
                 referrerPolicy="no-referrer"
-                onError={(e) => { (e.target as HTMLImageElement).style.display = "none" }}
+                onError={(e) => {
+                  ;(e.target as HTMLImageElement).style.display = "none"
+                }}
               />
               {canManage && (
                 <div className="absolute bottom-2 right-2 flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
@@ -1015,7 +1028,9 @@ export default function TournamentDetailPage({ params }: { params: { tournamentI
                           body: JSON.stringify({ titlePhotoPosition: pos }),
                         })
                         if (res.ok) {
-                          setTournament((prev) => prev ? { ...prev, titlePhotoPosition: pos } : prev)
+                          setTournament((prev) =>
+                            prev ? { ...prev, titlePhotoPosition: pos } : prev
+                          )
                         }
                       }}
                       className={`px-2 py-1 text-xs rounded font-medium transition-colors ${
@@ -1057,8 +1072,19 @@ export default function TournamentDetailPage({ params }: { params: { tournamentI
               }}
               className="w-full h-32 border-b border-dashed flex flex-col items-center justify-center gap-2 text-muted-foreground hover:bg-muted/50 transition-colors rounded-t-lg"
             >
-              <svg xmlns="http://www.w3.org/2000/svg" className="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="w-8 h-8"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={1.5}
+                  d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"
+                />
               </svg>
               <span className="text-sm font-medium">Add Title Photo</span>
             </button>
@@ -1072,11 +1098,13 @@ export default function TournamentDetailPage({ params }: { params: { tournamentI
                 </CardDescription>
               </div>
               <div className="flex items-center gap-2">
-                {tournament.requiresTeams && tournament.format && tournament.format !== "CUSTOM" && (
-                  <span className="inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium bg-teal-100 text-teal-800">
-                    {getFormatLabel(tournament.format)}
-                  </span>
-                )}
+                {tournament.requiresTeams &&
+                  tournament.format &&
+                  tournament.format !== "CUSTOM" && (
+                    <span className="inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium bg-teal-100 text-teal-800">
+                      {getFormatLabel(tournament.format)}
+                    </span>
+                  )}
                 {getStatusBadge(tournament.status)}
               </div>
             </div>
@@ -1137,29 +1165,47 @@ export default function TournamentDetailPage({ params }: { params: { tournamentI
         {/* Tabs */}
         <Tabs defaultValue={defaultTab}>
           <TabsList className="w-full flex flex-wrap">
-            <TabsTrigger value="players" className="flex-1">Players ({tournamentPlayerCount})</TabsTrigger>
+            <TabsTrigger value="players" className="flex-1">
+              Players ({tournamentPlayerCount})
+            </TabsTrigger>
             {tournament.requiresTeams && (
-              <TabsTrigger value="teams" className="flex-1">Teams ({tournament._count.teams})</TabsTrigger>
+              <TabsTrigger value="teams" className="flex-1">
+                Teams ({tournament._count.teams})
+              </TabsTrigger>
             )}
             {tournament.requiresTeams && (
-              <TabsTrigger value="auction" className="flex-1">Auction</TabsTrigger>
+              <TabsTrigger value="auction" className="flex-1">
+                Auction
+              </TabsTrigger>
             )}
             {isLeagueKnockout && (
-              <TabsTrigger value="groups" className="flex-1">Groups</TabsTrigger>
+              <TabsTrigger value="groups" className="flex-1">
+                Groups
+              </TabsTrigger>
             )}
             {(isLeagueKnockout || isKnockoutOnly) && (
-              <TabsTrigger value="knockout" className="flex-1">Knockout</TabsTrigger>
+              <TabsTrigger value="knockout" className="flex-1">
+                Knockout
+              </TabsTrigger>
             )}
             {canManage && isCustom && tournament.requiresTeams && (
-              <TabsTrigger value="standings" className="flex-1">Standings</TabsTrigger>
+              <TabsTrigger value="standings" className="flex-1">
+                Standings
+              </TabsTrigger>
             )}
             {tournament.requiresTeams && (
-              <TabsTrigger value="team-matches" className="flex-1">Team Matches ({tournament._count.teamMatches})</TabsTrigger>
+              <TabsTrigger value="team-matches" className="flex-1">
+                Team Matches ({tournament._count.teamMatches})
+              </TabsTrigger>
             )}
             {tournament.requiresTeams && (
-              <TabsTrigger value="fixtures" className="flex-1">Fixtures ({fixtures.length})</TabsTrigger>
+              <TabsTrigger value="fixtures" className="flex-1">
+                Fixtures ({fixtures.length})
+              </TabsTrigger>
             )}
-            <TabsTrigger value="matches" className="flex-1">Matches ({tournament._count.matches})</TabsTrigger>
+            <TabsTrigger value="matches" className="flex-1">
+              Matches ({tournament._count.matches})
+            </TabsTrigger>
           </TabsList>
 
           {/* Players Tab */}
@@ -1188,7 +1234,9 @@ export default function TournamentDetailPage({ params }: { params: { tournamentI
                     <div>
                       <CardTitle>Groups</CardTitle>
                       <CardDescription>
-                        {hasGroups ? `${tournament.groups!.length} groups` : "Generate groups to assign teams"}
+                        {hasGroups
+                          ? `${tournament.groups!.length} groups`
+                          : "Generate groups to assign teams"}
                       </CardDescription>
                     </div>
                     {canManage && (
@@ -1198,7 +1246,11 @@ export default function TournamentDetailPage({ params }: { params: { tournamentI
                           onClick={handleGenerateGroups}
                           disabled={generatingGroups || tournament._count.teams < 2}
                         >
-                          {generatingGroups ? "Generating..." : hasGroups ? "Regenerate Groups" : "Generate Groups"}
+                          {generatingGroups
+                            ? "Generating..."
+                            : hasGroups
+                              ? "Regenerate Groups"
+                              : "Generate Groups"}
                         </Button>
                         {hasGroups && (
                           <>
@@ -1215,7 +1267,9 @@ export default function TournamentDetailPage({ params }: { params: { tournamentI
                               onClick={handleGenerateLeagueMatches}
                               disabled={generatingLeagueMatches}
                             >
-                              {generatingLeagueMatches ? "Generating..." : "Generate League Matches"}
+                              {generatingLeagueMatches
+                                ? "Generating..."
+                                : "Generate League Matches"}
                             </Button>
                           </>
                         )}
@@ -1313,8 +1367,17 @@ export default function TournamentDetailPage({ params }: { params: { tournamentI
                                           <td className="py-2 pr-2 text-center">{s.lost}</td>
                                           <td className="py-2 pr-2 text-center">{s.drawn}</td>
                                           <td className="py-2 pr-2 text-center">
-                                            <span className={diff > 0 ? "text-green-600" : diff < 0 ? "text-red-600" : ""}>
-                                              {diff > 0 ? "+" : ""}{diff}
+                                            <span
+                                              className={
+                                                diff > 0
+                                                  ? "text-green-600"
+                                                  : diff < 0
+                                                    ? "text-red-600"
+                                                    : ""
+                                              }
+                                            >
+                                              {diff > 0 ? "+" : ""}
+                                              {diff}
                                             </span>
                                           </td>
                                           <td className="py-2 text-center font-bold">{pts}</td>
@@ -1325,7 +1388,8 @@ export default function TournamentDetailPage({ params }: { params: { tournamentI
                                 </table>
                               </div>
                               <p className="text-[10px] text-muted-foreground mt-2">
-                                P=Played, W=Won, L=Lost, D=Drawn, PD=Point Diff, Pts=Points (Win=2, Draw=1)
+                                P=Played, W=Won, L=Lost, D=Drawn, PD=Point Diff, Pts=Points (Win=2,
+                                Draw=1)
                               </p>
                             </>
                           ) : (
@@ -1369,7 +1433,9 @@ export default function TournamentDetailPage({ params }: { params: { tournamentI
                     <div>
                       <CardTitle>Knockout Bracket</CardTitle>
                       <CardDescription>
-                        {hasKnockoutMatches ? "Elimination bracket" : "Generate the knockout bracket"}
+                        {hasKnockoutMatches
+                          ? "Elimination bracket"
+                          : "Generate the knockout bracket"}
                       </CardDescription>
                     </div>
                     {canManage && !hasKnockoutMatches && (
@@ -1423,7 +1489,7 @@ export default function TournamentDetailPage({ params }: { params: { tournamentI
                   </div>
                 </CardHeader>
                 <CardContent>
-                  {(!tournament.teams || tournament.teams.length === 0) ? (
+                  {!tournament.teams || tournament.teams.length === 0 ? (
                     <div className="text-center py-8">
                       <p className="text-muted-foreground mb-4">No teams in this tournament yet</p>
                       {canManage && (
@@ -1444,7 +1510,9 @@ export default function TournamentDetailPage({ params }: { params: { tournamentI
                                     src={toGoogleDriveDisplayUrl(team.logoUrl)}
                                     alt={`${team.name} logo`}
                                     className="w-10 h-10 rounded-full object-cover border-2 border-gray-200 flex-shrink-0"
-                                    onError={(e) => { (e.target as HTMLImageElement).style.display = "none" }}
+                                    onError={(e) => {
+                                      ;(e.target as HTMLImageElement).style.display = "none"
+                                    }}
                                   />
                                 ) : (
                                   <div className="w-10 h-10 rounded-full bg-gradient-to-br from-blue-400 to-green-400 flex items-center justify-center text-white font-bold text-sm flex-shrink-0">
@@ -1522,7 +1590,7 @@ export default function TournamentDetailPage({ params }: { params: { tournamentI
                   </div>
                 </CardHeader>
                 <CardContent>
-                  {(!tournament.teamMatches || tournament.teamMatches.length === 0) ? (
+                  {!tournament.teamMatches || tournament.teamMatches.length === 0 ? (
                     <div className="text-center py-8">
                       <p className="text-muted-foreground mb-4">No team matches created yet</p>
                       {canManage && (
@@ -1543,19 +1611,26 @@ export default function TournamentDetailPage({ params }: { params: { tournamentI
                                 <div className="flex-1 min-w-0">
                                   <div className="flex items-center gap-2 mb-1">
                                     <span className="font-medium">{tm.name}</span>
-                                    <span className={`inline-flex items-center rounded-full px-2 py-0.5 text-xs font-medium ${
-                                      tm.category === "ADULT"
-                                        ? "bg-blue-100 text-blue-800"
-                                        : "bg-amber-100 text-amber-800"
-                                    }`}>
+                                    <span
+                                      className={`inline-flex items-center rounded-full px-2 py-0.5 text-xs font-medium ${
+                                        tm.category === "ADULT"
+                                          ? "bg-blue-100 text-blue-800"
+                                          : "bg-amber-100 text-amber-800"
+                                      }`}
+                                    >
                                       {tm.category}
                                     </span>
-                                    <span className={`inline-flex items-center rounded-full px-2 py-0.5 text-xs font-medium ${
-                                      tm.status === "DRAFT" ? "bg-gray-100 text-gray-800" :
-                                      tm.status === "READY" ? "bg-green-100 text-green-800" :
-                                      tm.status === "IN_PROGRESS" ? "bg-blue-100 text-blue-800" :
-                                      "bg-green-100 text-green-800"
-                                    }`}>
+                                    <span
+                                      className={`inline-flex items-center rounded-full px-2 py-0.5 text-xs font-medium ${
+                                        tm.status === "DRAFT"
+                                          ? "bg-gray-100 text-gray-800"
+                                          : tm.status === "READY"
+                                            ? "bg-green-100 text-green-800"
+                                            : tm.status === "IN_PROGRESS"
+                                              ? "bg-blue-100 text-blue-800"
+                                              : "bg-green-100 text-green-800"
+                                      }`}
+                                    >
                                       {tm.status.replace("_", " ")}
                                     </span>
                                   </div>
@@ -1580,7 +1655,9 @@ export default function TournamentDetailPage({ params }: { params: { tournamentI
                                   )}
                                 </div>
                                 <div className="flex items-center gap-2 flex-shrink-0 ml-4">
-                                  <Link href={`/tournaments/${tournament.id}/team-matches/${tm.id}`}>
+                                  <Link
+                                    href={`/tournaments/${tournament.id}/team-matches/${tm.id}`}
+                                  >
                                     <Button variant="outline" size="sm">
                                       View
                                     </Button>
@@ -1611,72 +1688,85 @@ export default function TournamentDetailPage({ params }: { params: { tournamentI
           {tournament.requiresTeams && isCustom && (
             <TabsContent value="standings">
               {(() => {
-                  const standings = computeStandings()
-                  const hasCompletedMatches = standings.some((s) => s.played > 0)
-                  return (
-                    <Card>
-                      <CardHeader>
-                        <CardTitle>Team Standings</CardTitle>
-                        <CardDescription>Rankings based on completed team matches</CardDescription>
-                      </CardHeader>
-                      <CardContent>
-                        {!hasCompletedMatches ? (
-                          <div className="text-center py-8">
-                            <p className="text-muted-foreground">No completed team matches yet. Standings will appear once matches are completed.</p>
+                const standings = computeStandings()
+                const hasCompletedMatches = standings.some((s) => s.played > 0)
+                return (
+                  <Card>
+                    <CardHeader>
+                      <CardTitle>Team Standings</CardTitle>
+                      <CardDescription>Rankings based on completed team matches</CardDescription>
+                    </CardHeader>
+                    <CardContent>
+                      {!hasCompletedMatches ? (
+                        <div className="text-center py-8">
+                          <p className="text-muted-foreground">
+                            No completed team matches yet. Standings will appear once matches are
+                            completed.
+                          </p>
+                        </div>
+                      ) : (
+                        <>
+                          <div className="overflow-x-auto">
+                            <table className="w-full text-sm">
+                              <thead>
+                                <tr className="border-b text-left">
+                                  <th className="pb-2 pr-3 font-medium">#</th>
+                                  <th className="pb-2 pr-3 font-medium">Team</th>
+                                  <th className="pb-2 pr-3 font-medium text-center">P</th>
+                                  <th className="pb-2 pr-3 font-medium text-center">W</th>
+                                  <th className="pb-2 pr-3 font-medium text-center">L</th>
+                                  <th className="pb-2 pr-3 font-medium text-center">D</th>
+                                  <th className="pb-2 pr-3 font-medium text-center">FW</th>
+                                  <th className="pb-2 pr-3 font-medium text-center">FL</th>
+                                  <th className="pb-2 pr-3 font-medium text-center">PD</th>
+                                  <th className="pb-2 font-medium text-center">Pts</th>
+                                </tr>
+                              </thead>
+                              <tbody>
+                                {standings.map((s, i) => {
+                                  const pts = s.won * 2 + s.drawn
+                                  const diff = s.pointsFor - s.pointsAgainst
+                                  return (
+                                    <tr key={s.teamId} className="border-b last:border-0">
+                                      <td className="py-2 pr-3 font-medium">{i + 1}</td>
+                                      <td className="py-2 pr-3 font-medium">{s.teamName}</td>
+                                      <td className="py-2 pr-3 text-center">{s.played}</td>
+                                      <td className="py-2 pr-3 text-center">{s.won}</td>
+                                      <td className="py-2 pr-3 text-center">{s.lost}</td>
+                                      <td className="py-2 pr-3 text-center">{s.drawn}</td>
+                                      <td className="py-2 pr-3 text-center">{s.fixturesWon}</td>
+                                      <td className="py-2 pr-3 text-center">{s.fixturesLost}</td>
+                                      <td className="py-2 pr-3 text-center">
+                                        <span
+                                          className={
+                                            diff > 0
+                                              ? "text-green-600"
+                                              : diff < 0
+                                                ? "text-red-600"
+                                                : ""
+                                          }
+                                        >
+                                          {diff > 0 ? "+" : ""}
+                                          {diff}
+                                        </span>
+                                      </td>
+                                      <td className="py-2 text-center font-bold">{pts}</td>
+                                    </tr>
+                                  )
+                                })}
+                              </tbody>
+                            </table>
                           </div>
-                        ) : (
-                          <>
-                            <div className="overflow-x-auto">
-                              <table className="w-full text-sm">
-                                <thead>
-                                  <tr className="border-b text-left">
-                                    <th className="pb-2 pr-3 font-medium">#</th>
-                                    <th className="pb-2 pr-3 font-medium">Team</th>
-                                    <th className="pb-2 pr-3 font-medium text-center">P</th>
-                                    <th className="pb-2 pr-3 font-medium text-center">W</th>
-                                    <th className="pb-2 pr-3 font-medium text-center">L</th>
-                                    <th className="pb-2 pr-3 font-medium text-center">D</th>
-                                    <th className="pb-2 pr-3 font-medium text-center">FW</th>
-                                    <th className="pb-2 pr-3 font-medium text-center">FL</th>
-                                    <th className="pb-2 pr-3 font-medium text-center">PD</th>
-                                    <th className="pb-2 font-medium text-center">Pts</th>
-                                  </tr>
-                                </thead>
-                                <tbody>
-                                  {standings.map((s, i) => {
-                                    const pts = s.won * 2 + s.drawn
-                                    const diff = s.pointsFor - s.pointsAgainst
-                                    return (
-                                      <tr key={s.teamId} className="border-b last:border-0">
-                                        <td className="py-2 pr-3 font-medium">{i + 1}</td>
-                                        <td className="py-2 pr-3 font-medium">{s.teamName}</td>
-                                        <td className="py-2 pr-3 text-center">{s.played}</td>
-                                        <td className="py-2 pr-3 text-center">{s.won}</td>
-                                        <td className="py-2 pr-3 text-center">{s.lost}</td>
-                                        <td className="py-2 pr-3 text-center">{s.drawn}</td>
-                                        <td className="py-2 pr-3 text-center">{s.fixturesWon}</td>
-                                        <td className="py-2 pr-3 text-center">{s.fixturesLost}</td>
-                                        <td className="py-2 pr-3 text-center">
-                                          <span className={diff > 0 ? "text-green-600" : diff < 0 ? "text-red-600" : ""}>
-                                            {diff > 0 ? "+" : ""}{diff}
-                                          </span>
-                                        </td>
-                                        <td className="py-2 text-center font-bold">{pts}</td>
-                                      </tr>
-                                    )
-                                  })}
-                                </tbody>
-                              </table>
-                            </div>
-                            <p className="text-xs text-muted-foreground mt-3">
-                              P=Played, W=Won, L=Lost, D=Drawn, FW=Fixtures Won, FL=Fixtures Lost, PD=Point Differential, Pts=Points (Win=2, Draw=1)
-                            </p>
-                          </>
-                        )}
-                      </CardContent>
-                    </Card>
-                  )
-                })()}
+                          <p className="text-xs text-muted-foreground mt-3">
+                            P=Played, W=Won, L=Lost, D=Drawn, FW=Fixtures Won, FL=Fixtures Lost,
+                            PD=Point Differential, Pts=Points (Win=2, Draw=1)
+                          </p>
+                        </>
+                      )}
+                    </CardContent>
+                  </Card>
+                )
+              })()}
             </TabsContent>
           )}
 
@@ -1686,9 +1776,7 @@ export default function TournamentDetailPage({ params }: { params: { tournamentI
               <Card>
                 <CardHeader>
                   <CardTitle>Player Auction</CardTitle>
-                  <CardDescription>
-                    Run a player auction/draft for this tournament
-                  </CardDescription>
+                  <CardDescription>Run a player auction/draft for this tournament</CardDescription>
                 </CardHeader>
                 <CardContent>
                   {auctionLoading ? (
@@ -1702,10 +1790,7 @@ export default function TournamentDetailPage({ params }: { params: { tournamentI
                         No auction has been created for this tournament yet.
                       </p>
                       {canManage && (
-                        <Button
-                          onClick={handleCreateAuction}
-                          disabled={creatingAuction}
-                        >
+                        <Button onClick={handleCreateAuction} disabled={creatingAuction}>
                           {creatingAuction ? "Creating..." : "Create Auction"}
                         </Button>
                       )}
@@ -1716,12 +1801,17 @@ export default function TournamentDetailPage({ params }: { params: { tournamentI
                         <div>
                           <h3 className="font-semibold">{auctionData.name}</h3>
                           <div className="flex items-center gap-3 mt-1 text-sm text-muted-foreground">
-                            <span className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium ${
-                              auctionData.status === "LIVE" ? "bg-green-100 text-green-800" :
-                              auctionData.status === "PAUSED" ? "bg-amber-100 text-amber-800" :
-                              auctionData.status === "COMPLETED" ? "bg-blue-100 text-blue-800" :
-                              "bg-gray-100 text-gray-800"
-                            }`}>
+                            <span
+                              className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium ${
+                                auctionData.status === "LIVE"
+                                  ? "bg-green-100 text-green-800"
+                                  : auctionData.status === "PAUSED"
+                                    ? "bg-amber-100 text-amber-800"
+                                    : auctionData.status === "COMPLETED"
+                                      ? "bg-blue-100 text-blue-800"
+                                      : "bg-gray-100 text-gray-800"
+                              }`}
+                            >
                               {auctionData.status}
                             </span>
                             <span>{auctionData._count.teams} teams</span>
@@ -1760,10 +1850,14 @@ export default function TournamentDetailPage({ params }: { params: { tournamentI
                 </CardHeader>
                 <CardContent>
                   {fixturesLoading ? (
-                    <div className="text-center py-8 text-muted-foreground">Loading fixtures...</div>
+                    <div className="text-center py-8 text-muted-foreground">
+                      Loading fixtures...
+                    </div>
                   ) : fixtures.length === 0 ? (
                     <div className="text-center py-8">
-                      <p className="text-muted-foreground">No fixtures yet. Create team matches first.</p>
+                      <p className="text-muted-foreground">
+                        No fixtures yet. Create team matches first.
+                      </p>
                     </div>
                   ) : (
                     <div className="space-y-3">
@@ -1777,7 +1871,8 @@ export default function TournamentDetailPage({ params }: { params: { tournamentI
                           KIDS_SINGLES: "Kids Singles",
                           KIDS_DOUBLES: "Kids Doubles",
                         }
-                        const typeLabel = fixtureTypeLabel[fixture.fixtureType] || fixture.fixtureType
+                        const typeLabel =
+                          fixtureTypeLabel[fixture.fixtureType] || fixture.fixtureType
                         const matchStatus = fixture.match?.status
                         return (
                           <Card key={fixture.id} className="overflow-hidden">
@@ -1791,7 +1886,9 @@ export default function TournamentDetailPage({ params }: { params: { tournamentI
                                         src={fixture.imageUrl}
                                         alt={`Fixture ${fixture.fixtureNumber}`}
                                         className="w-20 h-20 rounded-lg object-cover border"
-                                        onError={(e) => { (e.target as HTMLImageElement).style.display = "none" }}
+                                        onError={(e) => {
+                                          ;(e.target as HTMLImageElement).style.display = "none"
+                                        }}
                                       />
                                       <button
                                         onClick={() => handleRemoveFixtureImage(fixture.id)}
@@ -1803,10 +1900,23 @@ export default function TournamentDetailPage({ params }: { params: { tournamentI
                                     </div>
                                   ) : (
                                     <label className="w-20 h-20 rounded-lg border-2 border-dashed border-gray-300 flex flex-col items-center justify-center cursor-pointer hover:border-blue-400 hover:bg-blue-50 transition-colors">
-                                      <svg xmlns="http://www.w3.org/2000/svg" className="w-6 h-6 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                                      <svg
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        className="w-6 h-6 text-gray-400"
+                                        fill="none"
+                                        viewBox="0 0 24 24"
+                                        stroke="currentColor"
+                                      >
+                                        <path
+                                          strokeLinecap="round"
+                                          strokeLinejoin="round"
+                                          strokeWidth={2}
+                                          d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"
+                                        />
                                       </svg>
-                                      <span className="text-[10px] text-gray-400 mt-0.5">Add Photo</span>
+                                      <span className="text-[10px] text-gray-400 mt-0.5">
+                                        Add Photo
+                                      </span>
                                       <input
                                         type="file"
                                         accept="image/*"
@@ -1829,16 +1939,22 @@ export default function TournamentDetailPage({ params }: { params: { tournamentI
                                       #{fixture.fixtureNumber} {typeLabel}
                                     </span>
                                     {matchStatus && (
-                                      <span className={`inline-flex items-center rounded-full px-2 py-0.5 text-xs font-medium ${
-                                        matchStatus === "COMPLETED" ? "bg-green-100 text-green-800" :
-                                        matchStatus === "IN_PROGRESS" ? "bg-blue-100 text-blue-800" :
-                                        "bg-gray-100 text-gray-800"
-                                      }`}>
+                                      <span
+                                        className={`inline-flex items-center rounded-full px-2 py-0.5 text-xs font-medium ${
+                                          matchStatus === "COMPLETED"
+                                            ? "bg-green-100 text-green-800"
+                                            : matchStatus === "IN_PROGRESS"
+                                              ? "bg-blue-100 text-blue-800"
+                                              : "bg-gray-100 text-gray-800"
+                                        }`}
+                                      >
                                         {matchStatus.replace("_", " ")}
                                       </span>
                                     )}
                                     {uploadingFixtureId === fixture.id && (
-                                      <span className="text-xs text-muted-foreground">Uploading...</span>
+                                      <span className="text-xs text-muted-foreground">
+                                        Uploading...
+                                      </span>
                                     )}
                                   </div>
                                   <div className="text-xs text-muted-foreground mb-1.5">
@@ -1863,7 +1979,8 @@ export default function TournamentDetailPage({ params }: { params: { tournamentI
                                   )}
                                   {fixture.match && fixture.match.status === "COMPLETED" && (
                                     <div className="text-xs font-semibold mt-1">
-                                      Score: {fixture.match.setsWonBySideA} - {fixture.match.setsWonBySideB}
+                                      Score: {fixture.match.setsWonBySideA} -{" "}
+                                      {fixture.match.setsWonBySideB}
                                     </div>
                                   )}
                                 </div>
@@ -1872,7 +1989,9 @@ export default function TournamentDetailPage({ params }: { params: { tournamentI
                                 {fixture.match && (
                                   <div className="flex-shrink-0">
                                     <Link href={`/matches/${fixture.match.id}`}>
-                                      <Button variant="outline" size="sm">View Match</Button>
+                                      <Button variant="outline" size="sm">
+                                        View Match
+                                      </Button>
                                     </Link>
                                   </div>
                                 )}
@@ -1905,7 +2024,17 @@ export default function TournamentDetailPage({ params }: { params: { tournamentI
                           size="sm"
                           onClick={() => setViewMode("grid")}
                         >
-                          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            width="16"
+                            height="16"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            strokeWidth="2"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                          >
                             <rect x="3" y="3" width="7" height="7"></rect>
                             <rect x="14" y="3" width="7" height="7"></rect>
                             <rect x="14" y="14" width="7" height="7"></rect>
@@ -1917,7 +2046,17 @@ export default function TournamentDetailPage({ params }: { params: { tournamentI
                           size="sm"
                           onClick={() => setViewMode("list")}
                         >
-                          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            width="16"
+                            height="16"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            strokeWidth="2"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                          >
                             <line x1="8" y1="6" x2="21" y2="6"></line>
                             <line x1="8" y1="12" x2="21" y2="12"></line>
                             <line x1="8" y1="18" x2="21" y2="18"></line>
@@ -1959,10 +2098,20 @@ export default function TournamentDetailPage({ params }: { params: { tournamentI
                               </div>
                               <div className="text-sm text-muted-foreground">
                                 <PlayerLink name={match.sideAPlayer1} playerMap={playerMap} />
-                                {match.sideAPlayer2 && <>{" & "}<PlayerLink name={match.sideAPlayer2} playerMap={playerMap} /></>}
+                                {match.sideAPlayer2 && (
+                                  <>
+                                    {" & "}
+                                    <PlayerLink name={match.sideAPlayer2} playerMap={playerMap} />
+                                  </>
+                                )}
                                 {" vs "}
                                 <PlayerLink name={match.sideBPlayer1} playerMap={playerMap} />
-                                {match.sideBPlayer2 && <>{" & "}<PlayerLink name={match.sideBPlayer2} playerMap={playerMap} /></>}
+                                {match.sideBPlayer2 && (
+                                  <>
+                                    {" & "}
+                                    <PlayerLink name={match.sideBPlayer2} playerMap={playerMap} />
+                                  </>
+                                )}
                               </div>
                             </div>
                             {match.status !== "NOT_STARTED" && (
@@ -1996,9 +2145,7 @@ export default function TournamentDetailPage({ params }: { params: { tournamentI
                             <CardTitle className="text-base truncate">{match.name}</CardTitle>
                             {getStatusBadge(match.status)}
                           </div>
-                          <CardDescription className="text-xs">
-                            {match.type}
-                          </CardDescription>
+                          <CardDescription className="text-xs">{match.type}</CardDescription>
                         </CardHeader>
                         <CardContent>
                           <div className="space-y-3">
@@ -2007,14 +2154,24 @@ export default function TournamentDetailPage({ params }: { params: { tournamentI
                                 <span className="font-medium">Team A:</span>
                                 <div className="text-muted-foreground">
                                   <PlayerLink name={match.sideAPlayer1} playerMap={playerMap} />
-                                  {match.sideAPlayer2 && <>{" & "}<PlayerLink name={match.sideAPlayer2} playerMap={playerMap} /></>}
+                                  {match.sideAPlayer2 && (
+                                    <>
+                                      {" & "}
+                                      <PlayerLink name={match.sideAPlayer2} playerMap={playerMap} />
+                                    </>
+                                  )}
                                 </div>
                               </div>
                               <div>
                                 <span className="font-medium">Team B:</span>
                                 <div className="text-muted-foreground">
                                   <PlayerLink name={match.sideBPlayer1} playerMap={playerMap} />
-                                  {match.sideBPlayer2 && <>{" & "}<PlayerLink name={match.sideBPlayer2} playerMap={playerMap} /></>}
+                                  {match.sideBPlayer2 && (
+                                    <>
+                                      {" & "}
+                                      <PlayerLink name={match.sideBPlayer2} playerMap={playerMap} />
+                                    </>
+                                  )}
                                 </div>
                               </div>
                             </div>
@@ -2085,7 +2242,9 @@ export default function TournamentDetailPage({ params }: { params: { tournamentI
         <Dialog open={titlePhotoDialogOpen} onOpenChange={setTitlePhotoDialogOpen}>
           <DialogContent className="max-w-md">
             <DialogHeader>
-              <DialogTitle>{tournament.titlePhoto ? "Change Title Photo" : "Add Title Photo"}</DialogTitle>
+              <DialogTitle>
+                {tournament.titlePhoto ? "Change Title Photo" : "Add Title Photo"}
+              </DialogTitle>
               <DialogDescription>
                 Enter an image URL, Google Drive link, or upload a file.
               </DialogDescription>
@@ -2100,8 +2259,12 @@ export default function TournamentDetailPage({ params }: { params: { tournamentI
                     alt="Preview"
                     className="w-full h-full object-cover"
                     referrerPolicy="no-referrer"
-                    onError={(e) => { (e.target as HTMLImageElement).style.display = "none" }}
-                    onLoad={(e) => { (e.target as HTMLImageElement).style.display = "block" }}
+                    onError={(e) => {
+                      ;(e.target as HTMLImageElement).style.display = "none"
+                    }}
+                    onLoad={(e) => {
+                      ;(e.target as HTMLImageElement).style.display = "block"
+                    }}
                   />
                 </div>
               )}
@@ -2112,7 +2275,9 @@ export default function TournamentDetailPage({ params }: { params: { tournamentI
                     src={titlePhotoUrl}
                     alt="Preview"
                     className="w-full h-full object-cover"
-                    onError={(e) => { (e.target as HTMLImageElement).style.display = "none" }}
+                    onError={(e) => {
+                      ;(e.target as HTMLImageElement).style.display = "none"
+                    }}
                   />
                 </div>
               )}
@@ -2151,7 +2316,8 @@ export default function TournamentDetailPage({ params }: { params: { tournamentI
                   }}
                 />
                 <p className="text-xs text-muted-foreground">
-                  Max 5MB. For Google Drive, make sure the file is set to "Anyone with the link can view"
+                  Max 5MB. For Google Drive, make sure the file is set to "Anyone with the link can
+                  view"
                 </p>
               </div>
             </div>

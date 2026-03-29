@@ -7,7 +7,13 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select"
 import { AuctionTeamSetup } from "@/components/auction/AuctionTeamSetup"
 import { useAlertDialog } from "@/hooks/useAlertDialog"
 
@@ -28,10 +34,10 @@ export default function NewAuctionPage() {
   const [tournamentId, setTournamentId] = useState<string>("")
   const [tournaments, setTournaments] = useState<TournamentOption[]>([])
   const [teams, setTeams] = useState<TeamRow[]>([
-    { name: "", budget: "800000" },
-    { name: "", budget: "800000" },
-    { name: "", budget: "800000" },
-    { name: "", budget: "800000" },
+    { name: "", budget: "100000" },
+    { name: "", budget: "100000" },
+    { name: "", budget: "100000" },
+    { name: "", budget: "100000" },
   ])
   const [creating, setCreating] = useState(false)
 
@@ -171,7 +177,8 @@ export default function NewAuctionPage() {
                   </SelectContent>
                 </Select>
                 <p className="text-xs text-muted-foreground">
-                  Linking to a tournament allows importing tournament players and syncing auction results.
+                  Linking to a tournament allows importing tournament players and syncing auction
+                  results.
                 </p>
               </div>
 
