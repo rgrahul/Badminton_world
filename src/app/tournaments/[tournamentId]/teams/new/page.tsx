@@ -33,10 +33,12 @@ export default function NewTeamPage({ params }: { params: { tournamentId: string
   const teamSize = formData.requiredMale + formData.requiredFemale + formData.requiredKid
 
   useEffect(() => {
+    if (isAuctionMode) return
+    if (selectedPlayerIds.length === 0) return
     if (captainId && !selectedPlayerIds.includes(captainId)) {
       setCaptainId(null)
     }
-  }, [selectedPlayerIds, captainId])
+  }, [selectedPlayerIds, captainId, isAuctionMode])
 
   const handleLogoUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0]
@@ -295,6 +297,7 @@ export default function NewTeamPage({ params }: { params: { tournamentId: string
                 />
                 <div className="mt-4 p-3 rounded-lg border border-amber-200 bg-amber-50/80">
                   <TeamCaptainSelect
+                    mode={isAuctionMode ? "allPlayers" : "roster"}
                     selectedPlayerIds={selectedPlayerIds}
                     value={captainId}
                     onChange={setCaptainId}

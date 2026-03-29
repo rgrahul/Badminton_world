@@ -147,8 +147,16 @@ export async function PATCH(
         const prev = existingTeam.captainId
         resolvedCaptain = prev && playerIds.includes(prev) ? prev : null
       }
-      if (resolvedCaptain && !playerIds.includes(resolvedCaptain)) {
-        return errorResponse("Captain must be on the team roster", 400)
+      if (resolvedCaptain) {
+        if (playerIds.length > 0 && !playerIds.includes(resolvedCaptain)) {
+          return errorResponse("Captain must be on the team roster", 400)
+        }
+        if (playerIds.length === 0) {
+          const cap = await PlayerRepository.findById(resolvedCaptain)
+          if (!cap) {
+            return errorResponse("Captain player not found", 400)
+          }
+        }
       }
 
       const team = await TeamRepository.updateWithPlayers(params.teamId, {
@@ -184,11 +192,20 @@ export async function PATCH(
 
       if (validatedData.captainId !== undefined) {
         if (validatedData.captainId !== null) {
+          const rosterCount = await prisma.teamPlayer.count({
+            where: { teamId: params.teamId },
+          })
           const onTeam = await prisma.teamPlayer.findFirst({
             where: { teamId: params.teamId, playerId: validatedData.captainId },
           })
-          if (!onTeam) {
+          if (rosterCount > 0 && !onTeam) {
             return errorResponse("Captain must be a player on this team", 400)
+          }
+          if (rosterCount === 0) {
+            const cap = await PlayerRepository.findById(validatedData.captainId)
+            if (!cap) {
+              return errorResponse("Captain player not found", 400)
+            }
           }
         }
         updateData.captainId = validatedData.captainId

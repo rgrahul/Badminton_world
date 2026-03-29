@@ -59,6 +59,7 @@ export default function EditTeamPage({
   const teamSize = formData.requiredMale + formData.requiredFemale + formData.requiredKid
 
   useEffect(() => {
+    if (selectedPlayerIds.length === 0) return
     if (captainId && !selectedPlayerIds.includes(captainId)) {
       setCaptainId(null)
     }
@@ -347,6 +348,7 @@ export default function EditTeamPage({
                 />
                 <div className="mt-4 p-3 rounded-lg border border-amber-200 bg-amber-50/80">
                   <TeamCaptainSelect
+                    mode={selectedPlayerIds.length === 0 ? "allPlayers" : "roster"}
                     selectedPlayerIds={selectedPlayerIds}
                     value={captainId}
                     onChange={setCaptainId}

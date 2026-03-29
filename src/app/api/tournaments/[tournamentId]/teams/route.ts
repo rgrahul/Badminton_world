@@ -73,7 +73,12 @@ export async function POST(
     } = validatedData
 
     if (captainIdRaw) {
-      if (!playerIds.includes(captainIdRaw)) {
+      if (skipCompositionValidation) {
+        const cap = await PlayerRepository.findById(captainIdRaw)
+        if (!cap) {
+          return errorResponse("Captain player not found", 400)
+        }
+      } else if (!playerIds.includes(captainIdRaw)) {
         return errorResponse("Captain must be one of the players on this team", 400)
       }
     }
