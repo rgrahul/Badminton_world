@@ -2,12 +2,24 @@ import { PrismaClient } from "@prisma/client"
 
 const prisma = new PrismaClient()
 
+/** Target composition (required*) matches create-team form; roster is empty until the auction / manual adds. */
+interface AblTeamRow {
+  name: string
+  logoUrl: string
+  /** Optional: must match an existing `Player.email` (case-insensitive). */
+  captainEmail?: string
+}
+
 // ABL 2026 Teams — logoUrl: /public paths or any Google Drive link.
 // Drive files must be shared as "Anyone with the link" (Viewer) so the site can show them.
 // Supported Drive forms: .../file/d/FILE_ID/view, .../open?id=FILE_ID, .../uc?export=view&id=FILE_ID,
 // or store only the FILE_ID. The app converts these to thumbnail URLs for reliable <img> display.
-const ABL_TEAMS = [
-  { name: "Backhand Brigade", logoUrl: "1rlOih8rU5vVqlJO6GYheGKEgzXnkKgUf" },
+const ABL_TEAMS: AblTeamRow[] = [
+  {
+    name: "Backhand Brigade",
+    logoUrl: "1rlOih8rU5vVqlJO6GYheGKEgzXnkKgUf",
+    // captainEmail: "captain@yourclub.com",
+  },
   { name: "Club Shakti", logoUrl: "1lpV226kcptyHktYjOMATDzGAntSSu0Tp" },
   {
     name: "Court Commanders",
@@ -50,6 +62,12 @@ const ABL_TEAMS = [
     logoUrl: "https://drive.google.com/file/d/1xpYtaTy9NQMpXboqrN9L82wxXBaPojVA/view?usp=sharing",
   },
 ]
+
+/** Declared squad size + composition; roster empty until auction / manual adds (matches create API with skipCompositionValidation). */
+const AUCTION_MODE_TEAM_SIZE = 11
+const AUCTION_MODE_REQUIRED_MALE = 9
+const AUCTION_MODE_REQUIRED_FEMALE = 2
+const AUCTION_MODE_REQUIRED_KID = 0
 
 async function main() {
   console.log("🏸 Seeding ABL 2026 Tournament...\n")
@@ -94,9 +112,9 @@ async function main() {
   console.log(`  ✅ Tournament created: ${tournament.name} (${tournament.id})\n`)
 
   // ──────────────────────────────────────────────
-  // Step 2: Create 12 Teams with Logos (without players)
+  // Step 2: 12 teams — same as “Players added via Auction” (empty roster, targets only)
   // ──────────────────────────────────────────────
-  console.log("Step 2: Creating 12 teams with logos...")
+  console.log("Step 2: Creating 12 teams (players added via auction)...")
 
   const teams: { id: string; name: string }[] = []
 
@@ -112,20 +130,42 @@ async function main() {
       },
       update: {
         logoUrl: teamInfo.logoUrl,
+        playersAddedViaAuction: true,
+        teamSize: AUCTION_MODE_TEAM_SIZE,
+        requiredMale: AUCTION_MODE_REQUIRED_MALE,
+        requiredFemale: AUCTION_MODE_REQUIRED_FEMALE,
+        requiredKid: AUCTION_MODE_REQUIRED_KID,
       },
       create: {
         name: teamInfo.name,
         logoUrl: teamInfo.logoUrl,
         tournamentId: tournament.id,
-        teamSize: 11,
-        requiredMale: 9,
-        requiredFemale: 2,
-        requiredKid: 0,
+        teamSize: AUCTION_MODE_TEAM_SIZE,
+        requiredMale: AUCTION_MODE_REQUIRED_MALE,
+        requiredFemale: AUCTION_MODE_REQUIRED_FEMALE,
+        requiredKid: AUCTION_MODE_REQUIRED_KID,
+        playersAddedViaAuction: true,
       },
     })
 
     teams.push({ id: team.id, name: team.name })
     console.log(`  ✅ ${team.name}`)
+
+    const email = teamInfo.captainEmail?.trim()
+    if (email) {
+      const captain = await prisma.player.findFirst({
+        where: { email: { equals: email, mode: "insensitive" } },
+      })
+      if (!captain) {
+        console.warn(`  ⚠️  No player with email "${email}" — captain not set for ${teamInfo.name}`)
+      } else {
+        await prisma.team.update({
+          where: { id: team.id },
+          data: { captainId: captain.id },
+        })
+        console.log(`     👤 Captain: ${captain.name} (${captain.email})`)
+      }
+    }
   }
 
   console.log()
@@ -138,7 +178,7 @@ async function main() {
   console.log("═══════════════════════════════════════")
   console.log(`  Tournament:  ${tournament.name}`)
   console.log(`  ID:          ${tournament.id}`)
-  console.log(`  Teams:       ${teams.length}`)
+  console.log(`  Teams:       ${teams.length} (playersAddedViaAuction)`)
   console.log("═══════════════════════════════════════\n")
 }
 

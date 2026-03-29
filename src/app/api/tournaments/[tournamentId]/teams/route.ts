@@ -163,6 +163,7 @@ export async function POST(
       players: playerAssignments,
       logoUrl: validatedData.logoUrl,
       captainId: captainIdRaw ?? null,
+      playersAddedViaAuction: Boolean(skipCompositionValidation),
     })
 
     // Auto-register players to tournament pool (skip if already registered)

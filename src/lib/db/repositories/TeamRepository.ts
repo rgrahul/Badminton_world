@@ -9,6 +9,7 @@ export interface CreateTeamInput {
   requiredKid: number
   logoUrl?: string
   captainId?: string | null
+  playersAddedViaAuction?: boolean
   players: {
     playerId: string
     category: "MALE" | "FEMALE" | "KID"
@@ -23,6 +24,7 @@ export interface UpdateTeamInput {
   requiredKid?: number
   logoUrl?: string | null
   captainId?: string | null
+  playersAddedViaAuction?: boolean
 }
 
 export interface TeamFilters {
@@ -61,6 +63,7 @@ export class TeamRepository {
           requiredKid: data.requiredKid,
           logoUrl: data.logoUrl,
           captainId: data.captainId ?? null,
+          playersAddedViaAuction: data.playersAddedViaAuction ?? false,
           players: {
             create: data.players.map((p) => ({
               playerId: p.playerId,

@@ -398,6 +398,8 @@ model Team {
   logoUrl         String?
   captainId       String?
   captain         Player?     @relation("TeamCaptain", fields: [captainId], references: [id], onDelete: SetNull)
+  /// When true, roster was created with "Players added via Auction" (composition vs roster relaxed at create time).
+  playersAddedViaAuction Boolean @default(false)
 
   createdAt       DateTime    @default(now())
   updatedAt       DateTime    @updatedAt
