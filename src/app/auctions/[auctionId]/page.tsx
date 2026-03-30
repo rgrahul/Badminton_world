@@ -4,6 +4,16 @@ import { useEffect, useState, useCallback } from "react"
 import { useRouter } from "next/navigation"
 import { Header } from "@/components/layout/Header"
 import { Button } from "@/components/ui/button"
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog"
+import { Input } from "@/components/ui/input"
+import { Label } from "@/components/ui/label"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
 import { AuctionStatsBar } from "@/components/auction/AuctionStatsBar"
@@ -22,6 +32,20 @@ import {
   BidHistoryEntry,
 } from "@/types/auction"
 import { useRole } from "@/hooks/useRole"
+import { SKILL_CATEGORY_VALUES, skillCategoryLabel } from "@/lib/skillCategory"
+import type { SkillCategory } from "@prisma/client"
+
+function parseNonNegativePrice(raw: string): number {
+  const n = Number(raw)
+  return Number.isFinite(n) && n >= 0 ? n : 0
+}
+
+const emptySkillPriceForm = (): Record<SkillCategory, string> => ({
+  BEGINNER: "0",
+  INTERMEDIATE: "0",
+  INTERMEDIATE_PLUS: "0",
+  ADVANCED: "0",
+})
 
 export default function AuctionPage({ params }: { params: { auctionId: string } }) {
   const router = useRouter()
@@ -46,6 +70,10 @@ export default function AuctionPage({ params }: { params: { auctionId: string } 
   const [importing, setImporting] = useState(false)
   const [addingPlayers, setAddingPlayers] = useState(false)
   const [syncingTeams, setSyncingTeams] = useState(false)
+  const [tournamentImportOpen, setTournamentImportOpen] = useState(false)
+  const [tournamentSkillPrices, setTournamentSkillPrices] =
+    useState<Record<SkillCategory, string>>(emptySkillPriceForm)
+  const [tournamentUncategorizedPrice, setTournamentUncategorizedPrice] = useState("0")
 
   const fetchAuction = useCallback(async () => {
     try {
@@ -265,7 +293,7 @@ export default function AuctionPage({ params }: { params: { auctionId: string } 
     }
   }
 
-  const handleAddTournamentPlayers = async () => {
+  const submitTournamentPlayersImport = async () => {
     if (!auction?.tournamentId) {
       alert("This auction is not linked to a tournament", "Error")
       return
@@ -277,19 +305,30 @@ export default function AuctionPage({ params }: { params: { auctionId: string } 
     )
     if (!confirmed) return
 
+    const basePriceBySkillCategory = {
+      BEGINNER: parseNonNegativePrice(tournamentSkillPrices.BEGINNER),
+      INTERMEDIATE: parseNonNegativePrice(tournamentSkillPrices.INTERMEDIATE),
+      INTERMEDIATE_PLUS: parseNonNegativePrice(tournamentSkillPrices.INTERMEDIATE_PLUS),
+      ADVANCED: parseNonNegativePrice(tournamentSkillPrices.ADVANCED),
+    }
+
     try {
       setAddingPlayers(true)
-      const response = await fetch(
-        `/api/auctions/${params.auctionId}/players`,
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ fromTournament: true, basePrice: 0 }),
-        }
-      )
+      const response = await fetch(`/api/auctions/${params.auctionId}/players`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          fromTournament: true,
+          basePrice: parseNonNegativePrice(tournamentUncategorizedPrice),
+          basePriceBySkillCategory,
+        }),
+      })
 
       if (response.ok) {
         alert("Tournament players imported!", "Success")
+        setTournamentImportOpen(false)
+        setTournamentSkillPrices(emptySkillPriceForm())
+        setTournamentUncategorizedPrice("0")
         await fetchAuction()
         await fetchStats()
       } else {
@@ -400,10 +439,10 @@ export default function AuctionPage({ params }: { params: { auctionId: string } 
                 <Button
                   variant="outline"
                   size="sm"
-                  onClick={handleAddTournamentPlayers}
+                  onClick={() => setTournamentImportOpen(true)}
                   disabled={addingPlayers}
                 >
-                  {addingPlayers ? "Adding..." : "Add Tournament Players"}
+                  Add Tournament Players
                 </Button>
               )}
 
@@ -582,6 +621,59 @@ export default function AuctionPage({ params }: { params: { auctionId: string } 
           onImport={handleImportPlayers}
           importing={importing}
         />
+
+        <Dialog open={tournamentImportOpen} onOpenChange={setTournamentImportOpen}>
+          <DialogContent className="max-w-md max-h-[90vh] overflow-y-auto">
+            <DialogHeader>
+              <DialogTitle>Add tournament players</DialogTitle>
+              <DialogDescription>
+                Set base price per skill level. Players without a skill level use the “No skill level”
+                price. Captains are still excluded from the pool.
+              </DialogDescription>
+            </DialogHeader>
+            <div className="grid gap-4 py-2">
+              {SKILL_CATEGORY_VALUES.map((cat) => (
+                <div key={cat} className="space-y-1.5">
+                  <Label htmlFor={`tournament-base-${cat}`}>{skillCategoryLabel(cat)}</Label>
+                  <Input
+                    id={`tournament-base-${cat}`}
+                    type="number"
+                    min={0}
+                    step={1}
+                    inputMode="numeric"
+                    value={tournamentSkillPrices[cat]}
+                    onChange={(e) =>
+                      setTournamentSkillPrices((prev) => ({ ...prev, [cat]: e.target.value }))
+                    }
+                  />
+                </div>
+              ))}
+              <div className="space-y-1.5 pt-1 border-t">
+                <Label htmlFor="tournament-base-none">No skill level set</Label>
+                <Input
+                  id="tournament-base-none"
+                  type="number"
+                  min={0}
+                  step={1}
+                  inputMode="numeric"
+                  value={tournamentUncategorizedPrice}
+                  onChange={(e) => setTournamentUncategorizedPrice(e.target.value)}
+                />
+                <p className="text-xs text-muted-foreground">
+                  Applied when the player profile has no skill category.
+                </p>
+              </div>
+            </div>
+            <DialogFooter className="gap-2 sm:gap-0">
+              <Button type="button" variant="outline" onClick={() => setTournamentImportOpen(false)}>
+                Cancel
+              </Button>
+              <Button type="button" onClick={submitTournamentPlayersImport} disabled={addingPlayers}>
+                {addingPlayers ? "Adding..." : "Import players"}
+              </Button>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
       </main>
     </div>
   )

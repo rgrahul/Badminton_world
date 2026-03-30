@@ -6,6 +6,14 @@ import { AuctionPlayerRepository } from "@/lib/db/repositories/AuctionPlayerRepo
 import { errorResponse, successResponse } from "@/lib/api/responses"
 import { prisma } from "@/lib/db/client"
 import { getTournamentCaptainPlayerIds } from "@/lib/tournamentCaptainPlayers"
+import type { SkillCategory } from "@prisma/client"
+
+const basePriceBySkillCategorySchema = z.object({
+  BEGINNER: z.number().min(0),
+  INTERMEDIATE: z.number().min(0),
+  INTERMEDIATE_PLUS: z.number().min(0),
+  ADVANCED: z.number().min(0),
+})
 
 const addPlayersSchema = z.union([
   z.object({
@@ -14,7 +22,9 @@ const addPlayersSchema = z.union([
   }),
   z.object({
     fromTournament: z.literal(true),
+    /** Used when player has no skillCategory, or when basePriceBySkillCategory is omitted (flat price for all). */
     basePrice: z.number().min(0).default(0),
+    basePriceBySkillCategory: basePriceBySkillCategorySchema.optional(),
   }),
 ])
 
@@ -76,43 +86,58 @@ export async function POST(
       return errorResponse(parsed.error.errors[0].message, 400)
     }
 
-    let playerIds: string[]
-    const basePrice = parsed.data.basePrice
+    let rowsForCreate: { playerId: string; basePrice: number }[]
 
     if ("fromTournament" in parsed.data) {
       if (!auction.tournamentId) {
         return errorResponse("Auction is not linked to a tournament", 400)
       }
 
+      const basePrice = parsed.data.basePrice
+      const byCat = parsed.data.basePriceBySkillCategory
+
       const tournamentPlayers = await prisma.tournamentPlayer.findMany({
         where: { tournamentId: auction.tournamentId },
-        select: { playerId: true },
+        select: {
+          playerId: true,
+          player: { select: { skillCategory: true } },
+        },
       })
 
-      playerIds = tournamentPlayers.map((tp) => tp.playerId)
-      if (playerIds.length === 0) {
+      if (tournamentPlayers.length === 0) {
         return errorResponse("No players found in tournament", 400)
       }
+
+      const resolvePrice = (category: SkillCategory | null): number => {
+        if (byCat && category && category in byCat) {
+          return byCat[category as keyof typeof byCat]
+        }
+        return basePrice
+      }
+
+      rowsForCreate = tournamentPlayers.map((tp) => ({
+        playerId: tp.playerId,
+        basePrice: resolvePrice(tp.player.skillCategory),
+      }))
     } else {
-      playerIds = parsed.data.playerIds
+      const basePrice = parsed.data.basePrice
+      const playerIds = parsed.data.playerIds
+      rowsForCreate = playerIds.map((playerId) => ({ playerId, basePrice }))
     }
 
     if (auction.tournamentId) {
       const captainIds = await getTournamentCaptainPlayerIds(auction.tournamentId)
       if (captainIds.length > 0) {
         const block = new Set(captainIds)
-        playerIds = playerIds.filter((id) => !block.has(id))
+        rowsForCreate = rowsForCreate.filter((r) => !block.has(r.playerId))
       }
     }
 
-    if (playerIds.length === 0) {
+    if (rowsForCreate.length === 0) {
       return errorResponse("No players to add after excluding tournament captains", 400)
     }
 
-    const players = await AuctionPlayerRepository.createMany(
-      params.auctionId,
-      playerIds.map((playerId) => ({ playerId, basePrice }))
-    )
+    const players = await AuctionPlayerRepository.createMany(params.auctionId, rowsForCreate)
 
     return successResponse({ players }, 201)
   } catch (error) {
