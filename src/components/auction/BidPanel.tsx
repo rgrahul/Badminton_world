@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { AuctionTeam, AuctionPlayerWithDetails, BidHistoryEntry } from "@/types/auction"
+import { getAuctionBidIncrement } from "@/lib/auctionBidIncrement"
 
 interface BidPanelProps {
   teams: AuctionTeam[]
@@ -18,13 +19,6 @@ interface BidPanelProps {
   onUnsold: () => void
   selling: boolean
 }
-
-const QUICK_ADD = [
-  { label: "+1K", value: 1000 },
-  { label: "+2K", value: 2000 },
-  { label: "+5K", value: 5000 },
-  { label: "+10K", value: 10000 },
-]
 
 export function BidPanel({
   teams,
@@ -43,6 +37,7 @@ export function BidPanel({
   const selectedTeam = teams.find((t) => t.id === selectedTeamId)
   const canSell = currentPlayer && selectedTeamId && currentBid > 0 &&
     selectedTeam && (selectedTeam.budget - selectedTeam.spent) >= currentBid
+  const bidStep = getAuctionBidIncrement(currentBid)
 
   return (
     <Card className="h-full flex flex-col">
@@ -84,19 +79,20 @@ export function BidPanel({
         {/* Bid Controls */}
         <div>
           <div className="text-sm font-medium mb-2">Bid Amount</div>
-          <div className="flex gap-2 mb-2">
-            {QUICK_ADD.map((q) => (
-              <Button
-                key={q.label}
-                variant="outline"
-                size="sm"
-                disabled={!currentPlayer}
-                onClick={() => onBidChange(currentBid + q.value)}
-                className="flex-1"
-              >
-                {q.label}
-              </Button>
-            ))}
+          <div className="mb-2">
+            <Button
+              type="button"
+              disabled={!currentPlayer}
+              onClick={() => onBidChange(currentBid + bidStep)}
+              className="w-full h-11 bg-gradient-to-r from-violet-600 to-indigo-600 hover:from-violet-700 hover:to-indigo-700 text-white font-semibold shadow-md border-0"
+            >
+              <span className="flex flex-col items-center leading-tight py-0.5">
+                <span>Bid</span>
+                <span className="text-xs font-normal opacity-90">
+                  +{bidStep.toLocaleString()}
+                </span>
+              </span>
+            </Button>
           </div>
           <div className="flex gap-2">
             <Input
