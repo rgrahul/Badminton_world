@@ -4,7 +4,7 @@ import { useEffect, useMemo, useState } from "react"
 import { Dialog, DialogContent } from "@/components/ui/dialog"
 import { getDriveImageSrcWithThumbnailFallback } from "@/lib/googleDriveImageUrl"
 
-type AvatarSize = "sm" | "md" | "lg" | "xl" | "2xl"
+type AvatarSize = "sm" | "md" | "lg" | "xl" | "2xl" | "3xl"
 
 interface PlayerAvatarProps {
   name: string
@@ -29,6 +29,7 @@ const frameBoxClasses: Record<"circle" | "rounded", Record<AvatarSize, string>> 
     lg: "w-24 h-24 rounded-full",
     xl: "w-16 h-16 sm:w-20 sm:h-20 rounded-full",
     "2xl": "w-44 h-44 sm:w-56 sm:h-56 rounded-full",
+    "3xl": "w-56 h-56 sm:w-72 sm:h-72 rounded-full",
   },
   rounded: {
     sm: "w-6 h-6 rounded-md",
@@ -36,6 +37,7 @@ const frameBoxClasses: Record<"circle" | "rounded", Record<AvatarSize, string>> 
     lg: "w-24 h-24 rounded-lg",
     xl: "w-16 h-16 sm:w-20 sm:h-20 rounded-lg",
     "2xl": "w-44 h-44 sm:w-56 sm:h-56 rounded-xl",
+    "3xl": "w-56 h-56 sm:w-72 sm:h-72 rounded-xl",
   },
 }
 
@@ -45,6 +47,7 @@ const initialsTextClasses: Record<AvatarSize, string> = {
   lg: "text-3xl",
   xl: "text-2xl sm:text-3xl",
   "2xl": "text-5xl sm:text-6xl",
+  "3xl": "text-6xl sm:text-7xl",
 }
 
 export function PlayerAvatar({
@@ -85,7 +88,11 @@ export function PlayerAvatar({
 
   const showImage = Boolean(photoUrl && loadStage !== "failed" && resolvedSrc)
   const isRoundedFrame = frame === "rounded"
-  const shellClass = `${frameBoxClasses[frame][size]} ${initialsTextClasses[size]} bg-gradient-to-br from-blue-400 to-purple-500 flex items-center justify-center text-white font-bold flex-shrink-0 overflow-hidden ${showImage ? "cursor-pointer" : ""}`
+  const shellBgClass =
+    isRoundedFrame && showImage
+      ? "bg-transparent"
+      : "bg-gradient-to-br from-blue-400 to-purple-500 text-white font-bold"
+  const shellClass = `${frameBoxClasses[frame][size]} ${initialsTextClasses[size]} ${shellBgClass} flex items-center justify-center flex-shrink-0 overflow-hidden ${showImage ? "cursor-pointer" : ""}`
 
   return (
     <>

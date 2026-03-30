@@ -1,5 +1,6 @@
 "use client"
 
+import type { ReactNode } from "react"
 import { Card, CardContent } from "@/components/ui/card"
 import { PlayerAvatar } from "@/components/player/PlayerAvatar"
 import { AuctionPlayerWithDetails } from "@/types/auction"
@@ -8,6 +9,32 @@ import { SkillCategoryBadge } from "@/components/player/SkillCategoryBadge"
 interface PlayerSpotlightProps {
   player: AuctionPlayerWithDetails | null
   currentBid: number
+}
+
+function categoryValue(gender: string): string {
+  if (gender === "MALE") return "Mens"
+  if (gender === "FEMALE") return "Womens"
+  if (gender === "OTHER") return "Other"
+  return gender
+}
+
+function InfoRow({
+  label,
+  children,
+  alignValue = "start",
+}: {
+  label: string
+  children: ReactNode
+  alignValue?: "start" | "center"
+}) {
+  return (
+    <div
+      className={`flex gap-4 sm:gap-6 ${alignValue === "center" ? "items-center" : "items-start"}`}
+    >
+      <dt className="text-sm text-muted-foreground w-32 shrink-0 pt-0.5">{label}</dt>
+      <dd className="text-sm font-medium text-foreground min-w-0 flex-1">{children}</dd>
+    </div>
+  )
 }
 
 export function PlayerSpotlight({ player, currentBid }: PlayerSpotlightProps) {
@@ -35,7 +62,7 @@ export function PlayerSpotlight({ player, currentBid }: PlayerSpotlightProps) {
           <PlayerAvatar
             name={p.name}
             photoUrl={p.profilePhoto}
-            size="2xl"
+            size="3xl"
             preferDriveFullImage
             frame="rounded"
           />
@@ -44,39 +71,34 @@ export function PlayerSpotlight({ player, currentBid }: PlayerSpotlightProps) {
         {/* Player Name */}
         <h2 className="text-2xl font-bold mb-2">{p.name}</h2>
 
-        {/* Badges */}
-        <div className="flex flex-wrap gap-2 justify-center mb-4">
+        <dl className="w-full max-w-sm mx-auto space-y-3 mb-4 text-left">
           {p.gender && (
-            <span className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium ${
-              p.gender === "MALE" ? "bg-blue-100 text-blue-800" :
-              p.gender === "FEMALE" ? "bg-pink-100 text-pink-800" :
-              "bg-gray-100 text-gray-800"
-            }`}>
-              {p.gender}
-            </span>
+            <InfoRow label="Category">
+              {categoryValue(p.gender)}
+            </InfoRow>
           )}
-          {p.age && (
-            <span className="inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium bg-gray-100 text-gray-800">
-              Age: {p.age}
-            </span>
-          )}
-          <SkillCategoryBadge category={p.skillCategory} size="md" />
+          {p.age != null && <InfoRow label="Age">{p.age}</InfoRow>}
+          <InfoRow label="Skill category" alignValue="center">
+            {p.skillCategory ?
+              <SkillCategoryBadge category={p.skillCategory} size="md" />
+            : <span className="text-muted-foreground font-normal">—</span>}
+          </InfoRow>
           {p.experience?.trim() && (
-            <span className="inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium bg-green-100 text-green-800 max-w-full line-clamp-2">
-              {p.experience}
-            </span>
+            <InfoRow label="Experience">
+              <span className="font-normal whitespace-pre-wrap">{p.experience.trim()}</span>
+            </InfoRow>
           )}
           {p.lastPlayed?.trim() && (
-            <span className="inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium bg-slate-100 text-slate-800 max-w-full line-clamp-2">
-              Last played: {p.lastPlayed}
-            </span>
+            <InfoRow label="Last played">
+              <span className="font-normal whitespace-pre-wrap">{p.lastPlayed.trim()}</span>
+            </InfoRow>
           )}
           {p.keyStrength?.trim() && (
-            <span className="inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium bg-violet-100 text-violet-900 max-w-full line-clamp-2">
-              Key strength: {p.keyStrength}
-            </span>
+            <InfoRow label="Key strength">
+              <span className="font-normal whitespace-pre-wrap">{p.keyStrength.trim()}</span>
+            </InfoRow>
           )}
-        </div>
+        </dl>
 
         {/* Base Price */}
         <div className="text-sm text-muted-foreground mb-1">Base Price</div>
