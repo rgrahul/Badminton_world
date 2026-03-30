@@ -14,6 +14,7 @@ interface RegisteredPlayer {
   "Self-Assessed Skill Rating (Our Society level)": string
   "Years/months of playing experience": string
   "Last Played": string
+  "What is your key strength/shot that can turn a match in your favour?": string
 }
 
 /**
