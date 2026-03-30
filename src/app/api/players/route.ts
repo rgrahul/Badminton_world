@@ -6,6 +6,7 @@ import { z } from "zod"
 import { skillCategoryEnumSchema } from "@/lib/skillCategory"
 import { optionalExperienceSchema } from "@/lib/playerExperience"
 import { optionalLastPlayedSchema } from "@/lib/playerLastPlayed"
+import { optionalKeyStrengthSchema } from "@/lib/playerKeyStrength"
 
 const createPlayerSchema = z.object({
   name: z.string().min(1, "Name is required"),
@@ -15,6 +16,7 @@ const createPlayerSchema = z.object({
   gender: z.enum(["MALE", "FEMALE", "OTHER"]).optional().nullable(),
   experience: optionalExperienceSchema,
   lastPlayed: optionalLastPlayedSchema,
+  keyStrength: optionalKeyStrengthSchema,
   skillCategory: skillCategoryEnumSchema.optional().nullable(),
   profilePhoto: z.string().optional().nullable(),
 })

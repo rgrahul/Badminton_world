@@ -7,6 +7,7 @@ import { prisma } from "@/lib/db/client"
 import { optionalImportedSkillCategorySchema } from "@/lib/skillCategory"
 import { optionalExperienceSchema } from "@/lib/playerExperience"
 import { optionalLastPlayedSchema } from "@/lib/playerLastPlayed"
+import { optionalKeyStrengthSchema } from "@/lib/playerKeyStrength"
 import { getTournamentCaptainPlayerIds } from "@/lib/tournamentCaptainPlayers"
 
 const importSchema = z.object({
@@ -20,6 +21,7 @@ const importSchema = z.object({
         gender: z.enum(["MALE", "FEMALE", "OTHER"]).optional().nullable(),
         experience: optionalExperienceSchema,
         lastPlayed: optionalLastPlayedSchema,
+        keyStrength: optionalKeyStrengthSchema,
         skillCategory: optionalImportedSkillCategorySchema,
         profilePhoto: z.string().optional().nullable(),
         basePrice: z.number().min(0).default(0),
@@ -55,6 +57,7 @@ export async function POST(request: NextRequest, { params }: { params: { auction
           row.yearsOfExperience ??
           row.YearsOfExperience,
         lastPlayed: row.lastPlayed ?? row.LastPlayed ?? row.last_played,
+        keyStrength: row.keyStrength ?? row.KeyStrength ?? row.key_strength,
       })),
     }
     const parsed = importSchema.safeParse(merged)
@@ -112,6 +115,8 @@ export async function POST(request: NextRequest, { params }: { params: { auction
                 row.experience !== undefined ? row.experience : existingPlayer.experience,
               lastPlayed:
                 row.lastPlayed !== undefined ? row.lastPlayed : existingPlayer.lastPlayed,
+              keyStrength:
+                row.keyStrength !== undefined ? row.keyStrength : existingPlayer.keyStrength,
               skillCategory: row.skillCategory ?? existingPlayer.skillCategory,
               profilePhoto: row.profilePhoto || existingPlayer.profilePhoto,
             },
@@ -127,6 +132,7 @@ export async function POST(request: NextRequest, { params }: { params: { auction
               gender: row.gender || undefined,
               experience: row.experience === undefined ? undefined : row.experience,
               lastPlayed: row.lastPlayed === undefined ? undefined : row.lastPlayed,
+              keyStrength: row.keyStrength === undefined ? undefined : row.keyStrength,
               skillCategory: row.skillCategory || undefined,
               profilePhoto: row.profilePhoto || undefined,
             },

@@ -24,6 +24,7 @@ interface ImportRow {
   gender?: string | null
   experience?: string | null
   lastPlayed?: string | null
+  keyStrength?: string | null
   skillCategory?: SkillCategory | null
   profilePhoto?: string | null
   basePrice: number
@@ -45,6 +46,7 @@ const COL_MAP: Record<string, string[]> = {
   skillCategory: ["skill", "skill rating", "rating", "level", "skill category", "skill level"],
   experience: ["experience", "years of experience", "exp", "years"],
   lastPlayed: ["last played", "last played badminton", "last play", "lastplayed"],
+  keyStrength: ["key strength", "strength", "signature shot", "weapon"],
   profilePhoto: ["photo", "photo url", "image", "profile photo"],
   basePrice: ["base price", "baseprice", "starting price", "price"],
 }
@@ -77,10 +79,11 @@ function downloadTemplate() {
       "Skill level",
       "Experience",
       "Last played",
+      "Key strength",
       "Base Price",
     ],
-    ["John Doe", "Male", 28, "john@example.com", "9876543210", "Intermediate+", "5+ yrs club", "March 2025", 50000],
-    ["Jane Smith", "Female", 25, "jane@example.com", "9876543211", "Advanced", "3 years league", "2 weeks ago", 60000],
+    ["John Doe", "Male", 28, "john@example.com", "9876543210", "Intermediate+", "5+ yrs club", "March 2025", "Smash", 50000],
+    ["Jane Smith", "Female", 25, "jane@example.com", "9876543211", "Advanced", "3 years league", "2 weeks ago", "Net kills", 60000],
   ])
   XLSX.utils.book_append_sheet(wb, ws, "Players")
   XLSX.writeFile(wb, "auction_players_template.xlsx")
@@ -153,6 +156,12 @@ export function ExcelImportDialog({
               })(),
               lastPlayed: (() => {
                 const v = get("lastPlayed")
+                if (v === undefined || v === null) return null
+                const s = String(v).trim()
+                return s === "" ? null : s
+              })(),
+              keyStrength: (() => {
+                const v = get("keyStrength")
                 if (v === undefined || v === null) return null
                 const s = String(v).trim()
                 return s === "" ? null : s

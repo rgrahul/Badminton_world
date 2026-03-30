@@ -6,6 +6,7 @@ import { z } from "zod"
 import { optionalImportedSkillCategorySchema } from "@/lib/skillCategory"
 import { optionalExperienceSchema } from "@/lib/playerExperience"
 import { optionalLastPlayedSchema } from "@/lib/playerLastPlayed"
+import { optionalKeyStrengthSchema } from "@/lib/playerKeyStrength"
 
 const bulkPlayerSchema = z.object({
   name: z.string().min(1, "Name is required"),
@@ -15,6 +16,7 @@ const bulkPlayerSchema = z.object({
   gender: z.enum(["MALE", "FEMALE", "OTHER"]).optional().nullable(),
   experience: optionalExperienceSchema,
   lastPlayed: optionalLastPlayedSchema,
+  keyStrength: optionalKeyStrengthSchema,
   skillCategory: optionalImportedSkillCategorySchema,
   profilePhoto: z.string().optional().nullable(),
 })
@@ -43,6 +45,7 @@ export async function POST(request: NextRequest) {
         row.yearsOfExperience ??
         row.YearsOfExperience,
       lastPlayed: row.lastPlayed ?? row.LastPlayed ?? row.last_played,
+      keyStrength: row.keyStrength ?? row.KeyStrength ?? row.key_strength,
     }))
 
     const validatedPlayers = bulkUploadSchema.parse(rows)

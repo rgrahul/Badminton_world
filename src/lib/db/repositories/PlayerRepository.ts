@@ -9,6 +9,7 @@ export interface CreatePlayerInput {
   gender?: "MALE" | "FEMALE" | "OTHER" | null
   experience?: string | null
   lastPlayed?: string | null
+  keyStrength?: string | null
   skillCategory?: SkillCategory | null
   profilePhoto?: string | null
 }
@@ -21,6 +22,7 @@ export interface UpdatePlayerInput {
   gender?: "MALE" | "FEMALE" | "OTHER" | null
   experience?: string | null
   lastPlayed?: string | null
+  keyStrength?: string | null
   skillCategory?: SkillCategory | null
   profilePhoto?: string | null
 }

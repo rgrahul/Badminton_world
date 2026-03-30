@@ -27,6 +27,7 @@ export interface AuctionPlayerWithDetails {
     gender?: string | null
     experience?: string | null
     lastPlayed?: string | null
+    keyStrength?: string | null
     skillCategory?: string | null
     profilePhoto?: string | null
   }

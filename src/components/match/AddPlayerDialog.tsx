@@ -28,6 +28,7 @@ import { SkillCategorySelect } from "@/components/player/SkillCategorySelect"
 import { Textarea } from "@/components/ui/textarea"
 import { EXPERIENCE_MAX_LEN } from "@/lib/playerExperience"
 import { LAST_PLAYED_MAX_LEN } from "@/lib/playerLastPlayed"
+import { KEY_STRENGTH_MAX_LEN } from "@/lib/playerKeyStrength"
 
 interface Player {
   id: string
@@ -59,6 +60,7 @@ export function AddPlayerDialog({
     gender: "",
     experience: "",
     lastPlayed: "",
+    keyStrength: "",
     skillCategory: null as SkillCategory | null,
   })
 
@@ -73,6 +75,7 @@ export function AddPlayerDialog({
         gender: "",
         experience: "",
         lastPlayed: "",
+        keyStrength: "",
         skillCategory: null,
       })
     } else if (initialName) {
@@ -102,6 +105,10 @@ export function AddPlayerDialog({
           formData.experience.trim() === "" ? null : formData.experience.trim().slice(0, EXPERIENCE_MAX_LEN),
         lastPlayed:
           formData.lastPlayed.trim() === "" ? null : formData.lastPlayed.trim().slice(0, LAST_PLAYED_MAX_LEN),
+        keyStrength:
+          formData.keyStrength.trim() === ""
+            ? null
+            : formData.keyStrength.trim().slice(0, KEY_STRENGTH_MAX_LEN),
         skillCategory: formData.skillCategory,
       }
 
@@ -241,6 +248,26 @@ export function AddPlayerDialog({
                 maxLength={LAST_PLAYED_MAX_LEN}
                 rows={2}
               />
+            </div>
+
+            <div className="space-y-2 md:col-span-2">
+              <Label htmlFor="dialog-keyStrength">Key strength</Label>
+              <Textarea
+                id="dialog-keyStrength"
+                value={formData.keyStrength}
+                onChange={(e) =>
+                  setFormData({
+                    ...formData,
+                    keyStrength: e.target.value.slice(0, KEY_STRENGTH_MAX_LEN),
+                  })
+                }
+                placeholder="e.g. Smash, net play"
+                maxLength={KEY_STRENGTH_MAX_LEN}
+                rows={2}
+              />
+              <p className="text-xs text-muted-foreground">
+                Optional. Shot or strength that can turn a match in your favour.
+              </p>
             </div>
 
             <SkillCategorySelect
