@@ -20,6 +20,7 @@ interface Player {
   age?: number | null
   gender?: string | null
   experience?: string | null
+  lastPlayed?: string | null
   skillCategory?: string | null
   profilePhoto?: string | null
   createdAt: string
@@ -213,6 +214,12 @@ export default function PlayerDetailPage({ params }: { params: { playerId: strin
                   <div className="font-medium">
                     {skillCategoryLabel(player.skillCategory as SkillCategory | null) || "N/A"}
                   </div>
+                </div>
+              </div>
+              <div className="mt-4 min-w-0">
+                <div className="text-sm text-muted-foreground">Last played (badminton)</div>
+                <div className="font-medium whitespace-pre-wrap break-words text-sm">
+                  {player.lastPlayed?.trim() ? player.lastPlayed : "N/A"}
                 </div>
               </div>
             </div>

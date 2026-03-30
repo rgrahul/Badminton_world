@@ -38,6 +38,8 @@ model Player {
   age               Int?
   gender            Gender?
   experience        String?
+  /// Free text, e.g. when the player last played badminton.
+  lastPlayed          String?
   skillCategory     SkillCategory?
   profilePhoto      String?   // URL or base64 encoded image
 

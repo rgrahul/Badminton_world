@@ -5,6 +5,7 @@ import { errorResponse, successResponse } from "@/lib/api/responses"
 import { z } from "zod"
 import { optionalImportedSkillCategorySchema } from "@/lib/skillCategory"
 import { optionalExperienceSchema } from "@/lib/playerExperience"
+import { optionalLastPlayedSchema } from "@/lib/playerLastPlayed"
 
 const bulkPlayerSchema = z.object({
   name: z.string().min(1, "Name is required"),
@@ -13,6 +14,7 @@ const bulkPlayerSchema = z.object({
   age: z.number().int().positive().optional().nullable(),
   gender: z.enum(["MALE", "FEMALE", "OTHER"]).optional().nullable(),
   experience: optionalExperienceSchema,
+  lastPlayed: optionalLastPlayedSchema,
   skillCategory: optionalImportedSkillCategorySchema,
   profilePhoto: z.string().optional().nullable(),
 })
@@ -40,6 +42,7 @@ export async function POST(request: NextRequest) {
         row.Experience ??
         row.yearsOfExperience ??
         row.YearsOfExperience,
+      lastPlayed: row.lastPlayed ?? row.LastPlayed ?? row.last_played,
     }))
 
     const validatedPlayers = bulkUploadSchema.parse(rows)

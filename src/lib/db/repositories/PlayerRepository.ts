@@ -8,6 +8,7 @@ export interface CreatePlayerInput {
   age?: number | null
   gender?: "MALE" | "FEMALE" | "OTHER" | null
   experience?: string | null
+  lastPlayed?: string | null
   skillCategory?: SkillCategory | null
   profilePhoto?: string | null
 }
@@ -19,6 +20,7 @@ export interface UpdatePlayerInput {
   age?: number | null
   gender?: "MALE" | "FEMALE" | "OTHER" | null
   experience?: string | null
+  lastPlayed?: string | null
   skillCategory?: SkillCategory | null
   profilePhoto?: string | null
 }

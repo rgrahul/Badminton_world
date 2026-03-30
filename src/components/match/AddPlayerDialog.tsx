@@ -27,6 +27,7 @@ import type { SkillCategory } from "@prisma/client"
 import { SkillCategorySelect } from "@/components/player/SkillCategorySelect"
 import { Textarea } from "@/components/ui/textarea"
 import { EXPERIENCE_MAX_LEN } from "@/lib/playerExperience"
+import { LAST_PLAYED_MAX_LEN } from "@/lib/playerLastPlayed"
 
 interface Player {
   id: string
@@ -57,6 +58,7 @@ export function AddPlayerDialog({
     age: "",
     gender: "",
     experience: "",
+    lastPlayed: "",
     skillCategory: null as SkillCategory | null,
   })
 
@@ -70,6 +72,7 @@ export function AddPlayerDialog({
         age: "",
         gender: "",
         experience: "",
+        lastPlayed: "",
         skillCategory: null,
       })
     } else if (initialName) {
@@ -97,6 +100,8 @@ export function AddPlayerDialog({
         gender: formData.gender || null,
         experience:
           formData.experience.trim() === "" ? null : formData.experience.trim().slice(0, EXPERIENCE_MAX_LEN),
+        lastPlayed:
+          formData.lastPlayed.trim() === "" ? null : formData.lastPlayed.trim().slice(0, LAST_PLAYED_MAX_LEN),
         skillCategory: formData.skillCategory,
       }
 
@@ -217,6 +222,23 @@ export function AddPlayerDialog({
                 }
                 placeholder="e.g. 5+ years club"
                 maxLength={EXPERIENCE_MAX_LEN}
+                rows={2}
+              />
+            </div>
+
+            <div className="space-y-2 md:col-span-2">
+              <Label htmlFor="dialog-lastPlayed">Last played (badminton)</Label>
+              <Textarea
+                id="dialog-lastPlayed"
+                value={formData.lastPlayed}
+                onChange={(e) =>
+                  setFormData({
+                    ...formData,
+                    lastPlayed: e.target.value.slice(0, LAST_PLAYED_MAX_LEN),
+                  })
+                }
+                placeholder="e.g. March 2025"
+                maxLength={LAST_PLAYED_MAX_LEN}
                 rows={2}
               />
             </div>

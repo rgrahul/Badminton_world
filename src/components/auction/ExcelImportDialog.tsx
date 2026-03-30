@@ -23,6 +23,7 @@ interface ImportRow {
   age?: number | null
   gender?: string | null
   experience?: string | null
+  lastPlayed?: string | null
   skillCategory?: SkillCategory | null
   profilePhoto?: string | null
   basePrice: number
@@ -43,6 +44,7 @@ const COL_MAP: Record<string, string[]> = {
   mobileNumber: ["mobile", "phone", "mobile number", "contact"],
   skillCategory: ["skill", "skill rating", "rating", "level", "skill category", "skill level"],
   experience: ["experience", "years of experience", "exp", "years"],
+  lastPlayed: ["last played", "last played badminton", "last play", "lastplayed"],
   profilePhoto: ["photo", "photo url", "image", "profile photo"],
   basePrice: ["base price", "baseprice", "starting price", "price"],
 }
@@ -66,9 +68,19 @@ function normalizeGender(val: string | undefined | null): string | null {
 function downloadTemplate() {
   const wb = XLSX.utils.book_new()
   const ws = XLSX.utils.aoa_to_sheet([
-    ["Name", "Gender", "Age", "Email", "Mobile Number", "Skill level", "Experience", "Base Price"],
-    ["John Doe", "Male", 28, "john@example.com", "9876543210", "Intermediate+", "5+ yrs club", 50000],
-    ["Jane Smith", "Female", 25, "jane@example.com", "9876543211", "Advanced", "3 years league", 60000],
+    [
+      "Name",
+      "Gender",
+      "Age",
+      "Email",
+      "Mobile Number",
+      "Skill level",
+      "Experience",
+      "Last played",
+      "Base Price",
+    ],
+    ["John Doe", "Male", 28, "john@example.com", "9876543210", "Intermediate+", "5+ yrs club", "March 2025", 50000],
+    ["Jane Smith", "Female", 25, "jane@example.com", "9876543211", "Advanced", "3 years league", "2 weeks ago", 60000],
   ])
   XLSX.utils.book_append_sheet(wb, ws, "Players")
   XLSX.writeFile(wb, "auction_players_template.xlsx")
@@ -135,6 +147,12 @@ export function ExcelImportDialog({
               gender: normalizeGender(get("gender") as string),
               experience: (() => {
                 const v = get("experience")
+                if (v === undefined || v === null) return null
+                const s = String(v).trim()
+                return s === "" ? null : s
+              })(),
+              lastPlayed: (() => {
+                const v = get("lastPlayed")
                 if (v === undefined || v === null) return null
                 const s = String(v).trim()
                 return s === "" ? null : s

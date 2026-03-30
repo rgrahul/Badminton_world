@@ -60,6 +60,11 @@ export function PlayerSpotlight({ player, currentBid }: PlayerSpotlightProps) {
               {p.experience}
             </span>
           )}
+          {p.lastPlayed?.trim() && (
+            <span className="inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium bg-slate-100 text-slate-800 max-w-full line-clamp-2">
+              Last played: {p.lastPlayed}
+            </span>
+          )}
         </div>
 
         {/* Base Price */}

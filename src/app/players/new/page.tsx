@@ -19,6 +19,7 @@ import type { SkillCategory } from "@prisma/client"
 import { SkillCategorySelect } from "@/components/player/SkillCategorySelect"
 import { Textarea } from "@/components/ui/textarea"
 import { EXPERIENCE_MAX_LEN } from "@/lib/playerExperience"
+import { LAST_PLAYED_MAX_LEN } from "@/lib/playerLastPlayed"
 
 export default function NewPlayerPage() {
   const router = useRouter()
@@ -32,6 +33,7 @@ export default function NewPlayerPage() {
     age: "",
     gender: "",
     experience: "",
+    lastPlayed: "",
     skillCategory: null as SkillCategory | null,
     profilePhoto: "",
   })
@@ -117,6 +119,8 @@ export default function NewPlayerPage() {
         gender: formData.gender || null,
         experience:
           formData.experience.trim() === "" ? null : formData.experience.trim().slice(0, EXPERIENCE_MAX_LEN),
+        lastPlayed:
+          formData.lastPlayed.trim() === "" ? null : formData.lastPlayed.trim().slice(0, LAST_PLAYED_MAX_LEN),
         skillCategory: formData.skillCategory,
         profilePhoto: formData.profilePhoto || null,
       }
@@ -267,6 +271,27 @@ export default function NewPlayerPage() {
                       className="border-2 focus:border-purple-500 resize-y min-h-[80px]"
                     />
                     <p className="text-xs text-purple-600">Free text, up to {EXPERIENCE_MAX_LEN} characters.</p>
+                  </div>
+
+                  <div className="space-y-2 md:col-span-2">
+                    <Label htmlFor="lastPlayed" className="text-purple-700 font-semibold">
+                      Last played (badminton)
+                    </Label>
+                    <Textarea
+                      id="lastPlayed"
+                      value={formData.lastPlayed}
+                      onChange={(e) =>
+                        setFormData({
+                          ...formData,
+                          lastPlayed: e.target.value.slice(0, LAST_PLAYED_MAX_LEN),
+                        })
+                      }
+                      placeholder="e.g. March 2025, Sunday league"
+                      maxLength={LAST_PLAYED_MAX_LEN}
+                      rows={2}
+                      className="border-2 focus:border-purple-500 resize-y min-h-[64px]"
+                    />
+                    <p className="text-xs text-purple-600">Optional. When they last played, up to {LAST_PLAYED_MAX_LEN} characters.</p>
                   </div>
 
                   <SkillCategorySelect

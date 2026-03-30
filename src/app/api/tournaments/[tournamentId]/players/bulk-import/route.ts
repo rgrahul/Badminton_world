@@ -5,6 +5,7 @@ import { prisma } from "@/lib/db/client"
 import { errorResponse, successResponse } from "@/lib/api/responses"
 import { optionalImportedSkillCategorySchema } from "@/lib/skillCategory"
 import { optionalExperienceSchema } from "@/lib/playerExperience"
+import { optionalLastPlayedSchema } from "@/lib/playerLastPlayed"
 
 const playerSchema = z.object({
   name: z.string().min(1),
@@ -13,6 +14,7 @@ const playerSchema = z.object({
   age: z.number().int().positive().optional().nullable(),
   gender: z.enum(["MALE", "FEMALE", "OTHER"]).optional().nullable(),
   experience: optionalExperienceSchema,
+  lastPlayed: optionalLastPlayedSchema,
   skillCategory: optionalImportedSkillCategorySchema,
   profilePhoto: z.string().optional().nullable(),
 })
@@ -48,6 +50,7 @@ export async function POST(request: NextRequest, { params }: { params: { tournam
         row.Experience ??
         row.yearsOfExperience ??
         row.YearsOfExperience,
+      lastPlayed: row.lastPlayed ?? row.LastPlayed ?? row.last_played,
     }))
     const { players } = bulkImportSchema.parse({ players: rawPlayers })
 
@@ -96,6 +99,7 @@ export async function POST(request: NextRequest, { params }: { params: { tournam
             age: playerData.age || null,
             gender: playerData.gender || null,
             experience: playerData.experience ?? null,
+            lastPlayed: playerData.lastPlayed ?? null,
             skillCategory: playerData.skillCategory ?? null,
             profilePhoto: playerData.profilePhoto || null,
           },

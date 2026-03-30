@@ -12,6 +12,7 @@ import * as XLSX from "xlsx"
 import type { SkillCategory } from "@prisma/client"
 import { parseSkillCategory } from "@/lib/skillCategory"
 import { EXPERIENCE_MAX_LEN } from "@/lib/playerExperience"
+import { LAST_PLAYED_MAX_LEN } from "@/lib/playerLastPlayed"
 
 interface ParsedPlayer {
   name: string
@@ -20,6 +21,7 @@ interface ParsedPlayer {
   age?: number | null
   gender?: "MALE" | "FEMALE" | "OTHER" | null
   experience?: string | null
+  lastPlayed?: string | null
   skillCategory?: SkillCategory | null
   profilePhoto?: string | null
 }
@@ -82,6 +84,13 @@ export default function BulkUploadPage() {
                 const s = String(raw).trim()
                 if (s === "") return null
                 return s.slice(0, EXPERIENCE_MAX_LEN)
+              })(),
+              lastPlayed: (() => {
+                const raw = row.lastPlayed ?? row.LastPlayed ?? row.last_played
+                if (raw === undefined || raw === null || raw === "") return null
+                const s = String(raw).trim()
+                if (s === "") return null
+                return s.slice(0, LAST_PLAYED_MAX_LEN)
               })(),
               skillCategory: parseSkillCategory(
                 row.skillCategory ??
@@ -197,6 +206,7 @@ export default function BulkUploadPage() {
         age: 25,
         gender: "MALE",
         experience: "5+ years club",
+        lastPlayed: "March 2025",
         skillCategory: "INTERMEDIATE_PLUS",
         profilePhoto: "",
       },
@@ -207,6 +217,7 @@ export default function BulkUploadPage() {
         age: 28,
         gender: "FEMALE",
         experience: "7 years league",
+        lastPlayed: "2 weeks ago",
         skillCategory: "ADVANCED",
         profilePhoto: "",
       },
@@ -262,6 +273,7 @@ export default function BulkUploadPage() {
                 <li>age (optional) - Age as number</li>
                 <li>gender (optional) - MALE, FEMALE, or OTHER</li>
                 <li>experience (optional) - Free text; yearsOfExperience column still accepted</li>
+                <li>lastPlayed (optional) - When they last played badminton (free text)</li>
                 <li>
                   skillCategory (optional) — Beginner, Intermediate, Intermediate+, Advanced (column
                   names skillRating/rating/level still work; legacy 1–100 maps to a band)
@@ -302,6 +314,7 @@ export default function BulkUploadPage() {
                         <th className="px-3 py-2 text-left">Age</th>
                         <th className="px-3 py-2 text-left">Gender</th>
                         <th className="px-3 py-2 text-left">Experience</th>
+                        <th className="px-3 py-2 text-left">Last played</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -316,6 +329,9 @@ export default function BulkUploadPage() {
                           <td className="px-3 py-2">{player.gender || "-"}</td>
                           <td className="px-3 py-2 max-w-[180px] truncate" title={player.experience || ""}>
                             {player.experience || "-"}
+                          </td>
+                          <td className="px-3 py-2 max-w-[140px] truncate" title={player.lastPlayed || ""}>
+                            {player.lastPlayed || "-"}
                           </td>
                         </tr>
                       ))}

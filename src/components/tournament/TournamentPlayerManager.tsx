@@ -257,6 +257,12 @@ export function TournamentPlayerManager({ tournamentId, onPlayersChanged }: Tour
                 const s = String(raw).trim()
                 return s === "" ? null : s
               })(),
+              lastPlayed: (() => {
+                const raw = row.lastPlayed ?? row.LastPlayed ?? row.last_played
+                if (raw === undefined || raw === null) return null
+                const s = String(raw).trim()
+                return s === "" ? null : s
+              })(),
               skillCategory: parseSkillCategory(
                 row.skillCategory ??
                   row.SkillCategory ??
@@ -610,7 +616,7 @@ export function TournamentPlayerManager({ tournamentId, onPlayersChanged }: Tour
               {/* Column info */}
               <div className="text-xs text-muted-foreground">
                 <p className="font-medium text-foreground mb-1">Required: name</p>
-                <p>Optional: email, mobileNumber, age, gender (MALE/FEMALE), experience (or yearsOfExperience), skillCategory (or skillRating/rating/level)</p>
+                <p>Optional: email, mobileNumber, age, gender (MALE/FEMALE), experience (or yearsOfExperience), lastPlayed, skillCategory (or skillRating/rating/level)</p>
                 <p className="mt-1 text-green-700">Existing players (matched by name) will be reused, not duplicated.</p>
               </div>
 
