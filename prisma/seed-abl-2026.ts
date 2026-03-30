@@ -18,48 +18,61 @@ const ABL_TEAMS: AblTeamRow[] = [
   {
     name: "Backhand Brigade",
     logoUrl: "1rlOih8rU5vVqlJO6GYheGKEgzXnkKgUf",
-    // captainEmail: "captain@yourclub.com",
+    captainEmail: "subbiahperi@gmail.com",
   },
-  { name: "Club Shakti", logoUrl: "1lpV226kcptyHktYjOMATDzGAntSSu0Tp" },
+  {
+    name: "Club Shakti",
+    logoUrl: "1lpV226kcptyHktYjOMATDzGAntSSu0Tp",
+    captainEmail: "anandgshenoy@gmail.com",
+  },
   {
     name: "Court Commanders",
-    logoUrl: "https://drive.google.com/file/d/1vK97tcF64Q7Uat9yGEHe5dfKUiSvk7WF/view?usp=sharing",
+    logoUrl: "priyadarshi.menon@gmail.com",
   },
   {
     name: "Assetz Endless Rally",
     logoUrl: "https://drive.google.com/file/d/1rlOih8rU5vVqlJO6GYheGKEgzXnkKgUf/view?usp=sharing",
+    captainEmail: "varunkatikitala@gmail.com",
   },
   {
     name: "Mavericks 63",
     logoUrl: "https://drive.google.com/file/d/1W06aih38tScagABJWxK1oP7aHSTlERmc/view?usp=sharing",
+    captainEmail: "sharon.mavrick@gmail.com",
   },
   {
     name: "Dhurandhar Smash Squad",
     logoUrl: "https://drive.google.com/file/d/1NMYNGXl242f6f5p0dKw7rrULfNw57ke2/view?usp=sharing",
+    captainEmail: "avi.vaishali.jain@gmail.com",
   },
   {
     name: "Netflicks & Kill",
     logoUrl: "https://drive.google.com/file/d/1VnA9XjMbzWeYpt6AI_5F25SW1Dgp0-BO/view?usp=sharing",
+    captainEmail: "ankit.purohit991@gmail.com",
   },
   {
     name: "Shuttle Strikers",
     logoUrl: "https://drive.google.com/file/d/19KvLPn9F1WXVsEbdzF1fjFB8v0isP5SX/view?usp=sharing",
+    captainEmail: "Kumarrajeev35@gmail.com",
   },
   {
     name: "Smash Syndicate",
     logoUrl: "https://drive.google.com/file/d/1uj2aP89NzgFfOxCi444UwZjsgXkWYer8/view?usp=sharing",
+    captainEmail: "prankurtewari@gmail.com",
   },
   {
     name: "Supersonic",
     logoUrl: "https://drive.google.com/file/d/1Y9GFsyD2Nr-G0TlbBp_9OXnKfk9WARem/view?usp=sharing",
+    captainEmail: "gaurav9126@gmail.com",
   },
   {
     name: "Assetz Challengers",
     logoUrl: "https://drive.google.com/uc?export=view&id=1DEXzgjOcAUenMAfOYYQqMFMy_pU_qH6z",
+    captainEmail: "venkateshprabhu2@gmail.com",
   },
   {
     name: "Big Dawgs",
     logoUrl: "https://drive.google.com/file/d/1xpYtaTy9NQMpXboqrN9L82wxXBaPojVA/view?usp=sharing",
+    captainEmail: "prathapmenon7943@gmail.com",
   },
 ]
 
