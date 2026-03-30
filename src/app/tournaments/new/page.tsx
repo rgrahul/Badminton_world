@@ -380,7 +380,10 @@ export default function NewTournamentPage() {
                       <span>👥</span> Team roster (same for every team)
                     </Label>
                     <p className="text-sm text-blue-700">
-                      How many male, female, and kid players each team must have when you build full rosters (not auction mode).
+                      Squad size is male + female + kid (e.g. 11 = 9 + 2 + 0). The total{" "}
+                      <span className="font-semibold">includes the captain</span> as one player. With auctions, assign
+                      the captain first; the rest of the squad is filled by bidding. Manual full rosters must match these
+                      counts; “Players added via Auction” skips composition checks until the roster is finished.
                     </p>
                     <div className="grid grid-cols-3 gap-3">
                       <div className="space-y-1">

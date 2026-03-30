@@ -252,12 +252,13 @@ export default function TeamDetailPage({
             <div>
               <h3 className="font-semibold mb-3">Roster composition</h3>
               <p className="text-sm text-muted-foreground mb-3">
-                Targets are set on the tournament for every team. Edit the tournament to change them.
+                Targets are set on the tournament for every team. Totals include the captain as one player. Edit the
+                tournament to change targets.
               </p>
               <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                 <div className="bg-gray-50 rounded-lg p-3 text-center">
                   <div className="text-2xl font-bold">{targetTotal}</div>
-                  <div className="text-sm text-muted-foreground">Target squad size</div>
+                  <div className="text-sm text-muted-foreground">Target squad size (incl. captain)</div>
                   <div className="text-xs text-muted-foreground mt-1">Current: {actualTotal}</div>
                 </div>
                 <div className="bg-blue-50 rounded-lg p-3 text-center">
@@ -292,9 +293,6 @@ export default function TeamDetailPage({
                   Captain:{" "}
                   <span className="font-medium text-foreground">
                     <PlayerLink name={team.captain.name} playerId={team.captain.id} />
-                  </span>
-                  <span className="ml-2 inline-flex items-center rounded-full bg-amber-100 text-amber-900 px-2 py-0.5 text-xs font-medium">
-                    Not in auction pool
                   </span>
                 </p>
               )}
