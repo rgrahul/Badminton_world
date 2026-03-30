@@ -84,7 +84,23 @@ export async function PATCH(
       const requiredFemale = tournament.teamRequiredFemale
       const requiredKid = tournament.teamRequiredKid
       const targetTeamSize = compositionTeamSize(tournament)
-      const playerIds = validatedData.playerIds!
+      let playerIds = [...validatedData.playerIds!]
+
+      let resolvedCaptain: string | null
+      if (validatedData.captainId !== undefined) {
+        resolvedCaptain = validatedData.captainId
+      } else {
+        const prev = existingTeam.captainId
+        if (auctionMode) {
+          resolvedCaptain = prev
+        } else {
+          resolvedCaptain = prev && playerIds.includes(prev) ? prev : null
+        }
+      }
+
+      if (resolvedCaptain && !playerIds.includes(resolvedCaptain)) {
+        playerIds.push(resolvedCaptain)
+      }
 
       if (!auctionMode) {
         if (targetTeamSize === 0) {
@@ -149,24 +165,10 @@ export async function PATCH(
         }
       }
 
-      let resolvedCaptain: string | null
-      if (validatedData.captainId !== undefined) {
-        resolvedCaptain = validatedData.captainId
-      } else {
-        const prev = existingTeam.captainId
-        if (auctionMode) {
-          resolvedCaptain = prev
-        } else {
-          resolvedCaptain = prev && playerIds.includes(prev) ? prev : null
-        }
-      }
       if (resolvedCaptain) {
         const cap = await PlayerRepository.findById(resolvedCaptain)
         if (!cap) {
           return errorResponse("Captain player not found", 400)
-        }
-        if (!auctionMode && playerIds.length > 0 && !playerIds.includes(resolvedCaptain)) {
-          return errorResponse("Captain must be on the team roster", 400)
         }
       }
 

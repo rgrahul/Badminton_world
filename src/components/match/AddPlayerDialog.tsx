@@ -25,6 +25,9 @@ import {
 import { useAlertDialog } from "@/hooks/useAlertDialog"
 import type { SkillCategory } from "@prisma/client"
 import { SkillCategorySelect } from "@/components/player/SkillCategorySelect"
+import { Textarea } from "@/components/ui/textarea"
+import { EXPERIENCE_MAX_LEN } from "@/lib/playerExperience"
+import { LAST_PLAYED_MAX_LEN } from "@/lib/playerLastPlayed"
 
 interface Player {
   id: string
@@ -54,7 +57,8 @@ export function AddPlayerDialog({
     mobileNumber: "",
     age: "",
     gender: "",
-    yearsOfExperience: "",
+    experience: "",
+    lastPlayed: "",
     skillCategory: null as SkillCategory | null,
   })
 
@@ -67,7 +71,8 @@ export function AddPlayerDialog({
         mobileNumber: "",
         age: "",
         gender: "",
-        yearsOfExperience: "",
+        experience: "",
+        lastPlayed: "",
         skillCategory: null,
       })
     } else if (initialName) {
@@ -93,7 +98,10 @@ export function AddPlayerDialog({
         mobileNumber: formData.mobileNumber || null,
         age: formData.age ? parseInt(formData.age) : null,
         gender: formData.gender || null,
-        yearsOfExperience: formData.yearsOfExperience ? parseInt(formData.yearsOfExperience) : null,
+        experience:
+          formData.experience.trim() === "" ? null : formData.experience.trim().slice(0, EXPERIENCE_MAX_LEN),
+        lastPlayed:
+          formData.lastPlayed.trim() === "" ? null : formData.lastPlayed.trim().slice(0, LAST_PLAYED_MAX_LEN),
         skillCategory: formData.skillCategory,
       }
 
@@ -201,15 +209,37 @@ export function AddPlayerDialog({
 
           {/* Experience and Rating */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div className="space-y-2">
-              <Label htmlFor="dialog-yearsOfExperience">Years of Experience</Label>
-              <Input
-                id="dialog-yearsOfExperience"
-                type="number"
-                min="0"
-                value={formData.yearsOfExperience}
-                onChange={(e) => setFormData({ ...formData, yearsOfExperience: e.target.value })}
-                placeholder="5"
+            <div className="space-y-2 md:col-span-2">
+              <Label htmlFor="dialog-experience">Experience</Label>
+              <Textarea
+                id="dialog-experience"
+                value={formData.experience}
+                onChange={(e) =>
+                  setFormData({
+                    ...formData,
+                    experience: e.target.value.slice(0, EXPERIENCE_MAX_LEN),
+                  })
+                }
+                placeholder="e.g. 5+ years club"
+                maxLength={EXPERIENCE_MAX_LEN}
+                rows={2}
+              />
+            </div>
+
+            <div className="space-y-2 md:col-span-2">
+              <Label htmlFor="dialog-lastPlayed">Last played (badminton)</Label>
+              <Textarea
+                id="dialog-lastPlayed"
+                value={formData.lastPlayed}
+                onChange={(e) =>
+                  setFormData({
+                    ...formData,
+                    lastPlayed: e.target.value.slice(0, LAST_PLAYED_MAX_LEN),
+                  })
+                }
+                placeholder="e.g. March 2025"
+                maxLength={LAST_PLAYED_MAX_LEN}
+                rows={2}
               />
             </div>
 

@@ -55,9 +55,14 @@ export function PlayerSpotlight({ player, currentBid }: PlayerSpotlightProps) {
             </span>
           )}
           <SkillCategoryBadge category={p.skillCategory} size="md" />
-          {p.yearsOfExperience && (
-            <span className="inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium bg-green-100 text-green-800">
-              {p.yearsOfExperience}yr exp
+          {p.experience?.trim() && (
+            <span className="inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium bg-green-100 text-green-800 max-w-full line-clamp-2">
+              {p.experience}
+            </span>
+          )}
+          {p.lastPlayed?.trim() && (
+            <span className="inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium bg-slate-100 text-slate-800 max-w-full line-clamp-2">
+              Last played: {p.lastPlayed}
             </span>
           )}
         </div>

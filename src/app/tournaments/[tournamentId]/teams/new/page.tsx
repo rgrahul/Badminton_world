@@ -266,7 +266,8 @@ export default function NewTeamPage({ params }: { params: { tournamentId: string
                       </div>
                     </div>
                     <div className="text-sm text-blue-700 font-medium bg-blue-50 rounded p-2">
-                      Target squad size: <span className="font-bold">{targetTeamSize}</span> players
+                      Target squad size: <span className="font-bold">{targetTeamSize}</span> players total
+                      <span className="font-normal"> (including captain)</span>
                     </div>
                   </>
                 }

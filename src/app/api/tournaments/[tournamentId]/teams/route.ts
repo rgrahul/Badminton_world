@@ -59,7 +59,13 @@ export async function POST(
     const body = await request.json()
     const validatedData = createTeamSchema.parse(body)
 
-    const { playerIds, skipCompositionValidation, captainId: captainIdRaw } = validatedData
+    const { playerIds: rawPlayerIds, skipCompositionValidation, captainId: captainIdRaw } =
+      validatedData
+
+    let playerIds = [...rawPlayerIds]
+    if (captainIdRaw && !playerIds.includes(captainIdRaw)) {
+      playerIds.push(captainIdRaw)
+    }
 
     const requiredMale = tournament.teamRequiredMale
     const requiredFemale = tournament.teamRequiredFemale
@@ -67,13 +73,9 @@ export async function POST(
     const targetTeamSize = compositionTeamSize(tournament)
 
     if (captainIdRaw) {
-      if (skipCompositionValidation) {
-        const cap = await PlayerRepository.findById(captainIdRaw)
-        if (!cap) {
-          return errorResponse("Captain player not found", 400)
-        }
-      } else if (!playerIds.includes(captainIdRaw)) {
-        return errorResponse("Captain must be one of the players on this team", 400)
+      const cap = await PlayerRepository.findById(captainIdRaw)
+      if (!cap) {
+        return errorResponse("Captain player not found", 400)
       }
     }
 

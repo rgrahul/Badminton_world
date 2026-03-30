@@ -106,8 +106,8 @@ export function TeamCaptainSelect({
       </Select>
       <p className="text-xs text-muted-foreground">
         {mode === "allPlayers" ?
-          "Choose any player as captain (roster can be filled later via auction). Captains are not in the auction pool."
-        : "Captain must be on this team’s roster. Captains are not in the auction pool for this tournament."}
+          "The captain counts toward the tournament squad total (male/female/kid). Roster can be completed later via auction. Captains are excluded from the auction pool."
+        : "Pick the captain from this roster — they count as one of the squad spots. Captains are excluded from the auction pool."}
       </p>
     </div>
   )

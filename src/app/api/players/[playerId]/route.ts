@@ -4,6 +4,8 @@ import { PlayerRepository } from "@/lib/db/repositories/PlayerRepository"
 import { errorResponse, successResponse } from "@/lib/api/responses"
 import { z } from "zod"
 import { skillCategoryEnumSchema } from "@/lib/skillCategory"
+import { optionalExperienceSchema } from "@/lib/playerExperience"
+import { optionalLastPlayedSchema } from "@/lib/playerLastPlayed"
 
 const updatePlayerSchema = z.object({
   name: z.string().min(1).optional(),
@@ -11,7 +13,8 @@ const updatePlayerSchema = z.object({
   mobileNumber: z.string().optional().nullable(),
   age: z.number().int().positive().optional().nullable(),
   gender: z.enum(["MALE", "FEMALE", "OTHER"]).optional().nullable(),
-  yearsOfExperience: z.number().int().min(0).optional().nullable(),
+  experience: optionalExperienceSchema,
+  lastPlayed: optionalLastPlayedSchema,
   skillCategory: skillCategoryEnumSchema.optional().nullable(),
   profilePhoto: z.string().optional().nullable(),
 })

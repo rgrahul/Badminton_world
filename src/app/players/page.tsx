@@ -38,7 +38,7 @@ interface Player {
   mobileNumber?: string | null
   age?: number | null
   gender?: string | null
-  yearsOfExperience?: number | null
+  experience?: string | null
   skillCategory?: SkillCategory | null
   profilePhoto?: string | null
   createdAt: string
@@ -248,11 +248,15 @@ export default function PlayersPage() {
                           <div className="font-black text-gray-800">{player.age}</div>
                         </div>
                       )}
-                      {player.yearsOfExperience !== null &&
-                        player.yearsOfExperience !== undefined && (
-                          <div className="bg-gradient-to-br from-green-50 to-green-100 p-2 rounded-lg border border-green-200">
-                            <div className="text-green-700 text-xs font-bold">Exp</div>
-                            <div className="font-black text-gray-800">{player.yearsOfExperience}y</div>
+                      {player.experience?.trim() && (
+                          <div className="bg-gradient-to-br from-green-50 to-green-100 p-2 rounded-lg border border-green-200 min-w-0">
+                            <div className="text-green-700 text-xs font-bold">Experience</div>
+                            <div
+                              className="font-black text-gray-800 text-xs line-clamp-2 break-words"
+                              title={player.experience}
+                            >
+                              {player.experience}
+                            </div>
                           </div>
                         )}
                       {player.skillCategory && (
@@ -312,10 +316,15 @@ export default function PlayersPage() {
                           <div className="font-black text-gray-800">{player.age}</div>
                         </div>
                       )}
-                      {player.yearsOfExperience !== null && player.yearsOfExperience !== undefined && (
-                        <div className="text-center bg-gradient-to-br from-green-50 to-green-100 px-3 py-2 rounded-lg border border-green-200">
+                      {player.experience?.trim() && (
+                        <div className="text-center bg-gradient-to-br from-green-50 to-green-100 px-3 py-2 rounded-lg border border-green-200 max-w-[140px]">
                           <div className="text-green-700 text-xs font-bold">Experience</div>
-                          <div className="font-black text-gray-800">{player.yearsOfExperience}y</div>
+                          <div
+                            className="font-black text-gray-800 text-xs line-clamp-2 break-words"
+                            title={player.experience}
+                          >
+                            {player.experience}
+                          </div>
                         </div>
                       )}
                       {player.skillCategory && (
@@ -377,11 +386,15 @@ export default function PlayersPage() {
                           <div className="font-black text-gray-800">{player.age}</div>
                         </div>
                       )}
-                      {player.yearsOfExperience !== null &&
-                        player.yearsOfExperience !== undefined && (
-                          <div className="text-center bg-gradient-to-br from-green-50 to-green-100 px-3 py-2 rounded-lg border border-green-200">
+                      {player.experience?.trim() && (
+                          <div className="text-center bg-gradient-to-br from-green-50 to-green-100 px-3 py-2 rounded-lg border border-green-200 max-w-[160px]">
                             <div className="text-green-700 text-xs font-bold">Experience</div>
-                            <div className="font-black text-gray-800">{player.yearsOfExperience}y</div>
+                            <div
+                              className="font-black text-gray-800 text-xs line-clamp-2 break-words"
+                              title={player.experience}
+                            >
+                              {player.experience}
+                            </div>
                           </div>
                         )}
                       {player.skillCategory && (

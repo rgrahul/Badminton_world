@@ -4,6 +4,8 @@ import { auth } from "@/lib/auth"
 import { prisma } from "@/lib/db/client"
 import { errorResponse, successResponse } from "@/lib/api/responses"
 import { optionalImportedSkillCategorySchema } from "@/lib/skillCategory"
+import { optionalExperienceSchema } from "@/lib/playerExperience"
+import { optionalLastPlayedSchema } from "@/lib/playerLastPlayed"
 
 const playerSchema = z.object({
   name: z.string().min(1),
@@ -11,7 +13,8 @@ const playerSchema = z.object({
   mobileNumber: z.string().optional().nullable(),
   age: z.number().int().positive().optional().nullable(),
   gender: z.enum(["MALE", "FEMALE", "OTHER"]).optional().nullable(),
-  yearsOfExperience: z.number().int().min(0).optional().nullable(),
+  experience: optionalExperienceSchema,
+  lastPlayed: optionalLastPlayedSchema,
   skillCategory: optionalImportedSkillCategorySchema,
   profilePhoto: z.string().optional().nullable(),
 })
@@ -42,6 +45,12 @@ export async function POST(request: NextRequest, { params }: { params: { tournam
     const rawPlayers = (body.players as Record<string, unknown>[]).map((row) => ({
       ...row,
       skillCategory: row.skillCategory ?? row.skillRating,
+      experience:
+        row.experience ??
+        row.Experience ??
+        row.yearsOfExperience ??
+        row.YearsOfExperience,
+      lastPlayed: row.lastPlayed ?? row.LastPlayed ?? row.last_played,
     }))
     const { players } = bulkImportSchema.parse({ players: rawPlayers })
 
@@ -89,7 +98,8 @@ export async function POST(request: NextRequest, { params }: { params: { tournam
             mobileNumber: playerData.mobileNumber || null,
             age: playerData.age || null,
             gender: playerData.gender || null,
-            yearsOfExperience: playerData.yearsOfExperience || null,
+            experience: playerData.experience ?? null,
+            lastPlayed: playerData.lastPlayed ?? null,
             skillCategory: playerData.skillCategory ?? null,
             profilePhoto: playerData.profilePhoto || null,
           },

@@ -19,7 +19,8 @@ interface Player {
   mobileNumber?: string | null
   age?: number | null
   gender?: string | null
-  yearsOfExperience?: number | null
+  experience?: string | null
+  lastPlayed?: string | null
   skillCategory?: string | null
   profilePhoto?: string | null
   createdAt: string
@@ -202,12 +203,10 @@ export default function PlayerDetailPage({ params }: { params: { playerId: strin
                   <div className="text-sm text-muted-foreground">Gender</div>
                   <div className="font-medium">{player.gender ?? "N/A"}</div>
                 </div>
-                <div>
+                <div className="min-w-0">
                   <div className="text-sm text-muted-foreground">Experience</div>
-                  <div className="font-medium">
-                    {player.yearsOfExperience !== null && player.yearsOfExperience !== undefined
-                      ? `${player.yearsOfExperience} years`
-                      : "N/A"}
+                  <div className="font-medium whitespace-pre-wrap break-words text-sm">
+                    {player.experience?.trim() ? player.experience : "N/A"}
                   </div>
                 </div>
                 <div>
@@ -215,6 +214,12 @@ export default function PlayerDetailPage({ params }: { params: { playerId: strin
                   <div className="font-medium">
                     {skillCategoryLabel(player.skillCategory as SkillCategory | null) || "N/A"}
                   </div>
+                </div>
+              </div>
+              <div className="mt-4 min-w-0">
+                <div className="text-sm text-muted-foreground">Last played (badminton)</div>
+                <div className="font-medium whitespace-pre-wrap break-words text-sm">
+                  {player.lastPlayed?.trim() ? player.lastPlayed : "N/A"}
                 </div>
               </div>
             </div>

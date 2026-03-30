@@ -5,6 +5,8 @@ import { AuctionRepository } from "@/lib/db/repositories/AuctionRepository"
 import { errorResponse, successResponse } from "@/lib/api/responses"
 import { prisma } from "@/lib/db/client"
 import { optionalImportedSkillCategorySchema } from "@/lib/skillCategory"
+import { optionalExperienceSchema } from "@/lib/playerExperience"
+import { optionalLastPlayedSchema } from "@/lib/playerLastPlayed"
 import { getTournamentCaptainPlayerIds } from "@/lib/tournamentCaptainPlayers"
 
 const importSchema = z.object({
@@ -16,7 +18,8 @@ const importSchema = z.object({
         mobileNumber: z.string().optional().nullable(),
         age: z.number().int().optional().nullable(),
         gender: z.enum(["MALE", "FEMALE", "OTHER"]).optional().nullable(),
-        yearsOfExperience: z.number().int().optional().nullable(),
+        experience: optionalExperienceSchema,
+        lastPlayed: optionalLastPlayedSchema,
         skillCategory: optionalImportedSkillCategorySchema,
         profilePhoto: z.string().optional().nullable(),
         basePrice: z.number().min(0).default(0),
@@ -46,6 +49,12 @@ export async function POST(request: NextRequest, { params }: { params: { auction
       players: (body.players as Record<string, unknown>[]).map((row) => ({
         ...row,
         skillCategory: row.skillCategory ?? row.skillRating,
+        experience:
+          row.experience ??
+          row.Experience ??
+          row.yearsOfExperience ??
+          row.YearsOfExperience,
+        lastPlayed: row.lastPlayed ?? row.LastPlayed ?? row.last_played,
       })),
     }
     const parsed = importSchema.safeParse(merged)
@@ -99,7 +108,10 @@ export async function POST(request: NextRequest, { params }: { params: { auction
               mobileNumber: row.mobileNumber || existingPlayer.mobileNumber,
               age: row.age ?? existingPlayer.age,
               gender: row.gender || existingPlayer.gender,
-              yearsOfExperience: row.yearsOfExperience ?? existingPlayer.yearsOfExperience,
+              experience:
+                row.experience !== undefined ? row.experience : existingPlayer.experience,
+              lastPlayed:
+                row.lastPlayed !== undefined ? row.lastPlayed : existingPlayer.lastPlayed,
               skillCategory: row.skillCategory ?? existingPlayer.skillCategory,
               profilePhoto: row.profilePhoto || existingPlayer.profilePhoto,
             },
@@ -113,7 +125,8 @@ export async function POST(request: NextRequest, { params }: { params: { auction
               mobileNumber: row.mobileNumber || undefined,
               age: row.age || undefined,
               gender: row.gender || undefined,
-              yearsOfExperience: row.yearsOfExperience || undefined,
+              experience: row.experience === undefined ? undefined : row.experience,
+              lastPlayed: row.lastPlayed === undefined ? undefined : row.lastPlayed,
               skillCategory: row.skillCategory || undefined,
               profilePhoto: row.profilePhoto || undefined,
             },

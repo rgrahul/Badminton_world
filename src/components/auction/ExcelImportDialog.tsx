@@ -22,7 +22,8 @@ interface ImportRow {
   mobileNumber?: string | null
   age?: number | null
   gender?: string | null
-  yearsOfExperience?: number | null
+  experience?: string | null
+  lastPlayed?: string | null
   skillCategory?: SkillCategory | null
   profilePhoto?: string | null
   basePrice: number
@@ -42,7 +43,8 @@ const COL_MAP: Record<string, string[]> = {
   email: ["email", "email address"],
   mobileNumber: ["mobile", "phone", "mobile number", "contact"],
   skillCategory: ["skill", "skill rating", "rating", "level", "skill category", "skill level"],
-  yearsOfExperience: ["experience", "years of experience", "exp"],
+  experience: ["experience", "years of experience", "exp", "years"],
+  lastPlayed: ["last played", "last played badminton", "last play", "lastplayed"],
   profilePhoto: ["photo", "photo url", "image", "profile photo"],
   basePrice: ["base price", "baseprice", "starting price", "price"],
 }
@@ -66,9 +68,19 @@ function normalizeGender(val: string | undefined | null): string | null {
 function downloadTemplate() {
   const wb = XLSX.utils.book_new()
   const ws = XLSX.utils.aoa_to_sheet([
-    ["Name", "Gender", "Age", "Email", "Mobile Number", "Skill level", "Experience", "Base Price"],
-    ["John Doe", "Male", 28, "john@example.com", "9876543210", "Intermediate+", 5, 50000],
-    ["Jane Smith", "Female", 25, "jane@example.com", "9876543211", "Advanced", 3, 60000],
+    [
+      "Name",
+      "Gender",
+      "Age",
+      "Email",
+      "Mobile Number",
+      "Skill level",
+      "Experience",
+      "Last played",
+      "Base Price",
+    ],
+    ["John Doe", "Male", 28, "john@example.com", "9876543210", "Intermediate+", "5+ yrs club", "March 2025", 50000],
+    ["Jane Smith", "Female", 25, "jane@example.com", "9876543211", "Advanced", "3 years league", "2 weeks ago", 60000],
   ])
   XLSX.utils.book_append_sheet(wb, ws, "Players")
   XLSX.writeFile(wb, "auction_players_template.xlsx")
@@ -133,9 +145,18 @@ export function ExcelImportDialog({
               mobileNumber: get("mobileNumber") ? String(get("mobileNumber")) : null,
               age: get("age") ? parseInt(String(get("age"))) || null : null,
               gender: normalizeGender(get("gender") as string),
-              yearsOfExperience: get("yearsOfExperience")
-                ? parseInt(String(get("yearsOfExperience"))) || null
-                : null,
+              experience: (() => {
+                const v = get("experience")
+                if (v === undefined || v === null) return null
+                const s = String(v).trim()
+                return s === "" ? null : s
+              })(),
+              lastPlayed: (() => {
+                const v = get("lastPlayed")
+                if (v === undefined || v === null) return null
+                const s = String(v).trim()
+                return s === "" ? null : s
+              })(),
               skillCategory: parseSkillCategory(get("skillCategory")),
               profilePhoto: get("profilePhoto") ? String(get("profilePhoto")) : null,
               basePrice: get("basePrice")

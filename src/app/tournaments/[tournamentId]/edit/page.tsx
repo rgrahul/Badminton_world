@@ -339,7 +339,8 @@ export default function EditTournamentPage({ params }: { params: { tournamentId:
                 <div className="space-y-3 rounded-lg border p-4">
                   <h3 className="font-semibold">Team roster (per team)</h3>
                   <p className="text-sm text-muted-foreground">
-                    Target male / female / kid counts for every team when building full rosters.
+                    Male + female + kid is the full squad per team, <span className="font-medium text-foreground">including the captain</span>.
+                    Auctions fill the spots not taken by the captain.
                   </p>
                   <div className="grid grid-cols-3 gap-3">
                     <div className="space-y-1">
