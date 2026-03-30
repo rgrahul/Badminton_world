@@ -1,6 +1,7 @@
 import { PrismaClient, SkillCategory, Gender } from "@prisma/client"
 import fs from "fs"
 import path from "path"
+import { KEY_STRENGTH_MAX_LEN } from "../src/lib/playerKeyStrength"
 
 const prisma = new PrismaClient()
 
@@ -69,6 +70,7 @@ interface ParsedPlayer {
   skillCategory: SkillCategory | null
   experience: string | null
   lastPlayed: string | null
+  keyStrength: string | null
   profilePhoto: string | null
 }
 
@@ -103,6 +105,19 @@ function getExperience(expStr: string | undefined): string | null {
 function getLastPlayed(lastPlayedStr: string | undefined): string | null {
   if (!lastPlayedStr) return null
   return lastPlayedStr.trim() || null
+}
+
+const KEY_STRENGTH_CSV_COL =
+  "What is your key strength/shot that can turn a match in your favour?" as const
+
+/**
+ * Key strength from CSV; trimmed and capped to match Player.keyStrength / API.
+ */
+function getKeyStrength(raw: string | undefined): string | null {
+  if (!raw) return null
+  const t = raw.trim()
+  if (!t) return null
+  return t.length > KEY_STRENGTH_MAX_LEN ? t.slice(0, KEY_STRENGTH_MAX_LEN) : t
 }
 
 /**
@@ -164,6 +179,7 @@ async function main() {
         skillCategory: parseSkillCategory(row["Self-Assessed Skill Rating (Our Society level)"]),
         experience: getExperience(row["Years/months of playing experience"]),
         lastPlayed: getLastPlayed(row["Last Played"]),
+        keyStrength: getKeyStrength(row[KEY_STRENGTH_CSV_COL]),
         profilePhoto: row["Profile Photo (will be used for auction)"]?.trim() || null,
       }
 
@@ -196,6 +212,7 @@ async function main() {
             skillCategory: player.skillCategory,
             experience: player.experience,
             lastPlayed: player.lastPlayed,
+            keyStrength: player.keyStrength,
             profilePhoto: player.profilePhoto,
           },
         })
