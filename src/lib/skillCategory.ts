@@ -24,7 +24,7 @@ export function skillCategoryLabel(value: SkillCategory | null | undefined): str
 export const SKILL_CATEGORY_BADGE_CLASSES: Record<SkillCategory, string> = {
   BEGINNER: "bg-teal-100 text-teal-900",
   INTERMEDIATE: "bg-sky-100 text-sky-900",
-  INTERMEDIATE_PLUS: "bg-violet-100 text-violet-900",
+  INTERMEDIATE_PLUS: "bg-fuchsia-100 text-fuchsia-900",
   ADVANCED: "bg-amber-100 text-amber-950",
 }
 
