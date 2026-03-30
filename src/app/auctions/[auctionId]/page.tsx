@@ -121,6 +121,26 @@ export default function AuctionPage({ params }: { params: { auctionId: string } 
       })
 
       if (response.ok) {
+        const payload = await response.json().catch(() => null)
+        const d = payload?.data as
+          | {
+              teamsSynced?: number
+              teamsSyncSkippedConflict?: boolean
+            }
+          | undefined
+        if (newStatus === "COMPLETED" && d) {
+          if (d.teamsSyncSkippedConflict) {
+            alert(
+              "Auction completed. The tournament already had teams with those names, so creating teams from the auction was skipped. Verify rosters if needed.",
+              "Notice"
+            )
+          } else if (typeof d.teamsSynced === "number" && d.teamsSynced > 0) {
+            alert(
+              `Auction completed. ${d.teamsSynced} tournament team(s) were created with their sold players.`,
+              "Success"
+            )
+          }
+        }
         await fetchAuction()
       } else {
         const data = await response.json()

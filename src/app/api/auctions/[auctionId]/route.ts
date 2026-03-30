@@ -4,6 +4,8 @@ import { auth } from "@/lib/auth"
 import { AuctionRepository } from "@/lib/db/repositories/AuctionRepository"
 import { errorResponse, successResponse } from "@/lib/api/responses"
 import { getTournamentCaptainPlayerIds } from "@/lib/tournamentCaptainPlayers"
+import { prisma } from "@/lib/db/client"
+import { syncAuctionTeamsToTournament } from "@/lib/auctionSyncTeamsToTournament"
 
 const updateSchema = z.object({
   name: z.string().min(1).optional(),
@@ -62,6 +64,39 @@ export async function PATCH(request: NextRequest, { params }: { params: { auctio
     const parsed = updateSchema.safeParse(body)
     if (!parsed.success) {
       return errorResponse(parsed.error.errors[0].message, 400)
+    }
+
+    const isCompleting =
+      parsed.data.status === "COMPLETED" && auction.status !== "COMPLETED"
+
+    if (isCompleting && auction.tournamentId) {
+      try {
+        const syncResult = await prisma.$transaction(async (tx) => {
+          const syncRes = await syncAuctionTeamsToTournament(params.auctionId, {
+            tx,
+            requireSoldPlayers: false,
+            skipOnTeamNameConflict: true,
+          })
+          if (!syncRes.ok) {
+            throw new Error(syncRes.error)
+          }
+          await tx.auction.update({
+            where: { id: params.auctionId },
+            data: parsed.data,
+          })
+          return syncRes
+        })
+
+        const updated = await AuctionRepository.findById(params.auctionId)
+        return successResponse({
+          auction: updated,
+          teamsSynced: syncResult.teamsCreated,
+          teamsSyncSkippedConflict: Boolean(syncResult.skippedDueToConflict),
+        })
+      } catch (err) {
+        const message = err instanceof Error ? err.message : "Failed to complete auction"
+        return errorResponse(message, 400)
+      }
     }
 
     const updated = await AuctionRepository.update(params.auctionId, parsed.data)
