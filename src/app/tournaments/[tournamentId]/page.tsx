@@ -58,10 +58,6 @@ interface TeamPlayerInfo {
 interface Team {
   id: string
   name: string
-  teamSize: number
-  requiredMale: number
-  requiredFemale: number
-  requiredKid: number
   logoUrl: string | null
   captainId: string | null
   captain: { id: string; name: string } | null
@@ -148,6 +144,9 @@ interface Tournament {
   format?: string
   numberOfGroups?: number
   qualifyPerGroup?: number
+  teamRequiredMale: number
+  teamRequiredFemale: number
+  teamRequiredKid: number
   status: string
   createdAt: string
   matches: Match[]
@@ -1482,6 +1481,28 @@ export default function TournamentDetailPage({ params }: { params: { tournamentI
                     <div>
                       <CardTitle>Teams ({tournament._count.teams})</CardTitle>
                       <CardDescription>Teams in this tournament</CardDescription>
+                      {(tournament.teamRequiredMale +
+                        tournament.teamRequiredFemale +
+                        tournament.teamRequiredKid) > 0 && (
+                        <p className="text-sm text-muted-foreground mt-2 flex flex-wrap items-center gap-1.5">
+                          <span className="font-medium text-foreground">Target roster (each team):</span>
+                          {tournament.teamRequiredMale > 0 && (
+                            <span className="inline-flex rounded-full px-2 py-0.5 text-xs font-medium bg-blue-100 text-blue-800">
+                              {tournament.teamRequiredMale}M
+                            </span>
+                          )}
+                          {tournament.teamRequiredFemale > 0 && (
+                            <span className="inline-flex rounded-full px-2 py-0.5 text-xs font-medium bg-pink-100 text-pink-800">
+                              {tournament.teamRequiredFemale}F
+                            </span>
+                          )}
+                          {tournament.teamRequiredKid > 0 && (
+                            <span className="inline-flex rounded-full px-2 py-0.5 text-xs font-medium bg-amber-100 text-amber-800">
+                              {tournament.teamRequiredKid}K
+                            </span>
+                          )}
+                        </p>
+                      )}
                     </div>
                     {canManage && (
                       <Link href={`/tournaments/${tournament.id}/teams/new`}>
@@ -1529,27 +1550,10 @@ export default function TournamentDetailPage({ params }: { params: { tournamentI
                                     </span>
                                   </div>
                                   {team.captain && (
-                                    <div className="text-xs text-amber-800 mb-1">
+                                    <div className="text-xs text-amber-800">
                                       Captain: <span className="font-medium">{team.captain.name}</span>
                                     </div>
                                   )}
-                                  <div className="flex flex-wrap gap-1.5">
-                                    {team.requiredMale > 0 && (
-                                      <span className="inline-flex items-center rounded-full px-2 py-0.5 text-xs font-medium bg-blue-100 text-blue-800">
-                                        {team.requiredMale}M
-                                      </span>
-                                    )}
-                                    {team.requiredFemale > 0 && (
-                                      <span className="inline-flex items-center rounded-full px-2 py-0.5 text-xs font-medium bg-pink-100 text-pink-800">
-                                        {team.requiredFemale}F
-                                      </span>
-                                    )}
-                                    {team.requiredKid > 0 && (
-                                      <span className="inline-flex items-center rounded-full px-2 py-0.5 text-xs font-medium bg-amber-100 text-amber-800">
-                                        {team.requiredKid}K
-                                      </span>
-                                    )}
-                                  </div>
                                 </div>
                               </div>
                               <div className="flex items-center gap-2 flex-shrink-0 ml-4">

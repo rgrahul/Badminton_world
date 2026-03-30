@@ -30,6 +30,9 @@ const createTournamentSchema = z.object({
   defaultSetsCount: z.number().int().min(1).max(5).optional(),
   defaultPointsToWin: z.number().int().min(1).optional(),
   defaultDeuceCap: z.number().int().min(1).optional(),
+  teamRequiredMale: z.number().int().min(0).optional(),
+  teamRequiredFemale: z.number().int().min(0).optional(),
+  teamRequiredKid: z.number().int().min(0).optional(),
 })
 
 export async function POST(request: NextRequest) {

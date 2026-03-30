@@ -213,6 +213,9 @@ async function main() {
       requiresTeams: true,
       format: "KNOCKOUT_ONLY",
       status: "UPCOMING",
+      teamRequiredMale: MALES_PER_TEAM,
+      teamRequiredFemale: FEMALES_PER_TEAM,
+      teamRequiredKid: 0,
       ...TOURNAMENT_DEFAULTS,
     },
   })
@@ -231,10 +234,6 @@ async function main() {
       data: {
         name: teamName,
         tournamentId: tournament.id,
-        teamSize: 4,
-        requiredMale: 3,
-        requiredFemale: 1,
-        requiredKid: 0,
       },
     })
 

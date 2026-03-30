@@ -43,6 +43,9 @@ export default function NewTournamentPage() {
     defaultSetsCount: 3,
     defaultPointsToWin: 21,
     defaultDeuceCap: 30,
+    teamRequiredMale: 0,
+    teamRequiredFemale: 0,
+    teamRequiredKid: 0,
   })
 
   const isStructuredFormat = formData.format === "LEAGUE_KNOCKOUT" || formData.format === "KNOCKOUT_ONLY"
@@ -90,6 +93,11 @@ export default function NewTournamentPage() {
       const payload: Record<string, any> = { ...formData }
       if (!payload.titlePhoto) delete payload.titlePhoto
       // Clean up fields not relevant to the format
+      if (!formData.requiresTeams) {
+        delete payload.teamRequiredMale
+        delete payload.teamRequiredFemale
+        delete payload.teamRequiredKid
+      }
       if (!formData.requiresTeams || formData.format === "CUSTOM") {
         delete payload.format
         delete payload.numberOfGroups
@@ -364,6 +372,77 @@ export default function NewTournamentPage() {
                     </span>
                   </div>
                 </div>
+
+                {/* Team roster composition (when teams enabled) */}
+                {formData.requiresTeams && (
+                  <div className="space-y-4 bg-gradient-to-br from-blue-50 to-blue-100 p-4 rounded-lg border-2 border-blue-200">
+                    <Label className="text-blue-800 font-bold flex items-center gap-1 text-lg">
+                      <span>👥</span> Team roster (same for every team)
+                    </Label>
+                    <p className="text-sm text-blue-700">
+                      How many male, female, and kid players each team must have when you build full rosters (not auction mode).
+                    </p>
+                    <div className="grid grid-cols-3 gap-3">
+                      <div className="space-y-1">
+                        <Label htmlFor="teamRequiredMale" className="text-blue-700 text-xs font-semibold">
+                          Male
+                        </Label>
+                        <Input
+                          id="teamRequiredMale"
+                          type="number"
+                          min={0}
+                          value={formData.teamRequiredMale}
+                          onChange={(e) =>
+                            setFormData({
+                              ...formData,
+                              teamRequiredMale: parseInt(e.target.value, 10) || 0,
+                            })
+                          }
+                          disabled={isLoading}
+                          className="border-2"
+                        />
+                      </div>
+                      <div className="space-y-1">
+                        <Label htmlFor="teamRequiredFemale" className="text-blue-700 text-xs font-semibold">
+                          Female
+                        </Label>
+                        <Input
+                          id="teamRequiredFemale"
+                          type="number"
+                          min={0}
+                          value={formData.teamRequiredFemale}
+                          onChange={(e) =>
+                            setFormData({
+                              ...formData,
+                              teamRequiredFemale: parseInt(e.target.value, 10) || 0,
+                            })
+                          }
+                          disabled={isLoading}
+                          className="border-2"
+                        />
+                      </div>
+                      <div className="space-y-1">
+                        <Label htmlFor="teamRequiredKid" className="text-blue-700 text-xs font-semibold">
+                          Kid
+                        </Label>
+                        <Input
+                          id="teamRequiredKid"
+                          type="number"
+                          min={0}
+                          value={formData.teamRequiredKid}
+                          onChange={(e) =>
+                            setFormData({
+                              ...formData,
+                              teamRequiredKid: parseInt(e.target.value, 10) || 0,
+                            })
+                          }
+                          disabled={isLoading}
+                          className="border-2"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                )}
 
                 {/* Tournament Format (only when teams enabled) */}
                 {formData.requiresTeams && (

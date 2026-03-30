@@ -148,6 +148,11 @@ model Tournament {
   defaultPointsToWin  Int?  @default(21)
   defaultDeuceCap     Int?  @default(30)
 
+  /// Target roster composition for every team in this tournament (used when building rosters).
+  teamRequiredMale    Int   @default(0)
+  teamRequiredFemale  Int   @default(0)
+  teamRequiredKid     Int   @default(0)
+
   // Metadata
   createdById       String?
   createdBy         User?       @relation(fields: [createdById], references: [id])
@@ -391,10 +396,6 @@ model Team {
   id              String      @id @default(cuid())
   name            String
   tournamentId    String
-  teamSize        Int
-  requiredMale    Int
-  requiredFemale  Int
-  requiredKid     Int
   logoUrl         String?
   captainId       String?
   captain         Player?     @relation("TeamCaptain", fields: [captainId], references: [id], onDelete: SetNull)

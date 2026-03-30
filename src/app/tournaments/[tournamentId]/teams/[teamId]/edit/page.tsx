@@ -1,6 +1,7 @@
 "use client"
 
 import { useEffect, useState } from "react"
+import Link from "next/link"
 import { useRouter } from "next/navigation"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -11,6 +12,7 @@ import { TeamPlayerPicker } from "@/components/team/TeamPlayerPicker"
 import { TeamCaptainSelect } from "@/components/team/TeamCaptainSelect"
 import { useAlertDialog } from "@/hooks/useAlertDialog"
 import { toGoogleDriveDisplayUrl } from "@/lib/googleDriveImageUrl"
+import { compositionTeamSize, compositionRulesFromTournament } from "@/lib/tournamentTeamComposition"
 
 interface TeamPlayer {
   playerId: string
@@ -24,12 +26,17 @@ interface TeamPlayer {
 interface Team {
   id: string
   name: string
-  teamSize: number
-  requiredMale: number
-  requiredFemale: number
-  requiredKid: number
   logoUrl: string | null
   captainId: string | null
+  playersAddedViaAuction: boolean
+  captain: { id: string; name: string } | null
+  tournament: {
+    id: string
+    name: string
+    teamRequiredMale: number
+    teamRequiredFemale: number
+    teamRequiredKid: number
+  }
   players: TeamPlayer[]
 }
 
@@ -44,26 +51,31 @@ export default function EditTeamPage({
   const [isFetching, setIsFetching] = useState(true)
   const [error, setError] = useState("")
 
-  const [formData, setFormData] = useState({
-    name: "",
-    requiredMale: 0,
-    requiredFemale: 0,
-    requiredKid: 0,
+  const [formData, setFormData] = useState({ name: "" })
+  const [composition, setComposition] = useState({
+    teamRequiredMale: 0,
+    teamRequiredFemale: 0,
+    teamRequiredKid: 0,
   })
+  const [tournamentName, setTournamentName] = useState("")
 
   const [selectedPlayerIds, setSelectedPlayerIds] = useState<string[]>([])
   const [captainId, setCaptainId] = useState<string | null>(null)
+  const [captainPreview, setCaptainPreview] = useState<{ id: string; name: string } | null>(null)
+  const [playersAddedViaAuction, setPlayersAddedViaAuction] = useState(false)
   const [logoPreview, setLogoPreview] = useState<string | null>(null)
   const [logoBase64, setLogoBase64] = useState<string | null>(null)
 
-  const teamSize = formData.requiredMale + formData.requiredFemale + formData.requiredKid
+  const targetTeamSize = compositionTeamSize(composition)
+  const compositionRules = compositionRulesFromTournament(composition)
 
   useEffect(() => {
+    if (playersAddedViaAuction) return
     if (selectedPlayerIds.length === 0) return
     if (captainId && !selectedPlayerIds.includes(captainId)) {
       setCaptainId(null)
     }
-  }, [selectedPlayerIds, captainId])
+  }, [selectedPlayerIds, captainId, playersAddedViaAuction])
 
   const handleLogoUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0]
@@ -104,14 +116,17 @@ export default function EditTeamPage({
       }
 
       const team: Team = data.data.team
-      setFormData({
-        name: team.name,
-        requiredMale: team.requiredMale,
-        requiredFemale: team.requiredFemale,
-        requiredKid: team.requiredKid,
+      setFormData({ name: team.name })
+      setTournamentName(team.tournament.name)
+      setComposition({
+        teamRequiredMale: team.tournament.teamRequiredMale,
+        teamRequiredFemale: team.tournament.teamRequiredFemale,
+        teamRequiredKid: team.tournament.teamRequiredKid,
       })
       setSelectedPlayerIds(team.players.map((tp) => tp.playerId))
       setCaptainId(team.captainId ?? null)
+      setCaptainPreview(team.captain ? { id: team.captain.id, name: team.captain.name } : null)
+      setPlayersAddedViaAuction(team.playersAddedViaAuction ?? false)
       if (team.logoUrl) {
         setLogoPreview(team.logoUrl)
         setLogoBase64(team.logoUrl)
@@ -132,17 +147,22 @@ export default function EditTeamPage({
       return
     }
 
-    if (teamSize === 0) {
-      alert("Team size must be greater than 0. Set composition rules.", "Validation Error")
-      return
-    }
+    if (!playersAddedViaAuction) {
+      if (targetTeamSize === 0) {
+        alert(
+          "This tournament has no roster composition set. Edit the tournament first.",
+          "Validation Error"
+        )
+        return
+      }
 
-    if (selectedPlayerIds.length !== teamSize) {
-      alert(
-        `Please select exactly ${teamSize} players. Currently selected: ${selectedPlayerIds.length}`,
-        "Validation Error"
-      )
-      return
+      if (selectedPlayerIds.length !== targetTeamSize) {
+        alert(
+          `Please select exactly ${targetTeamSize} players. Currently selected: ${selectedPlayerIds.length}`,
+          "Validation Error"
+        )
+        return
+      }
     }
 
     setIsLoading(true)
@@ -155,13 +175,10 @@ export default function EditTeamPage({
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
             name: formData.name,
-            teamSize,
-            requiredMale: formData.requiredMale,
-            requiredFemale: formData.requiredFemale,
-            requiredKid: formData.requiredKid,
             playerIds: selectedPlayerIds,
             logoUrl: logoBase64 || null,
             captainId,
+            playersAddedViaAuction,
           }),
         }
       )
@@ -271,90 +288,102 @@ export default function EditTeamPage({
                 </div>
               </div>
 
-              {/* Composition Rules */}
-              <div className="space-y-4 bg-gradient-to-br from-blue-50 to-blue-100 p-4 rounded-lg border-2 border-blue-200">
+              {/* Players added via Auction */}
+              <div className="flex items-center gap-3 bg-gradient-to-br from-orange-50 to-orange-100 p-4 rounded-lg border border-orange-200">
+                <input
+                  type="checkbox"
+                  id="editAuctionMode"
+                  checked={playersAddedViaAuction}
+                  onChange={(e) => setPlayersAddedViaAuction(e.target.checked)}
+                  disabled={isLoading}
+                  className="w-4 h-4 rounded border-orange-300 text-orange-600 focus:ring-orange-500"
+                />
+                <Label htmlFor="editAuctionMode" className="text-orange-800 font-semibold cursor-pointer">
+                  Players added via Auction
+                </Label>
+                {playersAddedViaAuction && (
+                  <span className="text-xs text-orange-600 ml-auto">Composition validation relaxed</span>
+                )}
+              </div>
+
+              {/* Tournament roster target (read-only) */}
+              <div
+                className={`space-y-4 bg-gradient-to-br from-blue-50 to-blue-100 p-4 rounded-lg border-2 border-blue-200 ${playersAddedViaAuction ? "opacity-50" : ""}`}
+              >
                 <h3 className="font-bold text-blue-800 flex items-center gap-2 text-lg">
-                  Composition Rules
+                  Tournament roster target
+                  {playersAddedViaAuction && (
+                    <span className="text-xs font-normal text-blue-500">(optional in auction mode)</span>
+                  )}
                 </h3>
-                <div className="grid grid-cols-3 gap-4">
-                  <div className="space-y-2">
-                    <Label htmlFor="requiredMale" className="text-blue-700 font-semibold">
-                      Required Male
-                    </Label>
-                    <Input
-                      id="requiredMale"
-                      type="number"
-                      min="0"
-                      value={formData.requiredMale}
-                      onChange={(e) =>
-                        setFormData({ ...formData, requiredMale: parseInt(e.target.value) || 0 })
-                      }
-                      disabled={isLoading}
-                      className="border-2 focus:border-blue-500"
-                    />
+                {targetTeamSize === 0 ?
+                  <div className="text-sm text-blue-900 space-y-2">
+                    <p>No composition is set for this tournament yet.</p>
+                    <Link
+                      href={`/tournaments/${params.tournamentId}/edit`}
+                      className="inline-flex text-blue-700 font-semibold underline"
+                    >
+                      Edit tournament
+                    </Link>
                   </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="requiredFemale" className="text-blue-700 font-semibold">
-                      Required Female
-                    </Label>
-                    <Input
-                      id="requiredFemale"
-                      type="number"
-                      min="0"
-                      value={formData.requiredFemale}
-                      onChange={(e) =>
-                        setFormData({ ...formData, requiredFemale: parseInt(e.target.value) || 0 })
-                      }
-                      disabled={isLoading}
-                      className="border-2 focus:border-blue-500"
-                    />
-                  </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="requiredKid" className="text-blue-700 font-semibold">
-                      Required Kid
-                    </Label>
-                    <Input
-                      id="requiredKid"
-                      type="number"
-                      min="0"
-                      value={formData.requiredKid}
-                      onChange={(e) =>
-                        setFormData({ ...formData, requiredKid: parseInt(e.target.value) || 0 })
-                      }
-                      disabled={isLoading}
-                      className="border-2 focus:border-blue-500"
-                    />
-                  </div>
-                </div>
-                <div className="text-sm text-blue-700 font-medium bg-blue-50 rounded p-2">
-                  Total Team Size: <span className="font-bold">{teamSize}</span> players
-                </div>
+                : <>
+                    <p className="text-sm text-blue-800">
+                      Applies to every team in <span className="font-semibold">{tournamentName}</span>.
+                    </p>
+                    <div className="grid grid-cols-3 gap-4">
+                      <div className="rounded-lg bg-white/80 border border-blue-200 p-3 text-center">
+                        <div className="text-xl font-bold text-blue-700">{composition.teamRequiredMale}</div>
+                        <div className="text-xs text-blue-600 font-medium">Male</div>
+                      </div>
+                      <div className="rounded-lg bg-white/80 border border-pink-200 p-3 text-center">
+                        <div className="text-xl font-bold text-pink-700">{composition.teamRequiredFemale}</div>
+                        <div className="text-xs text-pink-600 font-medium">Female</div>
+                      </div>
+                      <div className="rounded-lg bg-white/80 border border-amber-200 p-3 text-center">
+                        <div className="text-xl font-bold text-amber-700">{composition.teamRequiredKid}</div>
+                        <div className="text-xs text-amber-600 font-medium">Kid</div>
+                      </div>
+                    </div>
+                    <div className="text-sm text-blue-700 font-medium bg-blue-50 rounded p-2">
+                      Target squad size: <span className="font-bold">{targetTeamSize}</span> players
+                    </div>
+                  </>
+                }
+              </div>
+
+              {/* Team captain — before roster selection, separate from player picker */}
+              <div className="space-y-4 bg-gradient-to-br from-amber-50 to-amber-100 p-4 rounded-lg border-2 border-amber-200">
+                <TeamCaptainSelect
+                  mode={
+                    playersAddedViaAuction || selectedPlayerIds.length === 0 ? "allPlayers" : "roster"
+                  }
+                  selectedPlayerIds={selectedPlayerIds}
+                  value={captainId}
+                  onChange={(id) => {
+                    setCaptainId(id)
+                    setCaptainPreview(null)
+                  }}
+                  captainPreview={captainPreview}
+                  disabled={isLoading}
+                />
               </div>
 
               {/* Player Selection */}
-              <div className="space-y-4 bg-gradient-to-br from-green-50 to-green-100 p-4 rounded-lg border-2 border-green-200">
+              <div
+                className={`space-y-4 bg-gradient-to-br from-green-50 to-green-100 p-4 rounded-lg border-2 border-green-200 ${playersAddedViaAuction ? "opacity-50" : ""}`}
+              >
                 <h3 className="font-bold text-green-800 flex items-center gap-2 text-lg">
                   Select Players
+                  {playersAddedViaAuction && (
+                    <span className="text-xs font-normal text-green-600">(optional in auction mode)</span>
+                  )}
                 </h3>
                 <TeamPlayerPicker
                   selectedPlayerIds={selectedPlayerIds}
                   onSelectionChange={setSelectedPlayerIds}
-                  compositionRules={{
-                    requiredMale: formData.requiredMale,
-                    requiredFemale: formData.requiredFemale,
-                    requiredKid: formData.requiredKid,
-                  }}
+                  compositionRules={compositionRules}
                   tournamentId={params.tournamentId}
                 />
-                <div className="mt-4 p-3 rounded-lg border border-amber-200 bg-amber-50/80">
-                  <TeamCaptainSelect
-                    mode={selectedPlayerIds.length === 0 ? "allPlayers" : "roster"}
-                    selectedPlayerIds={selectedPlayerIds}
-                    value={captainId}
-                    onChange={setCaptainId}
-                    disabled={isLoading}
-                  />
-                </div>
               </div>
 
               {/* Actions */}

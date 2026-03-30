@@ -27,6 +27,9 @@ export class TournamentRepository {
     defaultSetsCount?: number
     defaultPointsToWin?: number
     defaultDeuceCap?: number
+    teamRequiredMale?: number
+    teamRequiredFemale?: number
+    teamRequiredKid?: number
     createdById?: string
   }) {
     return prisma.tournament.create({
