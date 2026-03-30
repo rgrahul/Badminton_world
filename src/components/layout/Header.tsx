@@ -30,8 +30,8 @@ export function Header() {
         <div className="flex h-16 items-center justify-between">
           <Link href="/matches" className="text-xl md:text-2xl font-black flex items-center gap-2 hover:scale-105 transition-transform">
             <span className="text-2xl md:text-3xl">🏸</span>
-            <span className="hidden sm:inline">Badminton Scorer</span>
-            <span className="sm:hidden">Scorer</span>
+            <span className="hidden sm:inline">ABL 2026</span>
+            <span className="sm:hidden">ABL</span>
           </Link>
 
           {/* Desktop Navigation */}
