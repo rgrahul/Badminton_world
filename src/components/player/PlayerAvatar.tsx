@@ -1,12 +1,18 @@
 "use client"
 
-import { useState } from "react"
+import { useEffect, useMemo, useState } from "react"
 import { Dialog, DialogContent } from "@/components/ui/dialog"
+import { getDriveImageSrcWithThumbnailFallback } from "@/lib/googleDriveImageUrl"
 
 interface PlayerAvatarProps {
   name: string
   photoUrl?: string | null
   size?: "sm" | "md" | "lg" | "xl" | "2xl"
+  /**
+   * For Google Drive photos: load `uc?export=view` first, then fall back to thumbnail on error.
+   * Use on spotlight / profile; keep false for small list avatars.
+   */
+  preferDriveFullImage?: boolean
 }
 
 const sizeClasses = {
@@ -17,11 +23,42 @@ const sizeClasses = {
   "2xl": "w-44 h-44 sm:w-56 sm:h-56 text-5xl sm:text-6xl",
 }
 
-export function PlayerAvatar({ name, photoUrl, size = "md" }: PlayerAvatarProps) {
+export function PlayerAvatar({
+  name,
+  photoUrl,
+  size = "md",
+  preferDriveFullImage = false,
+}: PlayerAvatarProps) {
   const [open, setOpen] = useState(false)
-  const [imgError, setImgError] = useState(false)
 
-  const showImage = photoUrl && !imgError
+  const strategy = useMemo(() => {
+    if (!photoUrl) return null
+    if (preferDriveFullImage) return getDriveImageSrcWithThumbnailFallback(photoUrl)
+    return { primary: photoUrl as string }
+  }, [photoUrl, preferDriveFullImage])
+
+  type LoadStage = "primary" | "fallback" | "failed"
+  const [loadStage, setLoadStage] = useState<LoadStage>("primary")
+
+  useEffect(() => {
+    setLoadStage("primary")
+  }, [strategy])
+
+  const resolvedSrc =
+    !strategy ? null
+    : loadStage === "primary" ? strategy.primary
+    : loadStage === "fallback" ? (strategy.thumbnailFallback ?? null)
+    : null
+
+  const handleImgError = () => {
+    if (loadStage === "primary" && strategy?.thumbnailFallback) {
+      setLoadStage("fallback")
+      return
+    }
+    setLoadStage("failed")
+  }
+
+  const showImage = Boolean(photoUrl && loadStage !== "failed" && resolvedSrc)
 
   return (
     <>
@@ -30,18 +67,24 @@ export function PlayerAvatar({ name, photoUrl, size = "md" }: PlayerAvatarProps)
         onClick={showImage ? (e) => { e.preventDefault(); e.stopPropagation(); setOpen(true) } : undefined}
       >
         {showImage ? (
-          <img src={photoUrl} alt="" className="w-full h-full object-cover" referrerPolicy="no-referrer" onError={() => setImgError(true)} />
+          <img
+            src={resolvedSrc!}
+            alt=""
+            className="w-full h-full object-cover"
+            referrerPolicy="no-referrer"
+            onError={handleImgError}
+          />
         ) : (
           name.charAt(0).toUpperCase()
         )}
       </div>
 
-      {showImage && (
+      {showImage && resolvedSrc && (
         <Dialog open={open} onOpenChange={setOpen}>
           <DialogContent className="max-w-sm p-2 border-2 border-blue-500 bg-gray-950 [&>button]:bg-black/70 [&>button]:text-white [&>button]:rounded-full [&>button]:p-1 [&>button]:top-2 [&>button]:right-2 [&>button]:hover:bg-black/90">
             <div className="flex flex-col items-center">
               <img
-                src={photoUrl}
+                src={resolvedSrc}
                 alt={name}
                 className="w-full max-h-[70vh] object-contain rounded-lg"
                 referrerPolicy="no-referrer"

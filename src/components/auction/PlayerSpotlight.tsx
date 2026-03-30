@@ -32,7 +32,12 @@ export function PlayerSpotlight({ player, currentBid }: PlayerSpotlightProps) {
       <CardContent className="p-6 flex flex-col items-center text-center">
         {/* Player Photo */}
         <div className="mb-4">
-          <PlayerAvatar name={p.name} photoUrl={p.profilePhoto} size="2xl" />
+          <PlayerAvatar
+            name={p.name}
+            photoUrl={p.profilePhoto}
+            size="2xl"
+            preferDriveFullImage
+          />
         </div>
 
         {/* Player Name */}

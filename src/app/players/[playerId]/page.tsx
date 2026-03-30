@@ -148,7 +148,12 @@ export default function PlayerDetailPage({ params }: { params: { playerId: strin
           <CardHeader>
             <div className="flex items-start justify-between">
               <div className="flex items-center gap-3 sm:gap-4">
-                <PlayerAvatar name={player.name} photoUrl={player.profilePhoto} size="xl" />
+                <PlayerAvatar
+                  name={player.name}
+                  photoUrl={player.profilePhoto}
+                  size="xl"
+                  preferDriveFullImage
+                />
                 <div>
                   <CardTitle className="text-xl sm:text-2xl">{player.name}</CardTitle>
                   {player.gender && <div className="mt-2">{getGenderBadge(player.gender)}</div>}
