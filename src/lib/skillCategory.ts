@@ -33,6 +33,30 @@ export function skillCategoryBadgeClassName(value: SkillCategory | null | undefi
   return SKILL_CATEGORY_BADGE_CLASSES[value] ?? "bg-slate-100 text-slate-800"
 }
 
+/** UI filter on auction dashboards: all, uncategorized, or a specific tier */
+export type SkillCategoryFilter = "ALL" | "NONE" | SkillCategory
+
+export const SKILL_CATEGORY_FILTER_OPTIONS: SkillCategoryFilter[] = [
+  "ALL",
+  ...SKILL_CATEGORY_VALUES,
+  "NONE",
+]
+
+export function skillCategoryFilterLabel(value: SkillCategoryFilter): string {
+  if (value === "ALL") return "All"
+  if (value === "NONE") return "No level"
+  return skillCategoryLabel(value)
+}
+
+export function matchesSkillCategoryFilter(
+  filter: SkillCategoryFilter,
+  skillCategory: SkillCategory | string | null | undefined
+): boolean {
+  if (filter === "ALL") return true
+  if (filter === "NONE") return skillCategory == null || skillCategory === ""
+  return skillCategory === filter
+}
+
 const NORMALIZE = (s: string) =>
   s
     .trim()

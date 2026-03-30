@@ -8,6 +8,12 @@ import { Card, CardContent } from "@/components/ui/card"
 import { PlayerAvatar } from "@/components/player/PlayerAvatar"
 import { AuctionPlayerWithDetails } from "@/types/auction"
 import { SkillCategoryBadge } from "@/components/player/SkillCategoryBadge"
+import {
+  type SkillCategoryFilter,
+  matchesSkillCategoryFilter,
+  SKILL_CATEGORY_FILTER_OPTIONS,
+  skillCategoryFilterLabel,
+} from "@/lib/skillCategory"
 
 interface AuctionPlayerGridProps {
   players: AuctionPlayerWithDetails[]
@@ -20,10 +26,12 @@ export function AuctionPlayerGrid({ players, onReset }: AuctionPlayerGridProps) 
   const [search, setSearch] = useState("")
   const [statusFilter, setStatusFilter] = useState<StatusFilter>("ALL")
   const [genderFilter, setGenderFilter] = useState<string>("ALL")
+  const [skillCategoryFilter, setSkillCategoryFilter] = useState<SkillCategoryFilter>("ALL")
 
   const filtered = players.filter((ap) => {
     if (statusFilter !== "ALL" && ap.status !== statusFilter) return false
     if (genderFilter !== "ALL" && ap.player.gender !== genderFilter) return false
+    if (!matchesSkillCategoryFilter(skillCategoryFilter, ap.player.skillCategory)) return false
     if (search && !ap.player.name.toLowerCase().includes(search.toLowerCase())) return false
     return true
   })
@@ -56,7 +64,7 @@ export function AuctionPlayerGrid({ players, onReset }: AuctionPlayerGridProps) 
             </Button>
           ))}
         </div>
-        <div className="flex gap-1">
+        <div className="flex gap-1 flex-wrap">
           {["ALL", "MALE", "FEMALE"].map((g) => (
             <Button
               key={g}
@@ -65,6 +73,19 @@ export function AuctionPlayerGrid({ players, onReset }: AuctionPlayerGridProps) 
               onClick={() => setGenderFilter(g)}
             >
               {g === "ALL" ? "All" : g.charAt(0) + g.slice(1).toLowerCase()}
+            </Button>
+          ))}
+        </div>
+        <div className="flex gap-1 flex-wrap w-full sm:w-auto">
+          <span className="text-xs text-muted-foreground self-center mr-1 shrink-0">Skill</span>
+          {SKILL_CATEGORY_FILTER_OPTIONS.map((f) => (
+            <Button
+              key={f}
+              variant={skillCategoryFilter === f ? "default" : "outline"}
+              size="sm"
+              onClick={() => setSkillCategoryFilter(f)}
+            >
+              {skillCategoryFilterLabel(f)}
             </Button>
           ))}
         </div>
