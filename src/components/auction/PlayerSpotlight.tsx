@@ -37,6 +37,7 @@ export function PlayerSpotlight({ player, currentBid }: PlayerSpotlightProps) {
             photoUrl={p.profilePhoto}
             size="2xl"
             preferDriveFullImage
+            frame="rounded"
           />
         </div>
 
