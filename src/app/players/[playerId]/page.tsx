@@ -21,6 +21,7 @@ interface Player {
   gender?: string | null
   experience?: string | null
   lastPlayed?: string | null
+  keyStrength?: string | null
   skillCategory?: string | null
   profilePhoto?: string | null
   createdAt: string
@@ -220,6 +221,15 @@ export default function PlayerDetailPage({ params }: { params: { playerId: strin
                 <div className="text-sm text-muted-foreground">Last played (badminton)</div>
                 <div className="font-medium whitespace-pre-wrap break-words text-sm">
                   {player.lastPlayed?.trim() ? player.lastPlayed : "N/A"}
+                </div>
+              </div>
+              <div className="mt-4 min-w-0">
+                <div className="text-sm text-muted-foreground">Key strength</div>
+                <p className="text-xs text-muted-foreground mb-1">
+                  Strength or shot that can turn a match in your favour.
+                </p>
+                <div className="font-medium whitespace-pre-wrap break-words text-sm">
+                  {player.keyStrength?.trim() ? player.keyStrength : "N/A"}
                 </div>
               </div>
             </div>

@@ -65,6 +65,11 @@ export function PlayerSpotlight({ player, currentBid }: PlayerSpotlightProps) {
               Last played: {p.lastPlayed}
             </span>
           )}
+          {p.keyStrength?.trim() && (
+            <span className="inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium bg-violet-100 text-violet-900 max-w-full line-clamp-2">
+              Key strength: {p.keyStrength}
+            </span>
+          )}
         </div>
 
         {/* Base Price */}

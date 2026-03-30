@@ -40,6 +40,8 @@ model Player {
   experience        String?
   /// Free text, e.g. when the player last played badminton.
   lastPlayed          String?
+  /// Key strength or shot that can turn a match in the player's favour.
+  keyStrength         String?
   skillCategory     SkillCategory?
   profilePhoto      String?   // URL or base64 encoded image
 

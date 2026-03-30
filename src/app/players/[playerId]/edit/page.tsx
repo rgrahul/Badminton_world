@@ -27,6 +27,7 @@ import { SkillCategorySelect } from "@/components/player/SkillCategorySelect"
 import { Textarea } from "@/components/ui/textarea"
 import { EXPERIENCE_MAX_LEN } from "@/lib/playerExperience"
 import { LAST_PLAYED_MAX_LEN } from "@/lib/playerLastPlayed"
+import { KEY_STRENGTH_MAX_LEN } from "@/lib/playerKeyStrength"
 
 interface Player {
   id: string
@@ -37,6 +38,7 @@ interface Player {
   gender?: string | null
   experience?: string | null
   lastPlayed?: string | null
+  keyStrength?: string | null
   skillCategory?: SkillCategory | null
   profilePhoto?: string | null
 }
@@ -55,6 +57,7 @@ export default function EditPlayerPage({ params }: { params: { playerId: string 
     gender: "",
     experience: "",
     lastPlayed: "",
+    keyStrength: "",
     skillCategory: null as SkillCategory | null,
     profilePhoto: "",
   })
@@ -80,6 +83,7 @@ export default function EditPlayerPage({ params }: { params: { playerId: string 
           gender: player.gender || "",
           experience: player.experience ?? "",
           lastPlayed: player.lastPlayed ?? "",
+          keyStrength: player.keyStrength ?? "",
           skillCategory: player.skillCategory ?? null,
           profilePhoto: player.profilePhoto || "",
         })
@@ -174,6 +178,10 @@ export default function EditPlayerPage({ params }: { params: { playerId: string 
           formData.experience.trim() === "" ? null : formData.experience.trim().slice(0, EXPERIENCE_MAX_LEN),
         lastPlayed:
           formData.lastPlayed.trim() === "" ? null : formData.lastPlayed.trim().slice(0, LAST_PLAYED_MAX_LEN),
+        keyStrength:
+          formData.keyStrength.trim() === ""
+            ? null
+            : formData.keyStrength.trim().slice(0, KEY_STRENGTH_MAX_LEN),
         skillCategory: formData.skillCategory,
         profilePhoto: formData.profilePhoto || null,
       }
@@ -355,6 +363,30 @@ export default function EditPlayerPage({ params }: { params: { playerId: string 
                       className="border-2 focus:border-purple-500 resize-y min-h-[64px]"
                     />
                     <p className="text-xs text-purple-600">Optional. When they last played, up to {LAST_PLAYED_MAX_LEN} characters.</p>
+                  </div>
+
+                  <div className="space-y-2 md:col-span-2">
+                    <Label htmlFor="keyStrength" className="text-purple-700 font-semibold">
+                      Key strength
+                    </Label>
+                    <Textarea
+                      id="keyStrength"
+                      value={formData.keyStrength}
+                      onChange={(e) =>
+                        setFormData({
+                          ...formData,
+                          keyStrength: e.target.value.slice(0, KEY_STRENGTH_MAX_LEN),
+                        })
+                      }
+                      placeholder="e.g. Jump smash, tight net game"
+                      maxLength={KEY_STRENGTH_MAX_LEN}
+                      rows={2}
+                      className="border-2 focus:border-purple-500 resize-y min-h-[64px]"
+                    />
+                    <p className="text-xs text-purple-600">
+                      Optional. Key strength or shot that can turn a match in your favour. Up to{" "}
+                      {KEY_STRENGTH_MAX_LEN} characters.
+                    </p>
                   </div>
 
                   <SkillCategorySelect

@@ -70,17 +70,6 @@ export default async function Home() {
             </Button>
           </Link>
         </div>
-
-        {/* Demo Credentials */}
-        <Card className="mt-12 bg-gradient-to-r from-blue-50 to-green-50 border-blue-200">
-          <CardContent className="p-6">
-            <p className="font-semibold text-gray-800 mb-2">🔑 Demo Credentials</p>
-            <div className="space-y-1 text-sm">
-              <p className="text-gray-700"><span className="font-medium">Email:</span> umpire@example.com</p>
-              <p className="text-gray-700"><span className="font-medium">Password:</span> password123</p>
-            </div>
-          </CardContent>
-        </Card>
       </div>
     </main>
   )
