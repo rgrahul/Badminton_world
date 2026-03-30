@@ -365,6 +365,23 @@ export default function EditTeamPage({
                 </div>
               </div>
 
+              {/* Team captain — before roster selection, separate from player picker */}
+              <div className="space-y-4 bg-gradient-to-br from-amber-50 to-amber-100 p-4 rounded-lg border-2 border-amber-200">
+                <TeamCaptainSelect
+                  mode={
+                    playersAddedViaAuction || selectedPlayerIds.length === 0 ? "allPlayers" : "roster"
+                  }
+                  selectedPlayerIds={selectedPlayerIds}
+                  value={captainId}
+                  onChange={(id) => {
+                    setCaptainId(id)
+                    setCaptainPreview(null)
+                  }}
+                  captainPreview={captainPreview}
+                  disabled={isLoading}
+                />
+              </div>
+
               {/* Player Selection */}
               <div
                 className={`space-y-4 bg-gradient-to-br from-green-50 to-green-100 p-4 rounded-lg border-2 border-green-200 ${playersAddedViaAuction ? "opacity-50" : ""}`}
@@ -385,21 +402,6 @@ export default function EditTeamPage({
                   }}
                   tournamentId={params.tournamentId}
                 />
-                <div className="mt-4 p-3 rounded-lg border border-amber-200 bg-amber-50/80">
-                  <TeamCaptainSelect
-                    mode={
-                      playersAddedViaAuction || selectedPlayerIds.length === 0 ? "allPlayers" : "roster"
-                    }
-                    selectedPlayerIds={selectedPlayerIds}
-                    value={captainId}
-                    onChange={(id) => {
-                      setCaptainId(id)
-                      setCaptainPreview(null)
-                    }}
-                    captainPreview={captainPreview}
-                    disabled={isLoading}
-                  />
-                </div>
               </div>
 
               {/* Actions */}

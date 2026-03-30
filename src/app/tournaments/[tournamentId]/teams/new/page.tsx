@@ -280,6 +280,17 @@ export default function NewTeamPage({ params }: { params: { tournamentId: string
                 </div>
               </div>
 
+              {/* Team captain — before roster selection, separate from player picker */}
+              <div className="space-y-4 bg-gradient-to-br from-amber-50 to-amber-100 p-4 rounded-lg border-2 border-amber-200">
+                <TeamCaptainSelect
+                  mode={isAuctionMode ? "allPlayers" : "roster"}
+                  selectedPlayerIds={selectedPlayerIds}
+                  value={captainId}
+                  onChange={setCaptainId}
+                  disabled={isLoading}
+                />
+              </div>
+
               {/* Player Selection */}
               <div className="space-y-4 bg-gradient-to-br from-green-50 to-green-100 p-4 rounded-lg border-2 border-green-200">
                 <h3 className="font-bold text-green-800 flex items-center gap-2 text-lg">
@@ -295,15 +306,6 @@ export default function NewTeamPage({ params }: { params: { tournamentId: string
                   }}
                   tournamentId={params.tournamentId}
                 />
-                <div className="mt-4 p-3 rounded-lg border border-amber-200 bg-amber-50/80">
-                  <TeamCaptainSelect
-                    mode={isAuctionMode ? "allPlayers" : "roster"}
-                    selectedPlayerIds={selectedPlayerIds}
-                    value={captainId}
-                    onChange={setCaptainId}
-                    disabled={isLoading}
-                  />
-                </div>
               </div>
 
               {/* Actions */}
