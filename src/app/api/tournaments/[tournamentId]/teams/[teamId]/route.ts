@@ -9,13 +9,14 @@ import { derivePlayerCategory } from "@/lib/constants"
 
 const updateTeamSchema = z.object({
   name: z.string().min(1).optional(),
-  teamSize: z.number().int().positive().optional(),
+  teamSize: z.number().int().min(0).optional(),
   requiredMale: z.number().int().min(0).optional(),
   requiredFemale: z.number().int().min(0).optional(),
   requiredKid: z.number().int().min(0).optional(),
   playerIds: z.array(z.string()).optional(),
   logoUrl: z.string().nullable().optional(),
   captainId: z.string().min(1).nullable().optional(),
+  playersAddedViaAuction: z.boolean().optional(),
 })
 
 export async function GET(
@@ -72,6 +73,8 @@ export async function PATCH(
     const validatedData = updateTeamSchema.parse(body)
 
     const hasPlayerUpdate = validatedData.playerIds !== undefined
+    const auctionMode =
+      validatedData.playersAddedViaAuction ?? existingTeam.playersAddedViaAuction ?? false
 
     if (hasPlayerUpdate) {
       // Full update with players
@@ -81,18 +84,20 @@ export async function PATCH(
       const requiredKid = validatedData.requiredKid ?? existingTeam.requiredKid
       const playerIds = validatedData.playerIds!
 
-      if (requiredMale + requiredFemale + requiredKid !== teamSize) {
-        return errorResponse(
-          "Composition mismatch: required Male + Female + Kid must equal team size",
-          400
-        )
-      }
+      if (!auctionMode) {
+        if (requiredMale + requiredFemale + requiredKid !== teamSize) {
+          return errorResponse(
+            "Composition mismatch: required Male + Female + Kid must equal team size",
+            400
+          )
+        }
 
-      if (playerIds.length !== teamSize) {
-        return errorResponse(
-          `Player count (${playerIds.length}) must equal team size (${teamSize})`,
-          400
-        )
+        if (playerIds.length !== teamSize) {
+          return errorResponse(
+            `Player count (${playerIds.length}) must equal team size (${teamSize})`,
+            400
+          )
+        }
       }
 
       const uniqueIds = new Set(playerIds)
@@ -117,27 +122,29 @@ export async function PATCH(
         category: derivePlayerCategory(player!.age, player!.gender),
       }))
 
-      const maleCount = playerAssignments.filter((p) => p.category === "MALE").length
-      const femaleCount = playerAssignments.filter((p) => p.category === "FEMALE").length
-      const kidCount = playerAssignments.filter((p) => p.category === "KID").length
+      if (!auctionMode) {
+        const maleCount = playerAssignments.filter((p) => p.category === "MALE").length
+        const femaleCount = playerAssignments.filter((p) => p.category === "FEMALE").length
+        const kidCount = playerAssignments.filter((p) => p.category === "KID").length
 
-      if (maleCount !== requiredMale) {
-        return errorResponse(
-          `Male player count (${maleCount}) does not match required (${requiredMale})`,
-          400
-        )
-      }
-      if (femaleCount !== requiredFemale) {
-        return errorResponse(
-          `Female player count (${femaleCount}) does not match required (${requiredFemale})`,
-          400
-        )
-      }
-      if (kidCount !== requiredKid) {
-        return errorResponse(
-          `Kid player count (${kidCount}) does not match required (${requiredKid})`,
-          400
-        )
+        if (maleCount !== requiredMale) {
+          return errorResponse(
+            `Male player count (${maleCount}) does not match required (${requiredMale})`,
+            400
+          )
+        }
+        if (femaleCount !== requiredFemale) {
+          return errorResponse(
+            `Female player count (${femaleCount}) does not match required (${requiredFemale})`,
+            400
+          )
+        }
+        if (kidCount !== requiredKid) {
+          return errorResponse(
+            `Kid player count (${kidCount}) does not match required (${requiredKid})`,
+            400
+          )
+        }
       }
 
       let resolvedCaptain: string | null
@@ -145,17 +152,19 @@ export async function PATCH(
         resolvedCaptain = validatedData.captainId
       } else {
         const prev = existingTeam.captainId
-        resolvedCaptain = prev && playerIds.includes(prev) ? prev : null
+        if (auctionMode) {
+          resolvedCaptain = prev
+        } else {
+          resolvedCaptain = prev && playerIds.includes(prev) ? prev : null
+        }
       }
       if (resolvedCaptain) {
-        if (playerIds.length > 0 && !playerIds.includes(resolvedCaptain)) {
-          return errorResponse("Captain must be on the team roster", 400)
+        const cap = await PlayerRepository.findById(resolvedCaptain)
+        if (!cap) {
+          return errorResponse("Captain player not found", 400)
         }
-        if (playerIds.length === 0) {
-          const cap = await PlayerRepository.findById(resolvedCaptain)
-          if (!cap) {
-            return errorResponse("Captain player not found", 400)
-          }
+        if (!auctionMode && playerIds.length > 0 && !playerIds.includes(resolvedCaptain)) {
+          return errorResponse("Captain must be on the team roster", 400)
         }
       }
 
@@ -167,6 +176,7 @@ export async function PATCH(
         requiredKid,
         logoUrl: validatedData.logoUrl,
         captainId: resolvedCaptain,
+        playersAddedViaAuction: validatedData.playersAddedViaAuction ?? existingTeam.playersAddedViaAuction,
         players: playerAssignments,
       })
 
@@ -198,17 +208,21 @@ export async function PATCH(
           const onTeam = await prisma.teamPlayer.findFirst({
             where: { teamId: params.teamId, playerId: validatedData.captainId },
           })
-          if (rosterCount > 0 && !onTeam) {
+          const allowOffRosterCaptain =
+            auctionMode || rosterCount === 0
+          if (!allowOffRosterCaptain && !onTeam) {
             return errorResponse("Captain must be a player on this team", 400)
           }
-          if (rosterCount === 0) {
-            const cap = await PlayerRepository.findById(validatedData.captainId)
-            if (!cap) {
-              return errorResponse("Captain player not found", 400)
-            }
+          const cap = await PlayerRepository.findById(validatedData.captainId)
+          if (!cap) {
+            return errorResponse("Captain player not found", 400)
           }
         }
         updateData.captainId = validatedData.captainId
+      }
+
+      if (validatedData.playersAddedViaAuction !== undefined) {
+        updateData.playersAddedViaAuction = validatedData.playersAddedViaAuction
       }
 
       const team = await TeamRepository.update(params.teamId, updateData as import("@/lib/db/repositories/TeamRepository").UpdateTeamInput)

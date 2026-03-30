@@ -30,6 +30,8 @@ interface Team {
   requiredKid: number
   logoUrl: string | null
   captainId: string | null
+  playersAddedViaAuction: boolean
+  captain: { id: string; name: string } | null
   players: TeamPlayer[]
 }
 
@@ -53,17 +55,21 @@ export default function EditTeamPage({
 
   const [selectedPlayerIds, setSelectedPlayerIds] = useState<string[]>([])
   const [captainId, setCaptainId] = useState<string | null>(null)
+  const [captainPreview, setCaptainPreview] = useState<{ id: string; name: string } | null>(null)
+  const [playersAddedViaAuction, setPlayersAddedViaAuction] = useState(false)
   const [logoPreview, setLogoPreview] = useState<string | null>(null)
   const [logoBase64, setLogoBase64] = useState<string | null>(null)
 
-  const teamSize = formData.requiredMale + formData.requiredFemale + formData.requiredKid
+  const compositionTeamSize = formData.requiredMale + formData.requiredFemale + formData.requiredKid
+  const actualTeamSize = playersAddedViaAuction ? selectedPlayerIds.length : compositionTeamSize
 
   useEffect(() => {
+    if (playersAddedViaAuction) return
     if (selectedPlayerIds.length === 0) return
     if (captainId && !selectedPlayerIds.includes(captainId)) {
       setCaptainId(null)
     }
-  }, [selectedPlayerIds, captainId])
+  }, [selectedPlayerIds, captainId, playersAddedViaAuction])
 
   const handleLogoUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0]
@@ -112,6 +118,8 @@ export default function EditTeamPage({
       })
       setSelectedPlayerIds(team.players.map((tp) => tp.playerId))
       setCaptainId(team.captainId ?? null)
+      setCaptainPreview(team.captain ? { id: team.captain.id, name: team.captain.name } : null)
+      setPlayersAddedViaAuction(team.playersAddedViaAuction ?? false)
       if (team.logoUrl) {
         setLogoPreview(team.logoUrl)
         setLogoBase64(team.logoUrl)
@@ -132,17 +140,19 @@ export default function EditTeamPage({
       return
     }
 
-    if (teamSize === 0) {
-      alert("Team size must be greater than 0. Set composition rules.", "Validation Error")
-      return
-    }
+    if (!playersAddedViaAuction) {
+      if (compositionTeamSize === 0) {
+        alert("Team size must be greater than 0. Set composition rules.", "Validation Error")
+        return
+      }
 
-    if (selectedPlayerIds.length !== teamSize) {
-      alert(
-        `Please select exactly ${teamSize} players. Currently selected: ${selectedPlayerIds.length}`,
-        "Validation Error"
-      )
-      return
+      if (selectedPlayerIds.length !== compositionTeamSize) {
+        alert(
+          `Please select exactly ${compositionTeamSize} players. Currently selected: ${selectedPlayerIds.length}`,
+          "Validation Error"
+        )
+        return
+      }
     }
 
     setIsLoading(true)
@@ -155,13 +165,14 @@ export default function EditTeamPage({
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
             name: formData.name,
-            teamSize,
+            teamSize: actualTeamSize,
             requiredMale: formData.requiredMale,
             requiredFemale: formData.requiredFemale,
             requiredKid: formData.requiredKid,
             playerIds: selectedPlayerIds,
             logoUrl: logoBase64 || null,
             captainId,
+            playersAddedViaAuction,
           }),
         }
       )
@@ -271,10 +282,33 @@ export default function EditTeamPage({
                 </div>
               </div>
 
+              {/* Players added via Auction */}
+              <div className="flex items-center gap-3 bg-gradient-to-br from-orange-50 to-orange-100 p-4 rounded-lg border border-orange-200">
+                <input
+                  type="checkbox"
+                  id="editAuctionMode"
+                  checked={playersAddedViaAuction}
+                  onChange={(e) => setPlayersAddedViaAuction(e.target.checked)}
+                  disabled={isLoading}
+                  className="w-4 h-4 rounded border-orange-300 text-orange-600 focus:ring-orange-500"
+                />
+                <Label htmlFor="editAuctionMode" className="text-orange-800 font-semibold cursor-pointer">
+                  Players added via Auction
+                </Label>
+                {playersAddedViaAuction && (
+                  <span className="text-xs text-orange-600 ml-auto">Composition validation relaxed</span>
+                )}
+              </div>
+
               {/* Composition Rules */}
-              <div className="space-y-4 bg-gradient-to-br from-blue-50 to-blue-100 p-4 rounded-lg border-2 border-blue-200">
+              <div
+                className={`space-y-4 bg-gradient-to-br from-blue-50 to-blue-100 p-4 rounded-lg border-2 border-blue-200 ${playersAddedViaAuction ? "opacity-50" : ""}`}
+              >
                 <h3 className="font-bold text-blue-800 flex items-center gap-2 text-lg">
                   Composition Rules
+                  {playersAddedViaAuction && (
+                    <span className="text-xs font-normal text-blue-500">(optional in auction mode)</span>
+                  )}
                 </h3>
                 <div className="grid grid-cols-3 gap-4">
                   <div className="space-y-2">
@@ -327,14 +361,19 @@ export default function EditTeamPage({
                   </div>
                 </div>
                 <div className="text-sm text-blue-700 font-medium bg-blue-50 rounded p-2">
-                  Total Team Size: <span className="font-bold">{teamSize}</span> players
+                  Total Team Size: <span className="font-bold">{compositionTeamSize}</span> players
                 </div>
               </div>
 
               {/* Player Selection */}
-              <div className="space-y-4 bg-gradient-to-br from-green-50 to-green-100 p-4 rounded-lg border-2 border-green-200">
+              <div
+                className={`space-y-4 bg-gradient-to-br from-green-50 to-green-100 p-4 rounded-lg border-2 border-green-200 ${playersAddedViaAuction ? "opacity-50" : ""}`}
+              >
                 <h3 className="font-bold text-green-800 flex items-center gap-2 text-lg">
                   Select Players
+                  {playersAddedViaAuction && (
+                    <span className="text-xs font-normal text-green-600">(optional in auction mode)</span>
+                  )}
                 </h3>
                 <TeamPlayerPicker
                   selectedPlayerIds={selectedPlayerIds}
@@ -348,10 +387,16 @@ export default function EditTeamPage({
                 />
                 <div className="mt-4 p-3 rounded-lg border border-amber-200 bg-amber-50/80">
                   <TeamCaptainSelect
-                    mode={selectedPlayerIds.length === 0 ? "allPlayers" : "roster"}
+                    mode={
+                      playersAddedViaAuction || selectedPlayerIds.length === 0 ? "allPlayers" : "roster"
+                    }
                     selectedPlayerIds={selectedPlayerIds}
                     value={captainId}
-                    onChange={setCaptainId}
+                    onChange={(id) => {
+                      setCaptainId(id)
+                      setCaptainPreview(null)
+                    }}
+                    captainPreview={captainPreview}
                     disabled={isLoading}
                   />
                 </div>

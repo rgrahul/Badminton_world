@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect, useState } from "react"
+import { useEffect, useMemo, useState } from "react"
 import { Label } from "@/components/ui/label"
 import {
   Select,
@@ -18,6 +18,8 @@ type Props = {
   onChange: (captainId: string | null) => void
   disabled?: boolean
   id?: string
+  /** Ensures the current captain appears in the list before `/api/players` loads or when they are off-roster but valid (e.g. auction mode). */
+  captainPreview?: { id: string; name: string } | null
 }
 
 export function TeamCaptainSelect({
@@ -27,6 +29,7 @@ export function TeamCaptainSelect({
   onChange,
   disabled,
   id = "team-captain",
+  captainPreview = null,
 }: Props) {
   const [players, setPlayers] = useState<{ id: string; name: string }[]>([])
 
@@ -59,9 +62,19 @@ export function TeamCaptainSelect({
       [...players].sort((a, b) => a.name.localeCompare(b.name, undefined, { sensitivity: "base" }))
     : roster
 
-  const v = value && options.some((p) => p.id === value) ? value : "__none__"
+  const optionsWithCaptain = useMemo(() => {
+    if (value && captainPreview?.id === value && !options.some((p) => p.id === value)) {
+      return [...options, { id: captainPreview.id, name: captainPreview.name }].sort((a, b) =>
+        a.name.localeCompare(b.name, undefined, { sensitivity: "base" })
+      )
+    }
+    return options
+  }, [options, value, captainPreview])
 
-  const emptyOptions = options.length === 0
+  const v =
+    value && optionsWithCaptain.some((p) => p.id === value) ? value : "__none__"
+
+  const emptyOptions = optionsWithCaptain.length === 0
   const placeholder =
     emptyOptions ?
       mode === "allPlayers" ?
@@ -77,14 +90,14 @@ export function TeamCaptainSelect({
       <Select
         value={v}
         onValueChange={(s) => onChange(s === "__none__" ? null : s)}
-        disabled={disabled || emptyOptions}
+        disabled={disabled || (emptyOptions && !value)}
       >
         <SelectTrigger id={id} className="border-2 border-amber-200">
           <SelectValue placeholder={placeholder} />
         </SelectTrigger>
         <SelectContent>
           <SelectItem value="__none__">No captain</SelectItem>
-          {options.map((p) => (
+          {optionsWithCaptain.map((p) => (
             <SelectItem key={p.id} value={p.id}>
               {p.name}
             </SelectItem>
