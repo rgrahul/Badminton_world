@@ -37,7 +37,7 @@ model Player {
   mobileNumber      String?
   age               Int?
   gender            Gender?
-  yearsOfExperience Int?
+  experience        String?
   skillCategory     SkillCategory?
   profilePhoto      String?   // URL or base64 encoded image
 

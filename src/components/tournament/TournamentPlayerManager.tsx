@@ -247,7 +247,16 @@ export function TournamentPlayerManager({ tournamentId, onPlayersChanged }: Tour
               mobileNumber: row.mobileNumber || row.MobileNumber || row.mobile || row.Mobile || null,
               age: row.age || row.Age ? parseInt(row.age || row.Age) : null,
               gender,
-              yearsOfExperience: row.yearsOfExperience || row.YearsOfExperience || row.experience ? parseInt(row.yearsOfExperience || row.YearsOfExperience || row.experience) : null,
+              experience: (() => {
+                const raw =
+                  row.experience ??
+                  row.Experience ??
+                  row.yearsOfExperience ??
+                  row.YearsOfExperience
+                if (raw === undefined || raw === null) return null
+                const s = String(raw).trim()
+                return s === "" ? null : s
+              })(),
               skillCategory: parseSkillCategory(
                 row.skillCategory ??
                   row.SkillCategory ??
@@ -601,7 +610,7 @@ export function TournamentPlayerManager({ tournamentId, onPlayersChanged }: Tour
               {/* Column info */}
               <div className="text-xs text-muted-foreground">
                 <p className="font-medium text-foreground mb-1">Required: name</p>
-                <p>Optional: email, mobileNumber, age, gender (MALE/FEMALE), yearsOfExperience, skillCategory (or skillRating/rating/level)</p>
+                <p>Optional: email, mobileNumber, age, gender (MALE/FEMALE), experience (or yearsOfExperience), skillCategory (or skillRating/rating/level)</p>
                 <p className="mt-1 text-green-700">Existing players (matched by name) will be reused, not duplicated.</p>
               </div>
 

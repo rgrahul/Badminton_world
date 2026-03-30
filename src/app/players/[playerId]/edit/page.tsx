@@ -24,6 +24,8 @@ import {
 import { useAlertDialog } from "@/hooks/useAlertDialog"
 import type { SkillCategory } from "@prisma/client"
 import { SkillCategorySelect } from "@/components/player/SkillCategorySelect"
+import { Textarea } from "@/components/ui/textarea"
+import { EXPERIENCE_MAX_LEN } from "@/lib/playerExperience"
 
 interface Player {
   id: string
@@ -32,7 +34,7 @@ interface Player {
   mobileNumber?: string | null
   age?: number | null
   gender?: string | null
-  yearsOfExperience?: number | null
+  experience?: string | null
   skillCategory?: SkillCategory | null
   profilePhoto?: string | null
 }
@@ -49,7 +51,7 @@ export default function EditPlayerPage({ params }: { params: { playerId: string 
     mobileNumber: "",
     age: "",
     gender: "",
-    yearsOfExperience: "",
+    experience: "",
     skillCategory: null as SkillCategory | null,
     profilePhoto: "",
   })
@@ -73,7 +75,7 @@ export default function EditPlayerPage({ params }: { params: { playerId: string 
           mobileNumber: player.mobileNumber || "",
           age: player.age?.toString() || "",
           gender: player.gender || "",
-          yearsOfExperience: player.yearsOfExperience?.toString() || "",
+          experience: player.experience ?? "",
           skillCategory: player.skillCategory ?? null,
           profilePhoto: player.profilePhoto || "",
         })
@@ -164,7 +166,8 @@ export default function EditPlayerPage({ params }: { params: { playerId: string 
         mobileNumber: formData.mobileNumber || null,
         age: formData.age ? parseInt(formData.age) : null,
         gender: formData.gender || null,
-        yearsOfExperience: formData.yearsOfExperience ? parseInt(formData.yearsOfExperience) : null,
+        experience:
+          formData.experience.trim() === "" ? null : formData.experience.trim().slice(0, EXPERIENCE_MAX_LEN),
         skillCategory: formData.skillCategory,
         profilePhoto: formData.profilePhoto || null,
       }
@@ -306,19 +309,25 @@ export default function EditPlayerPage({ params }: { params: { playerId: string 
                   <span>⭐</span> Experience and skill level
                 </h3>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div className="space-y-2">
-                    <Label htmlFor="yearsOfExperience" className="text-purple-700 font-semibold">Years of Experience</Label>
-                    <Input
-                      id="yearsOfExperience"
-                      type="number"
-                      min="0"
-                      value={formData.yearsOfExperience}
+                  <div className="space-y-2 md:col-span-2">
+                    <Label htmlFor="experience" className="text-purple-700 font-semibold">
+                      Experience
+                    </Label>
+                    <Textarea
+                      id="experience"
+                      value={formData.experience}
                       onChange={(e) =>
-                        setFormData({ ...formData, yearsOfExperience: e.target.value })
+                        setFormData({
+                          ...formData,
+                          experience: e.target.value.slice(0, EXPERIENCE_MAX_LEN),
+                        })
                       }
-                      placeholder="5"
-                      className="border-2 focus:border-purple-500"
+                      placeholder="e.g. 5+ years club play, state junior 2019"
+                      maxLength={EXPERIENCE_MAX_LEN}
+                      rows={3}
+                      className="border-2 focus:border-purple-500 resize-y min-h-[80px]"
                     />
+                    <p className="text-xs text-purple-600">Free text, up to {EXPERIENCE_MAX_LEN} characters.</p>
                   </div>
 
                   <SkillCategorySelect

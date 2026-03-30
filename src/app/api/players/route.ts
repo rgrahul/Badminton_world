@@ -4,6 +4,7 @@ import { PlayerRepository } from "@/lib/db/repositories/PlayerRepository"
 import { errorResponse, successResponse } from "@/lib/api/responses"
 import { z } from "zod"
 import { skillCategoryEnumSchema } from "@/lib/skillCategory"
+import { optionalExperienceSchema } from "@/lib/playerExperience"
 
 const createPlayerSchema = z.object({
   name: z.string().min(1, "Name is required"),
@@ -11,7 +12,7 @@ const createPlayerSchema = z.object({
   mobileNumber: z.string().optional().nullable(),
   age: z.number().int().positive().optional().nullable(),
   gender: z.enum(["MALE", "FEMALE", "OTHER"]).optional().nullable(),
-  yearsOfExperience: z.number().int().min(0).optional().nullable(),
+  experience: optionalExperienceSchema,
   skillCategory: skillCategoryEnumSchema.optional().nullable(),
   profilePhoto: z.string().optional().nullable(),
 })
