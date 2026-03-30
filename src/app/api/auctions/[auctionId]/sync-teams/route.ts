@@ -9,7 +9,6 @@ export async function POST(
   try {
     const result = await syncAuctionTeamsToTournament(params.auctionId, {
       requireSoldPlayers: true,
-      skipOnTeamNameConflict: false,
     })
 
     if (!result.ok) {
@@ -20,6 +19,7 @@ export async function POST(
       {
         teams: [],
         count: result.teamsCreated,
+        playersLinked: result.playersAddedToRosters,
       },
       201
     )

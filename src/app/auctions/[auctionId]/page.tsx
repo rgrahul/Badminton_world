@@ -125,20 +125,17 @@ export default function AuctionPage({ params }: { params: { auctionId: string } 
         const d = payload?.data as
           | {
               teamsSynced?: number
-              teamsSyncSkippedConflict?: boolean
+              playersLinked?: number
             }
           | undefined
         if (newStatus === "COMPLETED" && d) {
-          if (d.teamsSyncSkippedConflict) {
-            alert(
-              "Auction completed. The tournament already had teams with those names, so creating teams from the auction was skipped. Verify rosters if needed.",
-              "Notice"
-            )
-          } else if (typeof d.teamsSynced === "number" && d.teamsSynced > 0) {
-            alert(
-              `Auction completed. ${d.teamsSynced} tournament team(s) were created with their sold players.`,
-              "Success"
-            )
+          const created = typeof d.teamsSynced === "number" ? d.teamsSynced : 0
+          const linked = typeof d.playersLinked === "number" ? d.playersLinked : 0
+          if (created > 0 || linked > 0) {
+            const parts: string[] = []
+            if (created > 0) parts.push(`${created} new tournament team(s)`)
+            if (linked > 0) parts.push(`${linked} player(s) on tournament rosters`)
+            alert(`Auction completed. ${parts.join(", ")}.`, "Success")
           }
         }
         await fetchAuction()

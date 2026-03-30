@@ -75,7 +75,6 @@ export async function PATCH(request: NextRequest, { params }: { params: { auctio
           const syncRes = await syncAuctionTeamsToTournament(params.auctionId, {
             tx,
             requireSoldPlayers: false,
-            skipOnTeamNameConflict: true,
           })
           if (!syncRes.ok) {
             throw new Error(syncRes.error)
@@ -91,7 +90,7 @@ export async function PATCH(request: NextRequest, { params }: { params: { auctio
         return successResponse({
           auction: updated,
           teamsSynced: syncResult.teamsCreated,
-          teamsSyncSkippedConflict: Boolean(syncResult.skippedDueToConflict),
+          playersLinked: syncResult.playersAddedToRosters,
         })
       } catch (err) {
         const message = err instanceof Error ? err.message : "Failed to complete auction"
