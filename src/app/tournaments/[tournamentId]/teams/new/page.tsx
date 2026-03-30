@@ -1,6 +1,7 @@
 "use client"
 
 import { useState, useEffect } from "react"
+import Link from "next/link"
 import { useRouter } from "next/navigation"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -10,19 +11,22 @@ import { Header } from "@/components/layout/Header"
 import { TeamPlayerPicker } from "@/components/team/TeamPlayerPicker"
 import { TeamCaptainSelect } from "@/components/team/TeamCaptainSelect"
 import { useAlertDialog } from "@/hooks/useAlertDialog"
+import { compositionTeamSize, compositionRulesFromTournament } from "@/lib/tournamentTeamComposition"
 
 export default function NewTeamPage({ params }: { params: { tournamentId: string } }) {
   const router = useRouter()
   const { alert } = useAlertDialog()
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState("")
-
-  const [formData, setFormData] = useState({
-    name: "",
-    requiredMale: 0,
-    requiredFemale: 0,
-    requiredKid: 0,
+  const [tournamentLoading, setTournamentLoading] = useState(true)
+  const [tournamentName, setTournamentName] = useState("")
+  const [composition, setComposition] = useState({
+    teamRequiredMale: 0,
+    teamRequiredFemale: 0,
+    teamRequiredKid: 0,
   })
+
+  const [formData, setFormData] = useState({ name: "" })
 
   const [selectedPlayerIds, setSelectedPlayerIds] = useState<string[]>([])
   const [captainId, setCaptainId] = useState<string | null>(null)
@@ -30,7 +34,32 @@ export default function NewTeamPage({ params }: { params: { tournamentId: string
   const [logoBase64, setLogoBase64] = useState<string | null>(null)
   const [isAuctionMode, setIsAuctionMode] = useState(false)
 
-  const teamSize = formData.requiredMale + formData.requiredFemale + formData.requiredKid
+  const targetTeamSize = compositionTeamSize(composition)
+
+  useEffect(() => {
+    let cancelled = false
+    ;(async () => {
+      try {
+        const res = await fetch(`/api/tournaments/${params.tournamentId}`)
+        const data = await res.json()
+        if (cancelled || !res.ok) return
+        const t = data.data.tournament
+        setTournamentName(t.name || "")
+        setComposition({
+          teamRequiredMale: t.teamRequiredMale ?? 0,
+          teamRequiredFemale: t.teamRequiredFemale ?? 0,
+          teamRequiredKid: t.teamRequiredKid ?? 0,
+        })
+      } catch {
+        /* ignore */
+      } finally {
+        if (!cancelled) setTournamentLoading(false)
+      }
+    })()
+    return () => {
+      cancelled = true
+    }
+  }, [params.tournamentId])
 
   useEffect(() => {
     if (isAuctionMode) return
@@ -72,14 +101,17 @@ export default function NewTeamPage({ params }: { params: { tournamentId: string
     }
 
     if (!isAuctionMode) {
-      if (teamSize === 0) {
-        alert("Team size must be greater than 0. Set composition rules.", "Validation Error")
+      if (targetTeamSize === 0) {
+        alert(
+          "This tournament has no roster composition set. Edit the tournament and set required male / female / kid counts for each team.",
+          "Validation Error"
+        )
         return
       }
 
-      if (selectedPlayerIds.length !== teamSize) {
+      if (selectedPlayerIds.length !== targetTeamSize) {
         alert(
-          `Please select exactly ${teamSize} players. Currently selected: ${selectedPlayerIds.length}`,
+          `Please select exactly ${targetTeamSize} players. Currently selected: ${selectedPlayerIds.length}`,
           "Validation Error"
         )
         return
@@ -88,18 +120,12 @@ export default function NewTeamPage({ params }: { params: { tournamentId: string
 
     setIsLoading(true)
 
-    const actualTeamSize = isAuctionMode ? selectedPlayerIds.length : teamSize
-
     try {
       const response = await fetch(`/api/tournaments/${params.tournamentId}/teams`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           name: formData.name,
-          teamSize: actualTeamSize,
-          requiredMale: formData.requiredMale,
-          requiredFemale: formData.requiredFemale,
-          requiredKid: formData.requiredKid,
           playerIds: selectedPlayerIds,
           logoUrl: logoBase64 || undefined,
           skipCompositionValidation: isAuctionMode,
@@ -120,6 +146,8 @@ export default function NewTeamPage({ params }: { params: { tournamentId: string
       setIsLoading(false)
     }
   }
+
+  const compositionRules = compositionRulesFromTournament(composition)
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-green-50 via-blue-50 to-green-50">
@@ -155,7 +183,7 @@ export default function NewTeamPage({ params }: { params: { tournamentId: string
                   value={formData.name}
                   onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                   required
-                  disabled={isLoading}
+                  disabled={isLoading || tournamentLoading}
                   className="border-2 focus:border-yellow-500"
                 />
               </div>
@@ -201,6 +229,49 @@ export default function NewTeamPage({ params }: { params: { tournamentId: string
                 </div>
               </div>
 
+              {/* Tournament roster target (read-only) */}
+              <div className="space-y-4 bg-gradient-to-br from-blue-50 to-blue-100 p-4 rounded-lg border-2 border-blue-200">
+                <h3 className="font-bold text-blue-800 flex items-center gap-2 text-lg">
+                  Tournament roster target
+                </h3>
+                {tournamentLoading ?
+                  <p className="text-sm text-blue-700">Loading tournament…</p>
+                : targetTeamSize === 0 ?
+                  <div className="text-sm text-blue-900 space-y-2">
+                    <p>No composition is set for this tournament yet.</p>
+                    <Link
+                      href={`/tournaments/${params.tournamentId}/edit`}
+                      className="inline-flex text-blue-700 font-semibold underline"
+                    >
+                      Edit tournament
+                    </Link>
+                    <span className="text-blue-700"> to set required male / female / kid counts (or use “Players added via Auction”).</span>
+                  </div>
+                : <>
+                    <p className="text-sm text-blue-800">
+                      Applies to every team in <span className="font-semibold">{tournamentName}</span>. Change it on the tournament edit page.
+                    </p>
+                    <div className="grid grid-cols-3 gap-4">
+                      <div className="rounded-lg bg-white/80 border border-blue-200 p-3 text-center">
+                        <div className="text-xl font-bold text-blue-700">{composition.teamRequiredMale}</div>
+                        <div className="text-xs text-blue-600 font-medium">Male</div>
+                      </div>
+                      <div className="rounded-lg bg-white/80 border border-pink-200 p-3 text-center">
+                        <div className="text-xl font-bold text-pink-700">{composition.teamRequiredFemale}</div>
+                        <div className="text-xs text-pink-600 font-medium">Female</div>
+                      </div>
+                      <div className="rounded-lg bg-white/80 border border-amber-200 p-3 text-center">
+                        <div className="text-xl font-bold text-amber-700">{composition.teamRequiredKid}</div>
+                        <div className="text-xs text-amber-600 font-medium">Kid</div>
+                      </div>
+                    </div>
+                    <div className="text-sm text-blue-700 font-medium bg-blue-50 rounded p-2">
+                      Target squad size: <span className="font-bold">{targetTeamSize}</span> players
+                    </div>
+                  </>
+                }
+              </div>
+
               {/* Auction Mode Toggle */}
               <div className="flex items-center gap-3 bg-gradient-to-br from-orange-50 to-orange-100 p-4 rounded-lg border border-orange-200">
                 <input
@@ -219,67 +290,6 @@ export default function NewTeamPage({ params }: { params: { tournamentId: string
                 )}
               </div>
 
-              {/* Composition Rules */}
-              <div className={`space-y-4 bg-gradient-to-br from-blue-50 to-blue-100 p-4 rounded-lg border-2 border-blue-200 ${isAuctionMode ? "opacity-50" : ""}`}>
-                <h3 className="font-bold text-blue-800 flex items-center gap-2 text-lg">
-                  Composition Rules
-                  {isAuctionMode && <span className="text-xs font-normal text-blue-500">(optional in auction mode)</span>}
-                </h3>
-                <div className="grid grid-cols-3 gap-4">
-                  <div className="space-y-2">
-                    <Label htmlFor="requiredMale" className="text-blue-700 font-semibold">
-                      Required Male
-                    </Label>
-                    <Input
-                      id="requiredMale"
-                      type="number"
-                      min="0"
-                      value={formData.requiredMale}
-                      onChange={(e) =>
-                        setFormData({ ...formData, requiredMale: parseInt(e.target.value) || 0 })
-                      }
-                      disabled={isLoading}
-                      className="border-2 focus:border-blue-500"
-                    />
-                  </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="requiredFemale" className="text-blue-700 font-semibold">
-                      Required Female
-                    </Label>
-                    <Input
-                      id="requiredFemale"
-                      type="number"
-                      min="0"
-                      value={formData.requiredFemale}
-                      onChange={(e) =>
-                        setFormData({ ...formData, requiredFemale: parseInt(e.target.value) || 0 })
-                      }
-                      disabled={isLoading}
-                      className="border-2 focus:border-blue-500"
-                    />
-                  </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="requiredKid" className="text-blue-700 font-semibold">
-                      Required Kid
-                    </Label>
-                    <Input
-                      id="requiredKid"
-                      type="number"
-                      min="0"
-                      value={formData.requiredKid}
-                      onChange={(e) =>
-                        setFormData({ ...formData, requiredKid: parseInt(e.target.value) || 0 })
-                      }
-                      disabled={isLoading}
-                      className="border-2 focus:border-blue-500"
-                    />
-                  </div>
-                </div>
-                <div className="text-sm text-blue-700 font-medium bg-blue-50 rounded p-2">
-                  Total Team Size: <span className="font-bold">{teamSize}</span> players
-                </div>
-              </div>
-
               {/* Team captain — before roster selection, separate from player picker */}
               <div className="space-y-4 bg-gradient-to-br from-amber-50 to-amber-100 p-4 rounded-lg border-2 border-amber-200">
                 <TeamCaptainSelect
@@ -292,18 +302,19 @@ export default function NewTeamPage({ params }: { params: { tournamentId: string
               </div>
 
               {/* Player Selection */}
-              <div className="space-y-4 bg-gradient-to-br from-green-50 to-green-100 p-4 rounded-lg border-2 border-green-200">
+              <div
+                className={`space-y-4 bg-gradient-to-br from-green-50 to-green-100 p-4 rounded-lg border-2 border-green-200 ${isAuctionMode ? "opacity-50" : ""}`}
+              >
                 <h3 className="font-bold text-green-800 flex items-center gap-2 text-lg">
                   Select Players
+                  {isAuctionMode && (
+                    <span className="text-xs font-normal text-green-600">(optional in auction mode)</span>
+                  )}
                 </h3>
                 <TeamPlayerPicker
                   selectedPlayerIds={selectedPlayerIds}
                   onSelectionChange={setSelectedPlayerIds}
-                  compositionRules={{
-                    requiredMale: formData.requiredMale,
-                    requiredFemale: formData.requiredFemale,
-                    requiredKid: formData.requiredKid,
-                  }}
+                  compositionRules={compositionRules}
                   tournamentId={params.tournamentId}
                 />
               </div>
@@ -321,7 +332,7 @@ export default function NewTeamPage({ params }: { params: { tournamentId: string
                 </Button>
                 <Button
                   type="submit"
-                  disabled={isLoading}
+                  disabled={isLoading || tournamentLoading}
                   className="flex-1 bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 text-white shadow-lg hover:shadow-xl transition-all font-bold"
                 >
                   {isLoading ? "Creating..." : "Create Team"}

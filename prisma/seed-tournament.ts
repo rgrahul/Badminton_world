@@ -83,6 +83,9 @@ async function main() {
       defaultSetsCount: 3,
       defaultPointsToWin: 15,
       defaultDeuceCap: 20,
+      teamRequiredMale: 9,
+      teamRequiredFemale: 2,
+      teamRequiredKid: 0,
     },
   })
 
@@ -129,10 +132,6 @@ async function main() {
       data: {
         name: TEAM_NAMES[t],
         tournamentId: tournament.id,
-        teamSize: 11,
-        requiredMale: 9,
-        requiredFemale: 2,
-        requiredKid: 0,
         players: {
           create: [
             ...teamMales.map((p) => ({

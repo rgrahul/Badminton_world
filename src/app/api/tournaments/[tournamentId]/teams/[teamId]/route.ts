@@ -3,16 +3,14 @@ import { z } from "zod"
 import { auth } from "@/lib/auth"
 import { prisma } from "@/lib/db/client"
 import { TeamRepository } from "@/lib/db/repositories/TeamRepository"
+import { TournamentRepository } from "@/lib/db/repositories/TournamentRepository"
 import { PlayerRepository } from "@/lib/db/repositories/PlayerRepository"
 import { errorResponse, successResponse } from "@/lib/api/responses"
 import { derivePlayerCategory } from "@/lib/constants"
+import { compositionTeamSize } from "@/lib/tournamentTeamComposition"
 
 const updateTeamSchema = z.object({
   name: z.string().min(1).optional(),
-  teamSize: z.number().int().min(0).optional(),
-  requiredMale: z.number().int().min(0).optional(),
-  requiredFemale: z.number().int().min(0).optional(),
-  requiredKid: z.number().int().min(0).optional(),
   playerIds: z.array(z.string()).optional(),
   logoUrl: z.string().nullable().optional(),
   captainId: z.string().min(1).nullable().optional(),
@@ -77,24 +75,28 @@ export async function PATCH(
       validatedData.playersAddedViaAuction ?? existingTeam.playersAddedViaAuction ?? false
 
     if (hasPlayerUpdate) {
-      // Full update with players
-      const teamSize = validatedData.teamSize ?? existingTeam.teamSize
-      const requiredMale = validatedData.requiredMale ?? existingTeam.requiredMale
-      const requiredFemale = validatedData.requiredFemale ?? existingTeam.requiredFemale
-      const requiredKid = validatedData.requiredKid ?? existingTeam.requiredKid
+      const tournament = await TournamentRepository.findById(params.tournamentId)
+      if (!tournament) {
+        return errorResponse("Tournament not found", 404)
+      }
+
+      const requiredMale = tournament.teamRequiredMale
+      const requiredFemale = tournament.teamRequiredFemale
+      const requiredKid = tournament.teamRequiredKid
+      const targetTeamSize = compositionTeamSize(tournament)
       const playerIds = validatedData.playerIds!
 
       if (!auctionMode) {
-        if (requiredMale + requiredFemale + requiredKid !== teamSize) {
+        if (targetTeamSize === 0) {
           return errorResponse(
-            "Composition mismatch: required Male + Female + Kid must equal team size",
+            "This tournament has no team roster composition set. Edit the tournament first.",
             400
           )
         }
 
-        if (playerIds.length !== teamSize) {
+        if (playerIds.length !== targetTeamSize) {
           return errorResponse(
-            `Player count (${playerIds.length}) must equal team size (${teamSize})`,
+            `Player count (${playerIds.length}) must equal tournament team size (${targetTeamSize})`,
             400
           )
         }
@@ -170,10 +172,6 @@ export async function PATCH(
 
       const team = await TeamRepository.updateWithPlayers(params.teamId, {
         name: validatedData.name,
-        teamSize,
-        requiredMale,
-        requiredFemale,
-        requiredKid,
         logoUrl: validatedData.logoUrl,
         captainId: resolvedCaptain,
         playersAddedViaAuction: validatedData.playersAddedViaAuction ?? existingTeam.playersAddedViaAuction,
@@ -191,13 +189,8 @@ export async function PATCH(
 
       return successResponse({ team })
     } else {
-      // Metadata-only update (name, composition, captain)
       const updateData: Record<string, unknown> = {}
       if (validatedData.name !== undefined) updateData.name = validatedData.name
-      if (validatedData.teamSize !== undefined) updateData.teamSize = validatedData.teamSize
-      if (validatedData.requiredMale !== undefined) updateData.requiredMale = validatedData.requiredMale
-      if (validatedData.requiredFemale !== undefined) updateData.requiredFemale = validatedData.requiredFemale
-      if (validatedData.requiredKid !== undefined) updateData.requiredKid = validatedData.requiredKid
       if (validatedData.logoUrl !== undefined) updateData.logoUrl = validatedData.logoUrl
 
       if (validatedData.captainId !== undefined) {

@@ -63,8 +63,7 @@ const ABL_TEAMS: AblTeamRow[] = [
   },
 ]
 
-/** Declared squad size + composition; roster empty until auction / manual adds (matches create API with skipCompositionValidation). */
-const AUCTION_MODE_TEAM_SIZE = 11
+/** League roster targets (stored on tournament; same for every team). */
 const AUCTION_MODE_REQUIRED_MALE = 9
 const AUCTION_MODE_REQUIRED_FEMALE = 2
 const AUCTION_MODE_REQUIRED_KID = 0
@@ -106,6 +105,9 @@ async function main() {
       defaultSetsCount: 3,
       defaultPointsToWin: 15,
       defaultDeuceCap: 20,
+      teamRequiredMale: AUCTION_MODE_REQUIRED_MALE,
+      teamRequiredFemale: AUCTION_MODE_REQUIRED_FEMALE,
+      teamRequiredKid: AUCTION_MODE_REQUIRED_KID,
     },
   })
 
@@ -131,19 +133,11 @@ async function main() {
       update: {
         logoUrl: teamInfo.logoUrl,
         playersAddedViaAuction: true,
-        teamSize: AUCTION_MODE_TEAM_SIZE,
-        requiredMale: AUCTION_MODE_REQUIRED_MALE,
-        requiredFemale: AUCTION_MODE_REQUIRED_FEMALE,
-        requiredKid: AUCTION_MODE_REQUIRED_KID,
       },
       create: {
         name: teamInfo.name,
         logoUrl: teamInfo.logoUrl,
         tournamentId: tournament.id,
-        teamSize: AUCTION_MODE_TEAM_SIZE,
-        requiredMale: AUCTION_MODE_REQUIRED_MALE,
-        requiredFemale: AUCTION_MODE_REQUIRED_FEMALE,
-        requiredKid: AUCTION_MODE_REQUIRED_KID,
         playersAddedViaAuction: true,
       },
     })

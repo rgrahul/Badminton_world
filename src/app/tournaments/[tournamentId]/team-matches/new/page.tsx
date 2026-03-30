@@ -12,15 +12,12 @@ import { useAlertDialog } from "@/hooks/useAlertDialog"
 interface Team {
   id: string
   name: string
-  teamSize: number
-  requiredMale: number
-  requiredFemale: number
-  requiredKid: number
   players: {
     playerId: string
     category: string
     player: { id: string; name: string; age: number | null; gender: string | null }
   }[]
+  _count: { players: number }
 }
 
 export default function NewTeamMatchPage({ params }: { params: { tournamentId: string } }) {
@@ -243,7 +240,7 @@ export default function NewTeamMatchPage({ params }: { params: { tournamentId: s
                         <option value="">Select team...</option>
                         {teams.map((t) => (
                           <option key={t.id} value={t.id}>
-                            {t.name} ({t.teamSize} players)
+                            {t.name} ({t._count.players} players)
                           </option>
                         ))}
                       </select>
@@ -264,7 +261,7 @@ export default function NewTeamMatchPage({ params }: { params: { tournamentId: s
                         <option value="">Select team...</option>
                         {teams.map((t) => (
                           <option key={t.id} value={t.id}>
-                            {t.name} ({t.teamSize} players)
+                            {t.name} ({t._count.players} players)
                           </option>
                         ))}
                       </select>

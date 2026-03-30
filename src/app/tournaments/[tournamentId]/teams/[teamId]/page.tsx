@@ -58,18 +58,18 @@ interface TeamMatchInfo {
 interface Team {
   id: string
   name: string
-  teamSize: number
-  requiredMale: number
-  requiredFemale: number
-  requiredKid: number
   logoUrl: string | null
   captainId: string | null
   captain: { id: string; name: string; profilePhoto: string | null } | null
+  playersAddedViaAuction?: boolean
   createdAt: string
   updatedAt: string
   tournament: {
     id: string
     name: string
+    teamRequiredMale: number
+    teamRequiredFemale: number
+    teamRequiredKid: number
   }
   players: TeamPlayer[]
   _count: {
@@ -170,6 +170,17 @@ export default function TeamDetailPage({
     )
   }
 
+  const actualMale = team?.players.filter((p) => p.category === "MALE").length ?? 0
+  const actualFemale = team?.players.filter((p) => p.category === "FEMALE").length ?? 0
+  const actualKid = team?.players.filter((p) => p.category === "KID").length ?? 0
+  const actualTotal = team?.players.length ?? 0
+  const targetTotal =
+    team ?
+      team.tournament.teamRequiredMale +
+      team.tournament.teamRequiredFemale +
+      team.tournament.teamRequiredKid
+    : 0
+
   if (error || !team) {
     return (
       <div className="min-h-screen bg-background">
@@ -237,25 +248,38 @@ export default function TeamDetailPage({
             </div>
           </CardHeader>
           <CardContent className="space-y-6">
-            {/* Composition Rules */}
+            {/* Tournament target vs current roster */}
             <div>
-              <h3 className="font-semibold mb-3">Composition Rules</h3>
+              <h3 className="font-semibold mb-3">Roster composition</h3>
+              <p className="text-sm text-muted-foreground mb-3">
+                Targets are set on the tournament for every team. Edit the tournament to change them.
+              </p>
               <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                 <div className="bg-gray-50 rounded-lg p-3 text-center">
-                  <div className="text-2xl font-bold">{team.teamSize}</div>
-                  <div className="text-sm text-muted-foreground">Team Size</div>
+                  <div className="text-2xl font-bold">{targetTotal}</div>
+                  <div className="text-sm text-muted-foreground">Target squad size</div>
+                  <div className="text-xs text-muted-foreground mt-1">Current: {actualTotal}</div>
                 </div>
                 <div className="bg-blue-50 rounded-lg p-3 text-center">
-                  <div className="text-2xl font-bold text-blue-700">{team.requiredMale}</div>
-                  <div className="text-sm text-blue-600">Male</div>
+                  <div className="text-2xl font-bold text-blue-700">
+                    {team.tournament.teamRequiredMale}
+                  </div>
+                  <div className="text-sm text-blue-600">Male (target)</div>
+                  <div className="text-xs text-blue-600/80 mt-1">Current: {actualMale}</div>
                 </div>
                 <div className="bg-pink-50 rounded-lg p-3 text-center">
-                  <div className="text-2xl font-bold text-pink-700">{team.requiredFemale}</div>
-                  <div className="text-sm text-pink-600">Female</div>
+                  <div className="text-2xl font-bold text-pink-700">
+                    {team.tournament.teamRequiredFemale}
+                  </div>
+                  <div className="text-sm text-pink-600">Female (target)</div>
+                  <div className="text-xs text-pink-600/80 mt-1">Current: {actualFemale}</div>
                 </div>
                 <div className="bg-amber-50 rounded-lg p-3 text-center">
-                  <div className="text-2xl font-bold text-amber-700">{team.requiredKid}</div>
-                  <div className="text-sm text-amber-600">Kid</div>
+                  <div className="text-2xl font-bold text-amber-700">
+                    {team.tournament.teamRequiredKid}
+                  </div>
+                  <div className="text-sm text-amber-600">Kid (target)</div>
+                  <div className="text-xs text-amber-600/80 mt-1">Current: {actualKid}</div>
                 </div>
               </div>
             </div>

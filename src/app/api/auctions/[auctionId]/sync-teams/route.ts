@@ -78,18 +78,10 @@ export async function POST(
           category: derivePlayerCategory(ap.player.age, ap.player.gender),
         }))
 
-        const maleCount = players.filter((p) => p.category === "MALE").length
-        const femaleCount = players.filter((p) => p.category === "FEMALE").length
-        const kidCount = players.filter((p) => p.category === "KID").length
-
         const team = await tx.team.create({
           data: {
             name: auctionTeam.name,
             tournamentId,
-            teamSize: players.length,
-            requiredMale: maleCount,
-            requiredFemale: femaleCount,
-            requiredKid: kidCount,
             players: {
               create: players.map((p) => ({
                 playerId: p.playerId,

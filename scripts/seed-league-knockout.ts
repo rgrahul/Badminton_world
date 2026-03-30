@@ -146,6 +146,9 @@ async function main() {
       status: "UPCOMING",
       numberOfGroups: NUM_GROUPS,
       qualifyPerGroup: QUALIFY_PER_GROUP,
+      teamRequiredMale: 3,
+      teamRequiredFemale: 1,
+      teamRequiredKid: 0,
       ...TOURNAMENT_DEFAULTS,
     },
   })
@@ -165,10 +168,6 @@ async function main() {
       data: {
         name: teamName,
         tournamentId: tournament.id,
-        teamSize: 4,
-        requiredMale: 3,
-        requiredFemale: 1,
-        requiredKid: 0,
       },
     })
 

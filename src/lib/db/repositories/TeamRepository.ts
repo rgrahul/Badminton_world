@@ -3,10 +3,6 @@ import { prisma } from "../client"
 export interface CreateTeamInput {
   name: string
   tournamentId: string
-  teamSize: number
-  requiredMale: number
-  requiredFemale: number
-  requiredKid: number
   logoUrl?: string
   captainId?: string | null
   playersAddedViaAuction?: boolean
@@ -18,10 +14,6 @@ export interface CreateTeamInput {
 
 export interface UpdateTeamInput {
   name?: string
-  teamSize?: number
-  requiredMale?: number
-  requiredFemale?: number
-  requiredKid?: number
   logoUrl?: string | null
   captainId?: string | null
   playersAddedViaAuction?: boolean
@@ -43,7 +35,13 @@ const teamInclude = {
     select: { id: true, name: true, profilePhoto: true },
   },
   tournament: {
-    select: { id: true, name: true },
+    select: {
+      id: true,
+      name: true,
+      teamRequiredMale: true,
+      teamRequiredFemale: true,
+      teamRequiredKid: true,
+    },
   },
   _count: {
     select: { players: true },
@@ -57,10 +55,6 @@ export class TeamRepository {
         data: {
           name: data.name,
           tournamentId: data.tournamentId,
-          teamSize: data.teamSize,
-          requiredMale: data.requiredMale,
-          requiredFemale: data.requiredFemale,
-          requiredKid: data.requiredKid,
           logoUrl: data.logoUrl,
           captainId: data.captainId ?? null,
           playersAddedViaAuction: data.playersAddedViaAuction ?? false,

@@ -31,6 +31,9 @@ export default function EditTournamentPage({ params }: { params: { tournamentId:
     titlePhotoPosition: "center",
     category: "",
     requiresTeams: false,
+    teamRequiredMale: 0,
+    teamRequiredFemale: 0,
+    teamRequiredKid: 0,
   })
 
   useEffect(() => {
@@ -74,6 +77,9 @@ export default function EditTournamentPage({ params }: { params: { tournamentId:
         titlePhotoPosition: tournament.titlePhotoPosition || "center",
         category: tournament.category || "",
         requiresTeams: tournament.requiresTeams || false,
+        teamRequiredMale: tournament.teamRequiredMale ?? 0,
+        teamRequiredFemale: tournament.teamRequiredFemale ?? 0,
+        teamRequiredKid: tournament.teamRequiredKid ?? 0,
       })
     } catch (err) {
       setError(err instanceof Error ? err.message : "An error occurred")
@@ -328,6 +334,65 @@ export default function EditTournamentPage({ params }: { params: { tournamentId:
                   </span>
                 </div>
               </div>
+
+              {formData.requiresTeams && (
+                <div className="space-y-3 rounded-lg border p-4">
+                  <h3 className="font-semibold">Team roster (per team)</h3>
+                  <p className="text-sm text-muted-foreground">
+                    Target male / female / kid counts for every team when building full rosters.
+                  </p>
+                  <div className="grid grid-cols-3 gap-3">
+                    <div className="space-y-1">
+                      <Label htmlFor="teamRequiredMale">Male</Label>
+                      <Input
+                        id="teamRequiredMale"
+                        type="number"
+                        min={0}
+                        value={formData.teamRequiredMale}
+                        onChange={(e) =>
+                          setFormData({
+                            ...formData,
+                            teamRequiredMale: parseInt(e.target.value, 10) || 0,
+                          })
+                        }
+                        disabled={isLoading}
+                      />
+                    </div>
+                    <div className="space-y-1">
+                      <Label htmlFor="teamRequiredFemale">Female</Label>
+                      <Input
+                        id="teamRequiredFemale"
+                        type="number"
+                        min={0}
+                        value={formData.teamRequiredFemale}
+                        onChange={(e) =>
+                          setFormData({
+                            ...formData,
+                            teamRequiredFemale: parseInt(e.target.value, 10) || 0,
+                          })
+                        }
+                        disabled={isLoading}
+                      />
+                    </div>
+                    <div className="space-y-1">
+                      <Label htmlFor="teamRequiredKid">Kid</Label>
+                      <Input
+                        id="teamRequiredKid"
+                        type="number"
+                        min={0}
+                        value={formData.teamRequiredKid}
+                        onChange={(e) =>
+                          setFormData({
+                            ...formData,
+                            teamRequiredKid: parseInt(e.target.value, 10) || 0,
+                          })
+                        }
+                        disabled={isLoading}
+                      />
+                    </div>
+                  </div>
+                </div>
+              )}
 
               {/* Category */}
               <div className="space-y-2">
