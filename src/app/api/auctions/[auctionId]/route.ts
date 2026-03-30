@@ -4,7 +4,6 @@ import { auth } from "@/lib/auth"
 import { AuctionRepository } from "@/lib/db/repositories/AuctionRepository"
 import { errorResponse, successResponse } from "@/lib/api/responses"
 import { getTournamentCaptainPlayerIds } from "@/lib/tournamentCaptainPlayers"
-import { prisma } from "@/lib/db/client"
 import { syncAuctionTeamsToTournament } from "@/lib/auctionSyncTeamsToTournament"
 
 const updateSchema = z.object({
@@ -71,22 +70,17 @@ export async function PATCH(request: NextRequest, { params }: { params: { auctio
 
     if (isCompleting && auction.tournamentId) {
       try {
-        const syncResult = await prisma.$transaction(async (tx) => {
-          const syncRes = await syncAuctionTeamsToTournament(params.auctionId, {
-            tx,
-            requireSoldPlayers: false,
-          })
-          if (!syncRes.ok) {
-            throw new Error(syncRes.error)
-          }
-          await tx.auction.update({
-            where: { id: params.auctionId },
-            data: parsed.data,
-          })
-          return syncRes
+        // Run roster sync in its own transaction (inside syncAuctionTeamsToTournament).
+        // Do not wrap in an outer $transaction while passing `tx` into that helper — nested
+        // interactive transactions can trigger "Transaction ID is invalid" with Prisma.
+        const syncResult = await syncAuctionTeamsToTournament(params.auctionId, {
+          requireSoldPlayers: false,
         })
+        if (!syncResult.ok) {
+          return errorResponse(syncResult.error, 400)
+        }
 
-        const updated = await AuctionRepository.findById(params.auctionId)
+        const updated = await AuctionRepository.update(params.auctionId, parsed.data)
         return successResponse({
           auction: updated,
           teamsSynced: syncResult.teamsCreated,
