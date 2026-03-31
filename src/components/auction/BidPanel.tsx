@@ -65,8 +65,8 @@ export function BidPanel({
                   disabled={!currentPlayer}
                   className={`p-2 rounded-lg border text-left transition-all ${
                     isSelected
-                      ? "border-primary bg-primary/10 ring-2 ring-primary"
-                      : "border-gray-200 hover:border-gray-300"
+                      ? "border-emerald-500/50 bg-emerald-500/10 ring-2 ring-emerald-500/50"
+                      : "border-white/10 hover:border-white/20"
                   } ${!currentPlayer ? "opacity-50 cursor-not-allowed" : "cursor-pointer"} ${
                     !canAfford && currentPlayer ? "opacity-60" : ""
                   }`}
@@ -153,7 +153,7 @@ export function BidPanel({
               bidHistory.slice(0, 20).map((entry) => (
                 <div
                   key={entry.id}
-                  className="text-xs p-2 bg-gray-50 rounded flex justify-between items-center"
+                  className="text-xs p-2 bg-white/5 rounded flex justify-between items-center"
                 >
                   <span>
                     <span className="font-medium">{entry.playerName}</span>

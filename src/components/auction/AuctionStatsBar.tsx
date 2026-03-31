@@ -9,9 +9,9 @@ interface AuctionStatsBarProps {
 
 export function AuctionStatsBar({ stats }: AuctionStatsBarProps) {
   const items = [
-    { label: "Total Players", value: stats.total, color: "text-gray-900" },
-    { label: "Available", value: stats.available, color: "text-blue-600" },
-    { label: "Sold", value: stats.sold, color: "text-green-600" },
+    { label: "Total Players", value: stats.total, color: "text-white" },
+    { label: "Available", value: stats.available, color: "text-cyan-400" },
+    { label: "Sold", value: stats.sold, color: "text-emerald-400" },
     { label: "Total Spent", value: `${(stats.totalSpent / 1000).toFixed(0)}K`, color: "text-purple-600" },
   ]
 

@@ -81,9 +81,9 @@ export default function PlayerDetailPage({ params }: { params: { playerId: strin
   const getGenderBadge = (gender?: string | null) => {
     if (!gender) return null
     const colors = {
-      MALE: "bg-blue-100 text-blue-800",
-      FEMALE: "bg-pink-100 text-pink-800",
-      OTHER: "bg-purple-100 text-purple-800",
+      MALE: "bg-cyan-500/10 text-cyan-400 border border-cyan-500/20",
+      FEMALE: "bg-pink-500/10 text-pink-400 border border-pink-500/20",
+      OTHER: "bg-purple-500/10 text-purple-400 border border-purple-500/20",
     }
     return (
       <span
@@ -98,10 +98,10 @@ export default function PlayerDetailPage({ params }: { params: { playerId: strin
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-background">
+      <div className="min-h-screen bg-[#0a0a0a]">
         <Header />
         <main className="container mx-auto px-4 py-8">
-          <div className="text-center">Loading player...</div>
+          <div className="text-center text-gray-400">Loading player...</div>
         </main>
       </div>
     )
@@ -109,7 +109,7 @@ export default function PlayerDetailPage({ params }: { params: { playerId: strin
 
   if (error || !player) {
     return (
-      <div className="min-h-screen bg-background">
+      <div className="min-h-screen bg-[#0a0a0a]">
         <Header />
         <main className="container mx-auto px-4 py-8">
           <div className="text-center text-destructive">{error || "Player not found"}</div>
@@ -119,98 +119,98 @@ export default function PlayerDetailPage({ params }: { params: { playerId: strin
   }
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-[#0a0a0a]">
       <Header />
       <main className="container mx-auto px-4 py-4 sm:py-8 max-w-4xl">
         <div className="mb-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
-          <Button variant="outline" size="sm" onClick={() => router.push("/players")}>
-            ← Back to Players
+          <Button variant="outline" size="sm" onClick={() => router.push("/players")} className="border border-white/10 hover:bg-white/5 text-gray-300">
+            Back to Players
           </Button>
           {isAdmin && (
             <div className="flex gap-2 w-full sm:w-auto">
               <Link href={`/players/${player.id}/edit`} className="flex-1 sm:flex-initial">
-                <Button variant="outline" className="w-full" size="sm">
-                  ✏️ Edit
+                <Button variant="outline" className="w-full border border-white/10 hover:bg-white/5 text-gray-300" size="sm">
+                  Edit
                 </Button>
               </Link>
               <Button variant="destructive" size="sm" className="flex-1 sm:flex-initial" onClick={handleDelete} disabled={isDeleting}>
-                {isDeleting ? "⏳ Deleting..." : "🗑️ Delete"}
+                {isDeleting ? "Deleting..." : "Delete"}
               </Button>
             </div>
           )}
         </div>
 
-        <Card className="mb-6">
+        <Card className="mb-6 border-white/10 bg-white/[0.03]">
           <CardHeader>
             <div className="flex items-start justify-between">
               <div className="flex items-center gap-3 sm:gap-4">
                 <PlayerAvatar name={player.name} photoUrl={player.profilePhoto} size="xl" />
                 <div>
-                  <CardTitle className="text-xl sm:text-2xl">{player.name}</CardTitle>
+                  <CardTitle className="text-xl sm:text-2xl text-white">{player.name}</CardTitle>
                   {player.gender && <div className="mt-2">{getGenderBadge(player.gender)}</div>}
                 </div>
               </div>
             </div>
           </CardHeader>
           <CardContent className="space-y-6">
-            {/* Contact Information — visible to admins only */}
+            {/* Contact Information -- visible to admins only */}
             {isAdmin ? (
               <div>
-                <h3 className="font-semibold mb-3">Contact Information</h3>
+                <h3 className="font-semibold mb-3 text-white">Contact Information</h3>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   {player.email ? (
                     <div>
-                      <div className="text-sm text-muted-foreground">Email</div>
-                      <div className="font-medium">{player.email}</div>
+                      <div className="text-sm text-gray-400">Email</div>
+                      <div className="font-medium text-white">{player.email}</div>
                     </div>
                   ) : (
                     <div>
-                      <div className="text-sm text-muted-foreground">Email</div>
-                      <div className="text-muted-foreground italic">Not provided</div>
+                      <div className="text-sm text-gray-400">Email</div>
+                      <div className="text-gray-500 italic">Not provided</div>
                     </div>
                   )}
                   {player.mobileNumber ? (
                     <div>
-                      <div className="text-sm text-muted-foreground">Mobile Number</div>
-                      <div className="font-medium">{player.mobileNumber}</div>
+                      <div className="text-sm text-gray-400">Mobile Number</div>
+                      <div className="font-medium text-white">{player.mobileNumber}</div>
                     </div>
                   ) : (
                     <div>
-                      <div className="text-sm text-muted-foreground">Mobile Number</div>
-                      <div className="text-muted-foreground italic">Not provided</div>
+                      <div className="text-sm text-gray-400">Mobile Number</div>
+                      <div className="text-gray-500 italic">Not provided</div>
                     </div>
                   )}
                 </div>
               </div>
             ) : (
-              <div className="bg-gray-50 rounded-lg p-4 text-sm text-muted-foreground">
+              <div className="bg-white/5 border border-white/10 rounded-lg p-4 text-sm text-gray-400">
                 Contact information is only visible to administrators.
               </div>
             )}
 
             {/* Personal Information */}
             <div>
-              <h3 className="font-semibold mb-3">Personal Information</h3>
+              <h3 className="font-semibold mb-3 text-white">Personal Information</h3>
               <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
                 <div>
-                  <div className="text-sm text-muted-foreground">Age</div>
-                  <div className="font-medium">{player.age ?? "N/A"}</div>
+                  <div className="text-sm text-gray-400">Age</div>
+                  <div className="font-medium text-white">{player.age ?? "N/A"}</div>
                 </div>
                 <div>
-                  <div className="text-sm text-muted-foreground">Gender</div>
-                  <div className="font-medium">{player.gender ?? "N/A"}</div>
+                  <div className="text-sm text-gray-400">Gender</div>
+                  <div className="font-medium text-white">{player.gender ?? "N/A"}</div>
                 </div>
                 <div>
-                  <div className="text-sm text-muted-foreground">Experience</div>
-                  <div className="font-medium">
+                  <div className="text-sm text-gray-400">Experience</div>
+                  <div className="font-medium text-white">
                     {player.yearsOfExperience !== null && player.yearsOfExperience !== undefined
                       ? `${player.yearsOfExperience} years`
                       : "N/A"}
                   </div>
                 </div>
                 <div>
-                  <div className="text-sm text-muted-foreground">Skill Rating</div>
-                  <div className="font-medium">
+                  <div className="text-sm text-gray-400">Skill Rating</div>
+                  <div className="font-medium text-white">
                     {player.skillRating ? `${player.skillRating}/100` : "N/A"}
                   </div>
                 </div>
@@ -220,15 +220,15 @@ export default function PlayerDetailPage({ params }: { params: { playerId: strin
 
             {/* Timestamps */}
             <div>
-              <h3 className="font-semibold mb-3">Timestamps</h3>
+              <h3 className="font-semibold mb-3 text-white">Timestamps</h3>
               <div className="space-y-2 text-sm">
                 <div className="flex justify-between">
-                  <span className="text-muted-foreground">Created:</span>
-                  <span>{new Date(player.createdAt).toLocaleString()}</span>
+                  <span className="text-gray-400">Created:</span>
+                  <span className="text-gray-300">{new Date(player.createdAt).toLocaleString()}</span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-muted-foreground">Last Updated:</span>
-                  <span>{new Date(player.updatedAt).toLocaleString()}</span>
+                  <span className="text-gray-400">Last Updated:</span>
+                  <span className="text-gray-300">{new Date(player.updatedAt).toLocaleString()}</span>
                 </div>
               </div>
             </div>

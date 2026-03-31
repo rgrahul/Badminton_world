@@ -190,14 +190,14 @@ export function TossDialog({
               <div className="grid grid-cols-1 gap-3">
                 <Button
                   variant="outline"
-                  className="h-auto py-5 px-6 border-2 hover:border-green-500 hover:bg-green-50 whitespace-normal"
+                  className="h-auto py-5 px-6 border border-white/20 hover:border-emerald-500/50 hover:bg-emerald-500/10 whitespace-normal"
                   onClick={() => handleTossWinner("A")}
                 >
                   <div className="font-semibold text-base text-left w-full">{sideALabel}</div>
                 </Button>
                 <Button
                   variant="outline"
-                  className="h-auto py-5 px-6 border-2 hover:border-blue-500 hover:bg-blue-50 whitespace-normal"
+                  className="h-auto py-5 px-6 border border-white/20 hover:border-cyan-500/50 hover:bg-cyan-500/10 whitespace-normal"
                   onClick={() => handleTossWinner("B")}
                 >
                   <div className="font-semibold text-base text-left w-full">{sideBLabel}</div>
@@ -215,7 +215,7 @@ export function TossDialog({
               <div className="grid grid-cols-1 gap-3">
                 <Button
                   variant="outline"
-                  className="h-auto py-5 px-6 border-2 hover:border-yellow-500 hover:bg-yellow-50 whitespace-normal"
+                  className="h-auto py-5 px-6 border border-white/20 hover:border-amber-500/50 hover:bg-amber-500/10 whitespace-normal"
                   onClick={() => handleWinnerChoice("SERVE")}
                 >
                   <div className="text-left w-full">
@@ -227,7 +227,7 @@ export function TossDialog({
                 </Button>
                 <Button
                   variant="outline"
-                  className="h-auto py-5 px-6 border-2 hover:border-purple-500 hover:bg-purple-50 whitespace-normal"
+                  className="h-auto py-5 px-6 border border-white/20 hover:border-purple-500/50 hover:bg-purple-500/10 whitespace-normal"
                   onClick={() => handleWinnerChoice("SIDE")}
                 >
                   <div className="text-left w-full">
@@ -252,7 +252,7 @@ export function TossDialog({
               <div className="grid grid-cols-2 gap-3">
                 <Button
                   variant="outline"
-                  className="h-auto py-6 px-4 border-2 hover:border-green-500 hover:bg-green-50 flex flex-col items-center gap-2"
+                  className="h-auto py-6 px-4 border border-white/20 hover:border-emerald-500/50 hover:bg-emerald-500/10 flex flex-col items-center gap-2"
                   onClick={() => handleCourtSide("LEFT")}
                 >
                   <span className="text-2xl">&#8592;</span>
@@ -260,7 +260,7 @@ export function TossDialog({
                 </Button>
                 <Button
                   variant="outline"
-                  className="h-auto py-6 px-4 border-2 hover:border-blue-500 hover:bg-blue-50 flex flex-col items-center gap-2"
+                  className="h-auto py-6 px-4 border border-white/20 hover:border-cyan-500/50 hover:bg-cyan-500/10 flex flex-col items-center gap-2"
                   onClick={() => handleCourtSide("RIGHT")}
                 >
                   <span className="text-2xl">&#8594;</span>
@@ -282,7 +282,7 @@ export function TossDialog({
               <div className="grid grid-cols-1 gap-3">
                 <Button
                   variant="outline"
-                  className="h-auto py-5 px-6 border-2 hover:border-yellow-500 hover:bg-yellow-50 whitespace-normal"
+                  className="h-auto py-5 px-6 border border-white/20 hover:border-amber-500/50 hover:bg-amber-500/10 whitespace-normal"
                   onClick={() => handleServerPick(servingSide === "A" ? sideAPlayer1 : sideBPlayer1)}
                 >
                   <div className="font-semibold text-base">
@@ -292,7 +292,7 @@ export function TossDialog({
                 {(servingSide === "A" ? sideAPlayer2 : sideBPlayer2) && (
                   <Button
                     variant="outline"
-                    className="h-auto py-5 px-6 border-2 hover:border-yellow-500 hover:bg-yellow-50 whitespace-normal"
+                    className="h-auto py-5 px-6 border border-white/20 hover:border-amber-500/50 hover:bg-amber-500/10 whitespace-normal"
                     onClick={() => handleServerPick(servingSide === "A" ? sideAPlayer2! : sideBPlayer2!)}
                   >
                     <div className="font-semibold text-base">
@@ -316,7 +316,7 @@ export function TossDialog({
               <div className="grid grid-cols-1 gap-3">
                 <Button
                   variant="outline"
-                  className="h-auto py-5 px-6 border-2 hover:border-orange-500 hover:bg-orange-50 whitespace-normal"
+                  className="h-auto py-5 px-6 border border-white/20 hover:border-orange-500/50 hover:bg-orange-500/10 whitespace-normal"
                   onClick={() => handleReceiverPick(receivingSide === "A" ? sideAPlayer1 : sideBPlayer1)}
                 >
                   <div className="font-semibold text-base">
@@ -326,7 +326,7 @@ export function TossDialog({
                 {(receivingSide === "A" ? sideAPlayer2 : sideBPlayer2) && (
                   <Button
                     variant="outline"
-                    className="h-auto py-5 px-6 border-2 hover:border-orange-500 hover:bg-orange-50 whitespace-normal"
+                    className="h-auto py-5 px-6 border border-white/20 hover:border-orange-500/50 hover:bg-orange-500/10 whitespace-normal"
                     onClick={() => handleReceiverPick(receivingSide === "A" ? sideAPlayer2! : sideBPlayer2!)}
                   >
                     <div className="font-semibold text-base">

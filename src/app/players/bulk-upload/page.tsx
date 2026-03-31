@@ -205,42 +205,42 @@ export default function BulkUploadPage() {
   }
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-[#0a0a0a]">
       <Header />
       <main className="container mx-auto px-4 py-8 max-w-4xl">
         <div className="mb-6">
-          <Button variant="outline" onClick={() => router.push("/players")}>
-            ← Back to Players
+          <Button variant="outline" onClick={() => router.push("/players")} className="border border-white/10 hover:bg-white/5 text-gray-300">
+            Back to Players
           </Button>
         </div>
 
-        <Card className="mb-6">
+        <Card className="mb-6 border-white/10 bg-white/[0.03]">
           <CardHeader>
-            <CardTitle>Bulk Upload Players</CardTitle>
-            <CardDescription>Upload an Excel file to add multiple players at once</CardDescription>
+            <CardTitle className="text-white">Bulk Upload Players</CardTitle>
+            <CardDescription className="text-gray-400">Upload an Excel file to add multiple players at once</CardDescription>
           </CardHeader>
           <CardContent className="space-y-6">
             {/* Download Template */}
-            <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+            <div className="bg-cyan-500/10 border border-cyan-500/20 rounded-lg p-4">
               <div className="flex items-start justify-between">
                 <div className="flex-1">
-                  <h3 className="font-semibold text-blue-900 mb-1">Download Template</h3>
-                  <p className="text-sm text-blue-800">
+                  <h3 className="font-semibold text-cyan-400 mb-1">Download Template</h3>
+                  <p className="text-sm text-gray-400">
                     Download a sample Excel template with the correct column format
                   </p>
                 </div>
-                <Button variant="outline" size="sm" onClick={downloadTemplate}>
-                  📥 Download Template
+                <Button variant="outline" size="sm" onClick={downloadTemplate} className="border border-white/10 hover:bg-white/5 text-gray-300">
+                  Download Template
                 </Button>
               </div>
             </div>
 
             {/* File Format Instructions */}
             <div className="space-y-2">
-              <h3 className="font-semibold">Required Excel Columns:</h3>
-              <ul className="text-sm text-muted-foreground space-y-1 list-disc pl-5">
+              <h3 className="font-semibold text-white">Required Excel Columns:</h3>
+              <ul className="text-sm text-gray-400 space-y-1 list-disc pl-5">
                 <li>
-                  <strong>name</strong> (required) - Player name
+                  <strong className="text-gray-300">name</strong> (required) - Player name
                 </li>
                 <li>email (optional) - Valid email address</li>
                 <li>mobileNumber (optional) - Mobile number</li>
@@ -254,10 +254,10 @@ export default function BulkUploadPage() {
 
             {/* File Upload */}
             <div className="space-y-2">
-              <Label htmlFor="file">Upload Excel File</Label>
-              <Input id="file" type="file" accept=".xlsx,.xls" onChange={handleFileChange} />
+              <Label htmlFor="file" className="text-gray-300">Upload Excel File</Label>
+              <Input id="file" type="file" accept=".xlsx,.xls" onChange={handleFileChange} className="bg-white/5 border-white/10 text-white placeholder:text-gray-500" />
               {file && (
-                <p className="text-sm text-muted-foreground">
+                <p className="text-sm text-gray-400">
                   Selected: {file.name} ({(file.size / 1024).toFixed(2)} KB)
                 </p>
               )}
@@ -265,7 +265,7 @@ export default function BulkUploadPage() {
 
             {/* Parse Button */}
             <div>
-              <Button onClick={handleParseFile} disabled={!file || isProcessing} className="w-full">
+              <Button onClick={handleParseFile} disabled={!file || isProcessing} className="w-full bg-gradient-to-r from-emerald-500 to-cyan-500 text-black font-semibold hover:from-emerald-400 hover:to-cyan-400">
                 {isProcessing ? "Processing..." : "Parse File"}
               </Button>
             </div>
@@ -273,34 +273,34 @@ export default function BulkUploadPage() {
             {/* Parsed Players Preview */}
             {parsedPlayers.length > 0 && (
               <div className="space-y-3">
-                <h3 className="font-semibold">Preview ({parsedPlayers.length} players)</h3>
-                <div className="max-h-64 overflow-y-auto border rounded-lg">
+                <h3 className="font-semibold text-white">Preview ({parsedPlayers.length} players)</h3>
+                <div className="max-h-64 overflow-y-auto border border-white/10 rounded-lg">
                   <table className="w-full text-sm">
-                    <thead className="bg-gray-50 sticky top-0">
+                    <thead className="bg-white/5 sticky top-0">
                       <tr>
-                        <th className="px-3 py-2 text-left">Name</th>
-                        <th className="px-3 py-2 text-left">Email</th>
-                        <th className="px-3 py-2 text-left">Mobile</th>
-                        <th className="px-3 py-2 text-left">Age</th>
-                        <th className="px-3 py-2 text-left">Gender</th>
+                        <th className="px-3 py-2 text-left text-gray-300">Name</th>
+                        <th className="px-3 py-2 text-left text-gray-300">Email</th>
+                        <th className="px-3 py-2 text-left text-gray-300">Mobile</th>
+                        <th className="px-3 py-2 text-left text-gray-300">Age</th>
+                        <th className="px-3 py-2 text-left text-gray-300">Gender</th>
                       </tr>
                     </thead>
                     <tbody>
                       {parsedPlayers.slice(0, 50).map((player, index) => (
-                        <tr key={index} className="border-t">
-                          <td className="px-3 py-2">{player.name}</td>
-                          <td className="px-3 py-2 truncate max-w-[150px]">
+                        <tr key={index} className="border-t border-white/10">
+                          <td className="px-3 py-2 text-white">{player.name}</td>
+                          <td className="px-3 py-2 truncate max-w-[150px] text-gray-400">
                             {player.email || "-"}
                           </td>
-                          <td className="px-3 py-2">{player.mobileNumber || "-"}</td>
-                          <td className="px-3 py-2">{player.age || "-"}</td>
-                          <td className="px-3 py-2">{player.gender || "-"}</td>
+                          <td className="px-3 py-2 text-gray-400">{player.mobileNumber || "-"}</td>
+                          <td className="px-3 py-2 text-gray-400">{player.age || "-"}</td>
+                          <td className="px-3 py-2 text-gray-400">{player.gender || "-"}</td>
                         </tr>
                       ))}
                     </tbody>
                   </table>
                   {parsedPlayers.length > 50 && (
-                    <div className="text-center py-2 text-xs text-muted-foreground bg-gray-50">
+                    <div className="text-center py-2 text-xs text-gray-500 bg-white/5">
                       Showing first 50 of {parsedPlayers.length} players
                     </div>
                   )}
@@ -310,7 +310,7 @@ export default function BulkUploadPage() {
                 <Button
                   onClick={handleUpload}
                   disabled={isProcessing}
-                  className="w-full bg-green-600 hover:bg-green-700"
+                  className="w-full bg-gradient-to-r from-emerald-500 to-cyan-500 text-black font-semibold hover:from-emerald-400 hover:to-cyan-400"
                 >
                   {isProcessing ? "Uploading..." : `Upload ${parsedPlayers.length} Players`}
                 </Button>
@@ -322,8 +322,8 @@ export default function BulkUploadPage() {
               <div
                 className={`p-4 rounded-lg ${
                   uploadResult.success
-                    ? "bg-green-50 border border-green-200 text-green-800"
-                    : "bg-red-50 border border-red-200 text-red-800"
+                    ? "bg-emerald-500/10 border border-emerald-500/20 text-emerald-400"
+                    : "bg-red-500/10 border border-red-500/20 text-red-400"
                 }`}
               >
                 {uploadResult.message}

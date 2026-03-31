@@ -81,13 +81,13 @@ const FIXTURE_TYPE_LABELS: Record<string, string> = {
 }
 
 const FIXTURE_TYPE_COLORS: Record<string, string> = {
-  MEN_DOUBLES: "bg-blue-100 text-blue-800",
-  WOMEN_DOUBLES: "bg-pink-100 text-pink-800",
-  MIXED_DOUBLES: "bg-purple-100 text-purple-800",
-  MEN_SINGLES: "bg-sky-100 text-sky-800",
-  WOMEN_SINGLES: "bg-rose-100 text-rose-800",
-  KIDS_SINGLES: "bg-amber-100 text-amber-800",
-  KIDS_DOUBLES: "bg-orange-100 text-orange-800",
+  MEN_DOUBLES: "bg-cyan-500/20 text-cyan-300",
+  WOMEN_DOUBLES: "bg-pink-500/20 text-pink-300",
+  MIXED_DOUBLES: "bg-purple-500/20 text-purple-300",
+  MEN_SINGLES: "bg-sky-500/20 text-sky-300",
+  WOMEN_SINGLES: "bg-rose-500/20 text-rose-300",
+  KIDS_SINGLES: "bg-amber-500/20 text-amber-300",
+  KIDS_DOUBLES: "bg-orange-500/20 text-orange-300",
 }
 
 export default function TeamMatchDetailPage({
@@ -152,10 +152,10 @@ export default function TeamMatchDetailPage({
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-background">
+      <div className="min-h-screen bg-[#0a0a0a]">
         <Header />
         <main className="container mx-auto px-4 py-8">
-          <div className="text-center">Loading team match...</div>
+          <div className="text-center text-gray-400">Loading team match...</div>
         </main>
       </div>
     )
@@ -163,10 +163,10 @@ export default function TeamMatchDetailPage({
 
   if (error || !teamMatch) {
     return (
-      <div className="min-h-screen bg-background">
+      <div className="min-h-screen bg-[#0a0a0a]">
         <Header />
         <main className="container mx-auto px-4 py-8">
-          <div className="text-center text-destructive">
+          <div className="text-center text-red-300">
             {error || "Team match not found"}
           </div>
         </main>
@@ -190,7 +190,7 @@ export default function TeamMatchDetailPage({
   ).length
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-[#0a0a0a]">
       <Header />
       <main className="container mx-auto px-4 py-4 sm:py-8 max-w-4xl">
         <div className="mb-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
@@ -198,23 +198,24 @@ export default function TeamMatchDetailPage({
             variant="outline"
             size="sm"
             onClick={() => router.push(`/tournaments/${params.tournamentId}`)}
+            className="border border-white/10 hover:bg-white/5 text-gray-300"
           >
             &larr; Back to Tournament
           </Button>
           {canManage && (
-            <Button variant="destructive" size="sm" onClick={handleDelete}>
+            <Button size="sm" onClick={handleDelete} className="bg-red-500/20 text-red-300 hover:bg-red-500/30 border border-red-500/20">
               Delete Team Match
             </Button>
           )}
         </div>
 
         {/* Header Card */}
-        <Card className="mb-6">
+        <Card className="mb-6 border-white/10 bg-white/[0.03]">
           <CardHeader>
             <div className="flex items-start justify-between">
               <div>
-                <CardTitle className="text-2xl">{teamMatch.name}</CardTitle>
-                <CardDescription className="mt-2 text-base">
+                <CardTitle className="text-2xl text-white">{teamMatch.name}</CardTitle>
+                <CardDescription className="mt-2 text-base text-gray-400">
                   {teamMatch.teamA.name} vs {teamMatch.teamB.name}
                 </CardDescription>
               </div>
@@ -222,8 +223,8 @@ export default function TeamMatchDetailPage({
                 <span
                   className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium ${
                     teamMatch.category === "ADULT"
-                      ? "bg-blue-100 text-blue-800"
-                      : "bg-amber-100 text-amber-800"
+                      ? "bg-cyan-500/20 text-cyan-300"
+                      : "bg-amber-500/20 text-amber-300"
                   }`}
                 >
                   {teamMatch.category}
@@ -231,12 +232,12 @@ export default function TeamMatchDetailPage({
                 <span
                   className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium ${
                     teamMatch.status === "DRAFT"
-                      ? "bg-gray-100 text-gray-800"
+                      ? "bg-gray-500/20 text-gray-300"
                       : teamMatch.status === "READY"
-                      ? "bg-green-100 text-green-800"
+                      ? "bg-emerald-500/20 text-emerald-300"
                       : teamMatch.status === "IN_PROGRESS"
-                      ? "bg-blue-100 text-blue-800"
-                      : "bg-green-100 text-green-800"
+                      ? "bg-cyan-500/20 text-cyan-300"
+                      : "bg-emerald-500/20 text-emerald-300"
                   }`}
                 >
                   {teamMatch.status.replace("_", " ")}
@@ -249,24 +250,24 @@ export default function TeamMatchDetailPage({
               {formatItems.map((item) => (
                 <span
                   key={item.label}
-                  className="inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium bg-purple-100 text-purple-800"
+                  className="inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium bg-purple-500/20 text-purple-300"
                 >
                   {item.count}x {item.label}
                 </span>
               ))}
             </div>
             <div className="flex flex-wrap gap-2 mb-3">
-              <span className="inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium bg-orange-100 text-orange-800">
+              <span className="inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium bg-orange-500/20 text-orange-300">
                 Best of {teamMatch.setsCount}
               </span>
-              <span className="inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium bg-orange-100 text-orange-800">
+              <span className="inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium bg-orange-500/20 text-orange-300">
                 {teamMatch.pointsToWin} pts
               </span>
-              <span className="inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium bg-orange-100 text-orange-800">
+              <span className="inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium bg-orange-500/20 text-orange-300">
                 Deuce cap {teamMatch.deuceCap}
               </span>
             </div>
-            <p className="text-sm text-muted-foreground">
+            <p className="text-sm text-gray-400">
               {assignedCount}/{teamMatch.fixtures.length} fixtures assigned
             </p>
           </CardContent>
@@ -274,30 +275,30 @@ export default function TeamMatchDetailPage({
 
         {/* Result Banner */}
         {teamMatch.status === "COMPLETED" && (
-          <Card className="mb-6 border-green-200 bg-green-50">
+          <Card className="mb-6 border-emerald-500/20 bg-emerald-500/5">
             <CardContent className="p-6">
               <div className="text-center">
                 {teamMatch.winningTeam ? (
-                  <div className="text-lg font-bold text-green-800 mb-3">
+                  <div className="text-lg font-bold text-emerald-300 mb-3">
                     {teamMatch.winningTeam.name} Wins!
                   </div>
                 ) : (
-                  <div className="text-lg font-bold text-gray-800 mb-3">
+                  <div className="text-lg font-bold text-gray-300 mb-3">
                     Match Drawn
                   </div>
                 )}
                 <div className="flex items-center justify-center gap-4 mb-2">
                   <div className={`text-center ${teamMatch.winningTeamId === teamMatch.teamA.id ? "font-bold" : ""}`}>
-                    <div className="text-sm text-muted-foreground">{teamMatch.teamA.name}</div>
-                    <div className="text-3xl font-bold tabular-nums">{teamMatch.fixturesWonByTeamA}</div>
+                    <div className="text-sm text-gray-400">{teamMatch.teamA.name}</div>
+                    <div className="text-3xl font-bold tabular-nums text-white">{teamMatch.fixturesWonByTeamA}</div>
                   </div>
-                  <div className="text-xl text-muted-foreground">-</div>
+                  <div className="text-xl text-gray-400">-</div>
                   <div className={`text-center ${teamMatch.winningTeamId === teamMatch.teamB.id ? "font-bold" : ""}`}>
-                    <div className="text-sm text-muted-foreground">{teamMatch.teamB.name}</div>
-                    <div className="text-3xl font-bold tabular-nums">{teamMatch.fixturesWonByTeamB}</div>
+                    <div className="text-sm text-gray-400">{teamMatch.teamB.name}</div>
+                    <div className="text-3xl font-bold tabular-nums text-white">{teamMatch.fixturesWonByTeamB}</div>
                   </div>
                 </div>
-                <div className="text-sm text-muted-foreground">
+                <div className="text-sm text-gray-400">
                   Total Points: {teamMatch.totalPointsTeamA} - {teamMatch.totalPointsTeamB}
                   {" "}
                   ({teamMatch.totalPointsTeamA - teamMatch.totalPointsTeamB > 0 ? "+" : ""}
@@ -309,12 +310,12 @@ export default function TeamMatchDetailPage({
         )}
 
         {/* Fixtures List */}
-        <Card>
+        <Card className="border-white/10 bg-white/[0.03]">
           <CardHeader>
-            <CardTitle>
+            <CardTitle className="text-white">
               Fixtures ({teamMatch.fixtures.length})
             </CardTitle>
-            <CardDescription>
+            <CardDescription className="text-gray-400">
               Assign players to each fixture, then score matches
             </CardDescription>
           </CardHeader>
@@ -331,18 +332,18 @@ export default function TeamMatchDetailPage({
                 ].includes(fixture.fixtureType)
 
                 return (
-                  <Card key={fixture.id} className="border">
+                  <Card key={fixture.id} className="border border-white/10 bg-white/[0.03]">
                     <CardContent className="p-4">
                       <div className="flex items-start justify-between gap-4">
                         <div className="flex-1 min-w-0">
                           <div className="flex items-center gap-2 mb-2">
-                            <span className="font-semibold text-sm">
+                            <span className="font-semibold text-sm text-white">
                               #{fixture.fixtureNumber}
                             </span>
                             <span
                               className={`inline-flex items-center rounded-full px-2 py-0.5 text-xs font-medium ${
                                 FIXTURE_TYPE_COLORS[fixture.fixtureType] ||
-                                "bg-gray-100 text-gray-800"
+                                "bg-gray-500/20 text-gray-300"
                               }`}
                             >
                               {FIXTURE_TYPE_LABELS[fixture.fixtureType] ||
@@ -352,10 +353,10 @@ export default function TeamMatchDetailPage({
                               <span
                                 className={`inline-flex items-center rounded-full px-2 py-0.5 text-xs font-medium ${
                                   fixture.match.status === "COMPLETED"
-                                    ? "bg-green-100 text-green-800"
+                                    ? "bg-emerald-500/20 text-emerald-300"
                                     : fixture.match.status === "IN_PROGRESS"
-                                    ? "bg-blue-100 text-blue-800"
-                                    : "bg-gray-100 text-gray-800"
+                                    ? "bg-cyan-500/20 text-cyan-300"
+                                    : "bg-gray-500/20 text-gray-300"
                                 }`}
                               >
                                 {fixture.match.status.replace("_", " ")}
@@ -366,10 +367,10 @@ export default function TeamMatchDetailPage({
                           {isAssigned ? (
                             <div className="grid grid-cols-2 gap-4 text-sm">
                               <div>
-                                <div className="text-xs font-medium text-muted-foreground mb-1">
+                                <div className="text-xs font-medium text-gray-400 mb-1">
                                   {teamMatch.teamA.name}
                                 </div>
-                                <div>
+                                <div className="text-gray-300">
                                   {fixture.teamAPlayer1?.name}
                                   {isDoubles &&
                                     fixture.teamAPlayer2 &&
@@ -377,10 +378,10 @@ export default function TeamMatchDetailPage({
                                 </div>
                               </div>
                               <div>
-                                <div className="text-xs font-medium text-muted-foreground mb-1">
+                                <div className="text-xs font-medium text-gray-400 mb-1">
                                   {teamMatch.teamB.name}
                                 </div>
-                                <div>
+                                <div className="text-gray-300">
                                   {fixture.teamBPlayer1?.name}
                                   {isDoubles &&
                                     fixture.teamBPlayer2 &&
@@ -389,17 +390,17 @@ export default function TeamMatchDetailPage({
                               </div>
                             </div>
                           ) : (
-                            <p className="text-sm text-muted-foreground italic">
+                            <p className="text-sm text-gray-400 italic">
                               Players not yet assigned
                             </p>
                           )}
 
                           {hasMatch && fixture.match && fixture.match.status !== "NOT_STARTED" && (
-                            <div className="mt-2 text-sm font-semibold">
+                            <div className="mt-2 text-sm font-semibold text-white">
                               Score: {fixture.match.setsWonBySideA} -{" "}
                               {fixture.match.setsWonBySideB}
                               {fixture.match.winningSide && (
-                                <span className="text-green-600 ml-2">
+                                <span className="text-emerald-400 ml-2">
                                   Side {fixture.match.winningSide} Won
                                 </span>
                               )}
@@ -412,12 +413,12 @@ export default function TeamMatchDetailPage({
                             <Link
                               href={`/tournaments/${params.tournamentId}/team-matches/${params.teamMatchId}/fixtures/${fixture.id}/assign`}
                             >
-                              <Button size="sm">Assign Players</Button>
+                              <Button size="sm" className="bg-gradient-to-r from-emerald-500 to-cyan-500 text-black font-semibold hover:from-emerald-400 hover:to-cyan-400">Assign Players</Button>
                             </Link>
                           )}
                           {hasMatch && fixture.match && (
                             <Link href={`/matches/${fixture.match.id}`}>
-                              <Button variant="outline" size="sm">
+                              <Button variant="outline" size="sm" className="border border-white/10 hover:bg-white/5 text-gray-300">
                                 {fixture.match.status === "COMPLETED"
                                   ? "View Result"
                                   : canManage ? "Score Match" : "View Match"}

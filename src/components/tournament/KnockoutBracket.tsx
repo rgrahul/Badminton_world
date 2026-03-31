@@ -51,7 +51,7 @@ export function KnockoutBracket({ matches, tournamentId }: KnockoutBracketProps)
   const rounds = ROUND_ORDER.filter((r) => roundGroups[r])
 
   if (rounds.length === 0) {
-    return <p className="text-muted-foreground text-center py-8">No bracket generated yet.</p>
+    return <p className="text-gray-500 text-center py-8">No bracket generated yet.</p>
   }
 
   // Check for champion
@@ -61,9 +61,8 @@ export function KnockoutBracket({ matches, tournamentId }: KnockoutBracketProps)
   return (
     <div className="space-y-6">
       {champion && (
-        <div className="text-center py-4 bg-gradient-to-r from-yellow-50 to-yellow-100 rounded-lg border-2 border-yellow-300">
-          <div className="text-3xl mb-1">🏆</div>
-          <div className="text-lg font-bold text-yellow-800">Champion: {champion.name}</div>
+        <div className="text-center py-4 bg-amber-500/10 rounded-lg border border-amber-500/20">
+          <div className="text-lg font-bold text-amber-300">Champion: {champion.name}</div>
         </div>
       )}
 
@@ -76,7 +75,7 @@ export function KnockoutBracket({ matches, tournamentId }: KnockoutBracketProps)
 
             return (
               <div key={round} className="flex flex-col items-center">
-                <div className="text-sm font-semibold text-muted-foreground mb-4">
+                <div className="text-sm font-semibold text-gray-400 mb-4">
                   {ROUND_LABELS[round] || round}
                 </div>
                 <div

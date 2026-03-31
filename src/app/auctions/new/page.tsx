@@ -128,37 +128,38 @@ export default function NewAuctionPage() {
   }
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-[#0a0a0a]">
       <Header />
       <main className="container mx-auto px-4 py-4 sm:py-8 max-w-2xl">
         <div className="mb-6">
-          <Button variant="outline" size="sm" onClick={() => router.push("/auctions")}>
+          <Button variant="outline" size="sm" onClick={() => router.push("/auctions")} className="border border-white/10 hover:bg-white/5 text-gray-300">
             ← Back to Auctions
           </Button>
         </div>
 
-        <Card>
+        <Card className="border-white/10 bg-white/[0.03]">
           <CardHeader>
-            <CardTitle>Create New Auction</CardTitle>
-            <CardDescription>Set up a player auction with teams and budget</CardDescription>
+            <CardTitle className="text-white">Create New Auction</CardTitle>
+            <CardDescription className="text-gray-400">Set up a player auction with teams and budget</CardDescription>
           </CardHeader>
           <CardContent>
             <form onSubmit={handleSubmit} className="space-y-6">
               <div className="space-y-2">
-                <Label htmlFor="name">Auction Name</Label>
+                <Label htmlFor="name" className="text-gray-300">Auction Name</Label>
                 <Input
                   id="name"
                   value={name}
                   onChange={(e) => setName(e.target.value)}
                   placeholder="e.g., ABL 2026 Player Auction"
                   required
+                  className="bg-white/5 border-white/10 text-white placeholder:text-gray-500"
                 />
               </div>
 
               <div className="space-y-2">
-                <Label>Link to Tournament (optional)</Label>
+                <Label className="text-gray-300">Link to Tournament (optional)</Label>
                 <Select value={tournamentId} onValueChange={setTournamentId}>
-                  <SelectTrigger>
+                  <SelectTrigger className="bg-white/5 border-white/10 text-white">
                     <SelectValue placeholder="No tournament" />
                   </SelectTrigger>
                   <SelectContent>
@@ -170,16 +171,16 @@ export default function NewAuctionPage() {
                     ))}
                   </SelectContent>
                 </Select>
-                <p className="text-xs text-muted-foreground">
+                <p className="text-xs text-gray-500">
                   Linking to a tournament allows importing tournament players and syncing auction results.
                 </p>
               </div>
 
-              <div className="border-t pt-4">
+              <div className="border-t border-white/10 pt-4">
                 <AuctionTeamSetup teams={teams} onChange={setTeams} />
               </div>
 
-              <Button type="submit" className="w-full" disabled={creating}>
+              <Button type="submit" className="w-full bg-gradient-to-r from-emerald-500 to-cyan-500 text-black font-semibold hover:from-emerald-400 hover:to-cyan-400" disabled={creating}>
                 {creating ? "Creating..." : "Create Auction"}
               </Button>
             </form>
