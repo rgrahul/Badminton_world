@@ -23,6 +23,7 @@ import { PlayerQueue } from "@/components/auction/PlayerQueue"
 import { AuctionPlayerGrid } from "@/components/auction/AuctionPlayerGrid"
 import { AuctionTeamCard } from "@/components/auction/AuctionTeamCard"
 import { ExcelImportDialog } from "@/components/auction/ExcelImportDialog"
+import { AuctionCompletingOverlay } from "@/components/auction/AuctionCompletingOverlay"
 import { GavelIcon, SoldGavelIcon } from "@/components/icons/GavelIcon"
 import { useAlertDialog } from "@/hooks/useAlertDialog"
 import {
@@ -74,6 +75,7 @@ export default function AuctionPage({ params }: { params: { auctionId: string } 
   const [tournamentSkillPrices, setTournamentSkillPrices] =
     useState<Record<SkillCategory, string>>(emptySkillPriceForm)
   const [tournamentUncategorizedPrice, setTournamentUncategorizedPrice] = useState("0")
+  const [completingAuction, setCompletingAuction] = useState(false)
 
   const fetchAuction = useCallback(async () => {
     try {
@@ -113,6 +115,9 @@ export default function AuctionPage({ params }: { params: { auctionId: string } 
     )
     if (!confirmed) return
 
+    const showCompletingOverlay = newStatus === "COMPLETED"
+    if (showCompletingOverlay) setCompletingAuction(true)
+
     try {
       const response = await fetch(`/api/auctions/${params.auctionId}`, {
         method: "PATCH",
@@ -145,6 +150,8 @@ export default function AuctionPage({ params }: { params: { auctionId: string } 
       }
     } catch (error) {
       console.error("Status change error:", error)
+    } finally {
+      if (showCompletingOverlay) setCompletingAuction(false)
     }
   }
 
@@ -424,6 +431,7 @@ export default function AuctionPage({ params }: { params: { auctionId: string } 
 
   return (
     <div className="min-h-screen bg-background">
+      <AuctionCompletingOverlay open={completingAuction} />
       <Header />
       <main className="container mx-auto px-4 py-4 sm:py-6 max-w-7xl">
         {/* Top Bar */}
@@ -465,23 +473,43 @@ export default function AuctionPage({ params }: { params: { auctionId: string } 
 
               {/* Status Controls */}
               {auction.status === "SETUP" && (
-                <Button size="sm" onClick={() => handleStatusChange("LIVE")} className="bg-green-600 hover:bg-green-700">
+                <Button
+                  size="sm"
+                  onClick={() => handleStatusChange("LIVE")}
+                  className="bg-green-600 hover:bg-green-700"
+                  disabled={completingAuction}
+                >
                   Start Auction
                 </Button>
               )}
               {auction.status === "LIVE" && (
-                <Button size="sm" variant="outline" onClick={() => handleStatusChange("PAUSED")}>
+                <Button
+                  size="sm"
+                  variant="outline"
+                  onClick={() => handleStatusChange("PAUSED")}
+                  disabled={completingAuction}
+                >
                   Pause
                 </Button>
               )}
               {auction.status === "PAUSED" && (
-                <Button size="sm" onClick={() => handleStatusChange("LIVE")} className="bg-green-600 hover:bg-green-700">
+                <Button
+                  size="sm"
+                  onClick={() => handleStatusChange("LIVE")}
+                  className="bg-green-600 hover:bg-green-700"
+                  disabled={completingAuction}
+                >
                   Resume
                 </Button>
               )}
               {(auction.status === "LIVE" || auction.status === "PAUSED") && (
-                <Button size="sm" variant="outline" onClick={() => handleStatusChange("COMPLETED")}>
-                  Complete
+                <Button
+                  size="sm"
+                  variant="outline"
+                  onClick={() => handleStatusChange("COMPLETED")}
+                  disabled={completingAuction}
+                >
+                  {completingAuction ? "Completing…" : "Complete"}
                 </Button>
               )}
               {auction.tournamentId && auction.status !== "SETUP" && (

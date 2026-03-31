@@ -65,10 +65,16 @@ const config: Config = {
           from: { height: "var(--radix-accordion-content-height)" },
           to: { height: "0" },
         },
+        /** Indeterminate bar for auction “complete” overlay */
+        "auction-bar": {
+          "0%": { transform: "translateX(-120%)" },
+          "100%": { transform: "translateX(320%)" },
+        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
+        "auction-bar": "auction-bar 1.8s ease-in-out infinite",
       },
     },
   },
