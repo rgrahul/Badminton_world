@@ -339,10 +339,10 @@ export default function AuctionPage({ params }: { params: { auctionId: string } 
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-background">
+      <div className="min-h-screen bg-[#0a0a0a]">
         <Header />
         <main className="container mx-auto px-4 py-8">
-          <div className="text-center">Loading auction...</div>
+          <div className="text-center text-gray-400">Loading auction...</div>
         </main>
       </div>
     )
@@ -350,40 +350,40 @@ export default function AuctionPage({ params }: { params: { auctionId: string } 
 
   if (!auction) {
     return (
-      <div className="min-h-screen bg-background">
+      <div className="min-h-screen bg-[#0a0a0a]">
         <Header />
         <main className="container mx-auto px-4 py-8">
-          <div className="text-center text-destructive">Auction not found</div>
+          <div className="text-center text-red-400">Auction not found</div>
         </main>
       </div>
     )
   }
 
   const statusColors: Record<string, string> = {
-    SETUP: "bg-gray-100 text-gray-800",
-    LIVE: "bg-green-100 text-green-800",
-    PAUSED: "bg-amber-100 text-amber-800",
-    COMPLETED: "bg-blue-100 text-blue-800",
+    SETUP: "bg-white/10 text-gray-300",
+    LIVE: "bg-emerald-500/20 text-emerald-300",
+    PAUSED: "bg-amber-500/20 text-amber-300",
+    COMPLETED: "bg-cyan-500/20 text-cyan-300",
   }
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-[#0a0a0a]">
       <Header />
       <main className="container mx-auto px-4 py-4 sm:py-6 max-w-7xl">
         {/* Top Bar */}
         <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 mb-4">
           <div className="flex items-center gap-3">
-            <Button variant="outline" size="sm" onClick={() => router.push("/auctions")}>
+            <Button variant="outline" size="sm" onClick={() => router.push("/auctions")} className="border border-white/10 hover:bg-white/5 text-gray-300">
               ← Back
             </Button>
             <div>
-              <h1 className="text-xl font-bold">{auction.name}</h1>
+              <h1 className="text-xl font-bold text-white">{auction.name}</h1>
               <div className="flex items-center gap-2 mt-0.5">
                 <span className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium ${statusColors[auction.status]}`}>
                   {auction.status}
                 </span>
                 {auction.tournament && (
-                  <span className="text-xs text-muted-foreground">
+                  <span className="text-xs text-gray-500">
                     {auction.tournament.name}
                   </span>
                 )}
@@ -393,7 +393,7 @@ export default function AuctionPage({ params }: { params: { auctionId: string } 
           {canManage && (
             <div className="flex flex-wrap gap-2">
               {/* Add Players Buttons */}
-              <Button variant="outline" size="sm" onClick={() => setImportOpen(true)}>
+              <Button variant="outline" size="sm" onClick={() => setImportOpen(true)} className="border border-white/10 hover:bg-white/5 text-gray-300">
                 Import Excel
               </Button>
               {auction.tournamentId && (
@@ -402,6 +402,7 @@ export default function AuctionPage({ params }: { params: { auctionId: string } 
                   size="sm"
                   onClick={handleAddTournamentPlayers}
                   disabled={addingPlayers}
+                  className="border border-white/10 hover:bg-white/5 text-gray-300"
                 >
                   {addingPlayers ? "Adding..." : "Add Tournament Players"}
                 </Button>
@@ -409,22 +410,22 @@ export default function AuctionPage({ params }: { params: { auctionId: string } 
 
               {/* Status Controls */}
               {auction.status === "SETUP" && (
-                <Button size="sm" onClick={() => handleStatusChange("LIVE")} className="bg-green-600 hover:bg-green-700">
+                <Button size="sm" onClick={() => handleStatusChange("LIVE")} className="bg-gradient-to-r from-emerald-500 to-cyan-500 text-black font-semibold hover:from-emerald-400 hover:to-cyan-400">
                   Start Auction
                 </Button>
               )}
               {auction.status === "LIVE" && (
-                <Button size="sm" variant="outline" onClick={() => handleStatusChange("PAUSED")}>
+                <Button size="sm" variant="outline" onClick={() => handleStatusChange("PAUSED")} className="border border-white/10 hover:bg-white/5 text-gray-300">
                   Pause
                 </Button>
               )}
               {auction.status === "PAUSED" && (
-                <Button size="sm" onClick={() => handleStatusChange("LIVE")} className="bg-green-600 hover:bg-green-700">
+                <Button size="sm" onClick={() => handleStatusChange("LIVE")} className="bg-gradient-to-r from-emerald-500 to-cyan-500 text-black font-semibold hover:from-emerald-400 hover:to-cyan-400">
                   Resume
                 </Button>
               )}
               {(auction.status === "LIVE" || auction.status === "PAUSED") && (
-                <Button size="sm" variant="outline" onClick={() => handleStatusChange("COMPLETED")}>
+                <Button size="sm" variant="outline" onClick={() => handleStatusChange("COMPLETED")} className="border border-white/10 hover:bg-white/5 text-gray-300">
                   Complete
                 </Button>
               )}
@@ -434,6 +435,7 @@ export default function AuctionPage({ params }: { params: { auctionId: string } 
                   variant="outline"
                   onClick={handleSyncTeams}
                   disabled={syncingTeams}
+                  className="border border-white/10 hover:bg-white/5 text-gray-300"
                 >
                   {syncingTeams ? "Creating..." : "Create Tournament Teams"}
                 </Button>
@@ -465,32 +467,32 @@ export default function AuctionPage({ params }: { params: { auctionId: string } 
           {/* Auction (Live) Tab */}
           <TabsContent value="auction">
             {auction.status === "SETUP" ? (
-              <Card>
+              <Card className="border-white/10 bg-white/[0.03]">
                 <CardContent className="p-8 text-center">
                   <div className="flex justify-center mb-4">
-                    <GavelIcon size={64} className="text-muted-foreground" />
+                    <GavelIcon size={64} className="text-gray-500" />
                   </div>
-                  <h3 className="text-lg font-semibold mb-2">Auction Not Started</h3>
-                  <p className="text-muted-foreground mb-4">
+                  <h3 className="text-lg font-semibold mb-2 text-white">Auction Not Started</h3>
+                  <p className="text-gray-400 mb-4">
                     {canManage
                       ? "Add players and teams, then start the auction to begin bidding."
                       : "The auction has not started yet. Check back later."}
                   </p>
                   {canManage && (
-                    <Button onClick={() => handleStatusChange("LIVE")} className="bg-green-600 hover:bg-green-700">
+                    <Button onClick={() => handleStatusChange("LIVE")} className="bg-gradient-to-r from-emerald-500 to-cyan-500 text-black font-semibold hover:from-emerald-400 hover:to-cyan-400">
                       Start Auction
                     </Button>
                   )}
                 </CardContent>
               </Card>
             ) : auction.status === "COMPLETED" ? (
-              <Card>
+              <Card className="border-white/10 bg-white/[0.03]">
                 <CardContent className="p-8 text-center">
                   <div className="flex justify-center mb-4">
-                    <SoldGavelIcon size={64} className="text-green-600" />
+                    <SoldGavelIcon size={64} className="text-emerald-400" />
                   </div>
-                  <h3 className="text-lg font-semibold mb-2">Auction Completed</h3>
-                  <p className="text-muted-foreground">
+                  <h3 className="text-lg font-semibold mb-2 text-white">Auction Completed</h3>
+                  <p className="text-gray-400">
                     This auction has been completed. View results in the Dashboard and Teams tabs.
                   </p>
                 </CardContent>
@@ -521,21 +523,21 @@ export default function AuctionPage({ params }: { params: { auctionId: string } 
                       selling={selling}
                     />
                   ) : (
-                    <Card className="h-full">
+                    <Card className="h-full border-white/10 bg-white/[0.03]">
                       <CardHeader>
-                        <CardTitle className="text-lg">Current Bid</CardTitle>
+                        <CardTitle className="text-lg text-white">Current Bid</CardTitle>
                       </CardHeader>
                       <CardContent className="flex flex-col items-center justify-center">
-                        <div className="text-4xl font-black text-primary mb-2">
+                        <div className="text-4xl font-black text-emerald-400 mb-2">
                           {currentBid.toLocaleString()}
                         </div>
                         {bidHistory.length > 0 && (
-                          <div className="text-sm text-muted-foreground space-y-1 w-full mt-4">
-                            <div className="font-medium mb-2">Bid History</div>
+                          <div className="text-sm text-gray-400 space-y-1 w-full mt-4">
+                            <div className="font-medium mb-2 text-gray-300">Bid History</div>
                             {bidHistory.map((entry, i) => (
-                              <div key={i} className="flex justify-between text-xs bg-muted rounded px-2 py-1">
-                                <span>{entry.teamName}</span>
-                                <span className="font-semibold">{entry.amount.toLocaleString()}</span>
+                              <div key={i} className="flex justify-between text-xs bg-white/5 border border-white/10 rounded px-2 py-1">
+                                <span className="text-gray-300">{entry.teamName}</span>
+                                <span className="font-semibold text-white">{entry.amount.toLocaleString()}</span>
                               </div>
                             ))}
                           </div>
@@ -560,9 +562,9 @@ export default function AuctionPage({ params }: { params: { auctionId: string } 
           {/* Teams Tab */}
           <TabsContent value="teams">
             {auction.teams.length === 0 ? (
-              <Card>
+              <Card className="border-white/10 bg-white/[0.03]">
                 <CardContent className="p-8 text-center">
-                  <p className="text-muted-foreground">No teams in this auction</p>
+                  <p className="text-gray-400">No teams in this auction</p>
                 </CardContent>
               </Card>
             ) : (

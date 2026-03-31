@@ -193,10 +193,10 @@ export default function AssignFixturePage({
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-background">
+      <div className="min-h-screen bg-[#0a0a0a]">
         <Header />
         <main className="container mx-auto px-4 py-8">
-          <div className="text-center">Loading fixture...</div>
+          <div className="text-center text-gray-400">Loading fixture...</div>
         </main>
       </div>
     )
@@ -204,10 +204,10 @@ export default function AssignFixturePage({
 
   if (error && !fixture) {
     return (
-      <div className="min-h-screen bg-background">
+      <div className="min-h-screen bg-[#0a0a0a]">
         <Header />
         <main className="container mx-auto px-4 py-8">
-          <div className="text-center text-destructive">{error}</div>
+          <div className="text-center text-red-300">{error}</div>
         </main>
       </div>
     )
@@ -290,11 +290,11 @@ export default function AssignFixturePage({
     excludeId?: string
   ) => (
     <div className="space-y-1">
-      <label className="text-sm font-semibold text-gray-700">{label}</label>
+      <label className="text-sm font-semibold text-gray-300">{label}</label>
       <select
         value={value}
         onChange={(e) => onChange(e.target.value)}
-        className="w-full rounded-md border-2 border-gray-200 px-3 py-2 text-sm focus:border-blue-500 focus:outline-none"
+        className="w-full rounded-md bg-white/5 border border-white/10 px-3 py-2 text-sm text-white focus:border-cyan-500 focus:outline-none"
         disabled={submitting}
       >
         <option value="">Select player...</option>
@@ -319,15 +319,15 @@ export default function AssignFixturePage({
   )
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-purple-50 to-blue-50">
+    <div className="min-h-screen bg-[#0a0a0a]">
       <Header />
       <main className="container mx-auto px-4 py-4 sm:py-8 max-w-2xl">
-        <Card className="border-2 border-blue-200 shadow-2xl">
-          <CardHeader className="bg-gradient-to-r from-blue-50 to-purple-50">
-            <CardTitle className="text-2xl font-black bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+        <Card className="border-white/10 bg-white/[0.03] shadow-2xl">
+          <CardHeader>
+            <CardTitle className="text-2xl font-black text-white">
               Assign Players
             </CardTitle>
-            <CardDescription className="text-sm text-gray-600 font-medium">
+            <CardDescription className="text-sm text-gray-400 font-medium">
               Fixture #{fixture.fixtureNumber} &mdash;{" "}
               {FIXTURE_TYPE_LABELS[fixture.fixtureType] || fixture.fixtureType}
               {isDoubles
@@ -338,21 +338,21 @@ export default function AssignFixturePage({
           <CardContent className="pt-6">
             <form onSubmit={handleSubmit} className="space-y-6">
               {error && (
-                <div className="rounded-lg bg-red-50 border-2 border-red-200 p-4 text-sm text-red-700 font-semibold">
+                <div className="rounded-lg bg-red-500/20 border border-red-500/20 p-4 text-sm text-red-300 font-semibold">
                   {error}
                 </div>
               )}
 
               {/* Gender restriction info */}
               {genderHint && (
-                <div className="rounded-lg bg-amber-50 border border-amber-200 p-3 text-sm text-amber-800 font-medium">
+                <div className="rounded-lg bg-amber-500/10 border border-amber-500/20 p-3 text-sm text-amber-300 font-medium">
                   Gender requirement for {FIXTURE_TYPE_LABELS[fixture.fixtureType]}: {genderHint}
                 </div>
               )}
 
               {/* Team A Players */}
-              <div className="space-y-3 bg-gradient-to-br from-blue-50 to-blue-100 p-4 rounded-lg border-2 border-blue-200">
-                <h3 className="font-bold text-blue-800 text-lg">
+              <div className="space-y-3 bg-white/5 border border-white/10 p-4 rounded-lg">
+                <h3 className="font-bold text-white text-lg">
                   {fixture.teamMatch.teamA.name}
                 </h3>
                 {renderPlayerSelect(
@@ -373,8 +373,8 @@ export default function AssignFixturePage({
               </div>
 
               {/* Team B Players */}
-              <div className="space-y-3 bg-gradient-to-br from-green-50 to-green-100 p-4 rounded-lg border-2 border-green-200">
-                <h3 className="font-bold text-green-800 text-lg">
+              <div className="space-y-3 bg-white/5 border border-white/10 p-4 rounded-lg">
+                <h3 className="font-bold text-white text-lg">
                   {fixture.teamMatch.teamB.name}
                 </h3>
                 {renderPlayerSelect(
@@ -401,14 +401,14 @@ export default function AssignFixturePage({
                   variant="outline"
                   onClick={() => router.back()}
                   disabled={submitting}
-                  className="flex-1 border-2 hover:bg-gray-50 font-semibold"
+                  className="flex-1 border border-white/10 hover:bg-white/5 text-gray-300 font-semibold"
                 >
                   Cancel
                 </Button>
                 <Button
                   type="submit"
                   disabled={submitting}
-                  className="flex-1 bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white shadow-lg hover:shadow-xl transition-all font-bold"
+                  className="flex-1 bg-gradient-to-r from-emerald-500 to-cyan-500 text-black font-semibold hover:from-emerald-400 hover:to-cyan-400 shadow-lg hover:shadow-xl transition-all"
                 >
                   {submitting ? "Assigning..." : "Assign & Create Match"}
                 </Button>

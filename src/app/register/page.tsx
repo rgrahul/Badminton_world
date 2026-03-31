@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import { BirdieLogo } from "@/components/icons/BirdieLogo"
 
 export default function RegisterPage() {
   const router = useRouter()
@@ -45,21 +46,25 @@ export default function RegisterPage() {
   }
 
   return (
-    <div className="flex min-h-screen items-center justify-center p-4">
-      <Card className="w-full max-w-md">
+    <div className="flex min-h-screen items-center justify-center p-4 bg-[#0a0a0a]">
+      <Card className="w-full max-w-md border-white/10 bg-white/[0.03] backdrop-blur-sm">
         <CardHeader>
-          <CardTitle>Register</CardTitle>
-          <CardDescription>Create a new account to get started</CardDescription>
+          <div className="flex items-center justify-center gap-1 mb-2">
+            <BirdieLogo className="w-12 h-12" />
+            <span className="text-2xl font-bold"><span className="text-sky-300">Bird</span><span className="text-amber-400">ie</span></span>
+          </div>
+          <CardTitle className="text-white text-center">Create an account</CardTitle>
+          <CardDescription className="text-center">Get started with Birdie for free</CardDescription>
         </CardHeader>
         <CardContent>
           <form onSubmit={handleSubmit} className="space-y-4">
             {error && (
-              <div className="rounded-md bg-destructive/15 p-3 text-sm text-destructive">
+              <div className="rounded-md bg-red-500/15 border border-red-500/20 p-3 text-sm text-red-400">
                 {error}
               </div>
             )}
             <div className="space-y-2">
-              <Label htmlFor="name">Name (optional)</Label>
+              <Label htmlFor="name" className="text-gray-300">Name (optional)</Label>
               <Input
                 id="name"
                 type="text"
@@ -67,10 +72,11 @@ export default function RegisterPage() {
                 value={name}
                 onChange={(e) => setName(e.target.value)}
                 disabled={isLoading}
+                className="bg-white/5 border-white/10 text-white placeholder:text-gray-500 focus:border-emerald-500/50"
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="email">Email</Label>
+              <Label htmlFor="email" className="text-gray-300">Email</Label>
               <Input
                 id="email"
                 type="email"
@@ -79,10 +85,11 @@ export default function RegisterPage() {
                 onChange={(e) => setEmail(e.target.value)}
                 required
                 disabled={isLoading}
+                className="bg-white/5 border-white/10 text-white placeholder:text-gray-500 focus:border-emerald-500/50"
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="password">Password</Label>
+              <Label htmlFor="password" className="text-gray-300">Password</Label>
               <Input
                 id="password"
                 type="password"
@@ -92,14 +99,15 @@ export default function RegisterPage() {
                 required
                 minLength={8}
                 disabled={isLoading}
+                className="bg-white/5 border-white/10 text-white placeholder:text-gray-500 focus:border-emerald-500/50"
               />
             </div>
-            <Button type="submit" className="w-full" disabled={isLoading}>
+            <Button type="submit" className="w-full bg-gradient-to-r from-emerald-500 to-cyan-500 text-black font-semibold hover:from-emerald-400 hover:to-cyan-400" disabled={isLoading}>
               {isLoading ? "Creating account..." : "Register"}
             </Button>
-            <div className="text-center text-sm">
+            <div className="text-center text-sm text-gray-400">
               Already have an account?{" "}
-              <Link href="/login" className="text-primary hover:underline">
+              <Link href="/login" className="text-emerald-400 hover:text-emerald-300 hover:underline">
                 Login
               </Link>
             </div>

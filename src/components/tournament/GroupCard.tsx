@@ -47,26 +47,26 @@ export function GroupCard({ tournamentId, groupName, groupTeams, standings, qual
       }))
 
   return (
-    <Card>
+    <Card className="border-white/10 bg-white/[0.03]">
       <CardHeader className="pb-3">
-        <CardTitle className="text-lg">{groupName}</CardTitle>
+        <CardTitle className="text-lg text-white">{groupName}</CardTitle>
       </CardHeader>
       <CardContent>
         <div className="space-y-1">
           {orderedTeams.map((t, i) => (
             <div
               key={t.teamId}
-              className={`flex items-center gap-2 py-1.5 px-2 rounded hover:bg-gray-50 ${t.isQualified ? "bg-green-50" : ""}`}
+              className={`flex items-center gap-2 py-1.5 px-2 rounded hover:bg-white/5 ${t.isQualified ? "bg-emerald-500/10" : ""}`}
             >
-              <span className="text-sm font-medium text-muted-foreground w-5">{i + 1}.</span>
+              <span className="text-sm font-medium text-gray-500 w-5">{i + 1}.</span>
               <Link
                 href={`/tournaments/${tournamentId}/teams/${t.teamId}`}
-                className="text-sm font-medium hover:underline text-primary"
+                className="text-sm font-medium hover:underline text-emerald-400"
               >
                 {t.teamName}
               </Link>
               {t.isQualified && (
-                <span className="ml-auto inline-flex items-center rounded-full bg-green-100 px-1.5 py-0.5 text-[10px] font-bold text-green-700">
+                <span className="ml-auto inline-flex items-center rounded-full bg-emerald-500/20 px-1.5 py-0.5 text-[10px] font-bold text-emerald-300">
                   Q
                 </span>
               )}

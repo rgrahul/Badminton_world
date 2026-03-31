@@ -140,23 +140,22 @@ export default function NewPlayerPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-green-50 via-blue-50 to-green-50">
+    <div className="min-h-screen bg-[#0a0a0a]">
       <Header />
       <main className="container mx-auto px-4 py-4 sm:py-8 max-w-2xl">
-        <Card className="border-2 border-green-200 shadow-2xl">
-          <CardHeader className="bg-gradient-to-r from-green-50 to-blue-50">
-            <CardTitle className="text-2xl sm:text-3xl font-black bg-gradient-to-r from-green-600 to-blue-600 bg-clip-text text-transparent flex items-center gap-2">
-              <span className="text-3xl sm:text-4xl">👤</span>
+        <Card className="border-white/10 bg-white/[0.03] shadow-2xl">
+          <CardHeader>
+            <CardTitle className="text-2xl sm:text-3xl font-black text-white">
               Add New Player
             </CardTitle>
-            <CardDescription className="text-sm sm:text-base text-gray-600 font-medium">Create a new player profile</CardDescription>
+            <CardDescription className="text-sm sm:text-base text-gray-400 font-medium">Create a new player profile</CardDescription>
           </CardHeader>
           <CardContent className="pt-6">
             <form onSubmit={handleSubmit} className="space-y-6">
               {/* Name - Required */}
-              <div className="space-y-2 bg-gradient-to-br from-yellow-50 to-yellow-100 p-4 rounded-lg border border-yellow-200">
-                <Label htmlFor="name" className="text-yellow-800 font-bold flex items-center gap-1">
-                  <span>✨</span> Player Name <span className="text-red-500">*</span>
+              <div className="space-y-2 bg-white/5 border border-white/10 p-4 rounded-lg">
+                <Label htmlFor="name" className="text-gray-300 font-bold flex items-center gap-1">
+                  Player Name <span className="text-red-500">*</span>
                 </Label>
                 <Input
                   id="name"
@@ -164,49 +163,49 @@ export default function NewPlayerPage() {
                   onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                   placeholder="Enter player name"
                   required
-                  className="border-2 focus:border-yellow-500"
+                  className="bg-white/5 border-white/10 text-white placeholder:text-gray-500"
                 />
               </div>
 
               {/* Contact Information */}
-              <div className="space-y-4 bg-gradient-to-br from-blue-50 to-blue-100 p-4 rounded-lg border-2 border-blue-200">
-                <h3 className="font-bold text-blue-800 flex items-center gap-2 text-lg">
-                  <span>📞</span> Contact Information
+              <div className="space-y-4 bg-cyan-500/10 border border-cyan-500/20 p-4 rounded-lg">
+                <h3 className="font-bold text-cyan-400 flex items-center gap-2 text-lg">
+                  Contact Information
                 </h3>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div className="space-y-2">
-                    <Label htmlFor="email" className="text-blue-700 font-semibold">Email</Label>
+                    <Label htmlFor="email" className="text-gray-300 font-semibold">Email</Label>
                     <Input
                       id="email"
                       type="email"
                       value={formData.email}
                       onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                       placeholder="player@example.com"
-                      className="border-2 focus:border-blue-500"
+                      className="bg-white/5 border-white/10 text-white placeholder:text-gray-500"
                     />
                   </div>
 
                   <div className="space-y-2">
-                    <Label htmlFor="mobileNumber" className="text-blue-700 font-semibold">Mobile Number</Label>
+                    <Label htmlFor="mobileNumber" className="text-gray-300 font-semibold">Mobile Number</Label>
                     <Input
                       id="mobileNumber"
                       value={formData.mobileNumber}
                       onChange={(e) => setFormData({ ...formData, mobileNumber: e.target.value })}
                       placeholder="+1234567890"
-                      className="border-2 focus:border-blue-500"
+                      className="bg-white/5 border-white/10 text-white placeholder:text-gray-500"
                     />
                   </div>
                 </div>
               </div>
 
               {/* Personal Information */}
-              <div className="space-y-4 bg-gradient-to-br from-green-50 to-green-100 p-4 rounded-lg border-2 border-green-200">
-                <h3 className="font-bold text-green-800 flex items-center gap-2 text-lg">
-                  <span>🎂</span> Personal Information
+              <div className="space-y-4 bg-emerald-500/10 border border-emerald-500/20 p-4 rounded-lg">
+                <h3 className="font-bold text-emerald-400 flex items-center gap-2 text-lg">
+                  Personal Information
                 </h3>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div className="space-y-2">
-                    <Label htmlFor="age" className="text-green-700 font-semibold">Age</Label>
+                    <Label htmlFor="age" className="text-gray-300 font-semibold">Age</Label>
                     <Input
                       id="age"
                       type="number"
@@ -214,23 +213,23 @@ export default function NewPlayerPage() {
                       value={formData.age}
                       onChange={(e) => setFormData({ ...formData, age: e.target.value })}
                       placeholder="25"
-                      className="border-2 focus:border-green-500"
+                      className="bg-white/5 border-white/10 text-white placeholder:text-gray-500"
                     />
                   </div>
 
                   <div className="space-y-2">
-                    <Label htmlFor="gender" className="text-green-700 font-semibold">Gender</Label>
+                    <Label htmlFor="gender" className="text-gray-300 font-semibold">Gender</Label>
                     <Select
                       value={formData.gender}
                       onValueChange={(value) => setFormData({ ...formData, gender: value })}
                     >
-                      <SelectTrigger className="border-2 focus:border-green-500">
+                      <SelectTrigger className="bg-white/5 border-white/10 text-white">
                         <SelectValue placeholder="Select gender" />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="MALE">👨 Male</SelectItem>
-                        <SelectItem value="FEMALE">👩 Female</SelectItem>
-                        <SelectItem value="OTHER">🧑 Other</SelectItem>
+                        <SelectItem value="MALE">Male</SelectItem>
+                        <SelectItem value="FEMALE">Female</SelectItem>
+                        <SelectItem value="OTHER">Other</SelectItem>
                       </SelectContent>
                     </Select>
                   </div>
@@ -238,13 +237,13 @@ export default function NewPlayerPage() {
               </div>
 
               {/* Experience and Rating */}
-              <div className="space-y-4 bg-gradient-to-br from-purple-50 to-purple-100 p-4 rounded-lg border-2 border-purple-200">
-                <h3 className="font-bold text-purple-800 flex items-center gap-2 text-lg">
-                  <span>⭐</span> Experience and Rating
+              <div className="space-y-4 bg-purple-500/10 border border-purple-500/20 p-4 rounded-lg">
+                <h3 className="font-bold text-purple-400 flex items-center gap-2 text-lg">
+                  Experience and Rating
                 </h3>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div className="space-y-2">
-                    <Label htmlFor="yearsOfExperience" className="text-purple-700 font-semibold">Years of Experience</Label>
+                    <Label htmlFor="yearsOfExperience" className="text-gray-300 font-semibold">Years of Experience</Label>
                     <Input
                       id="yearsOfExperience"
                       type="number"
@@ -254,12 +253,12 @@ export default function NewPlayerPage() {
                         setFormData({ ...formData, yearsOfExperience: e.target.value })
                       }
                       placeholder="5"
-                      className="border-2 focus:border-purple-500"
+                      className="bg-white/5 border-white/10 text-white placeholder:text-gray-500"
                     />
                   </div>
 
                   <div className="space-y-2">
-                    <Label htmlFor="skillRating" className="text-purple-700 font-semibold">Skill Rating (1-100)</Label>
+                    <Label htmlFor="skillRating" className="text-gray-300 font-semibold">Skill Rating (1-100)</Label>
                     <Input
                       id="skillRating"
                       type="number"
@@ -268,22 +267,22 @@ export default function NewPlayerPage() {
                       value={formData.skillRating}
                       onChange={(e) => setFormData({ ...formData, skillRating: e.target.value })}
                       placeholder="75"
-                      className="border-2 focus:border-purple-500"
+                      className="bg-white/5 border-white/10 text-white placeholder:text-gray-500"
                     />
                   </div>
                 </div>
               </div>
 
               {/* Profile Photo Upload */}
-              <div className="space-y-4 bg-gradient-to-br from-gray-50 to-gray-100 p-4 rounded-lg border border-gray-200">
-                <Label className="text-gray-800 font-bold flex items-center gap-1">
-                  <span>📷</span> Profile Photo
+              <div className="space-y-4 bg-white/5 border border-white/10 p-4 rounded-lg">
+                <Label className="text-white font-bold flex items-center gap-1">
+                  Profile Photo
                 </Label>
 
                 {/* Photo Preview */}
                 {previewUrl && !imageError && (
                   <div className="flex justify-center">
-                    <div className="relative w-32 h-32 rounded-full overflow-hidden border-4 border-green-200 shadow-lg">
+                    <div className="relative w-32 h-32 rounded-full overflow-hidden border-4 border-white/10 shadow-lg">
                       <img
                         src={previewUrl}
                         alt="Profile preview"
@@ -296,8 +295,8 @@ export default function NewPlayerPage() {
                 )}
                 {imageError && previewUrl && (
                   <div className="flex justify-center">
-                    <div className="text-sm text-red-600 bg-red-50 p-3 rounded-lg border border-red-200">
-                      ⚠️ Unable to load image. Please check the URL or try uploading a file instead.
+                    <div className="text-sm text-red-400 bg-red-500/10 p-3 rounded-lg border border-red-500/20">
+                      Unable to load image. Please check the URL or try uploading a file instead.
                     </div>
                   </div>
                 )}
@@ -309,19 +308,19 @@ export default function NewPlayerPage() {
                     type="file"
                     accept="image/*"
                     onChange={handleFileUpload}
-                    className="border-2 focus:border-gray-500"
+                    className="bg-white/5 border-white/10 text-white placeholder:text-gray-500"
                   />
-                  <p className="text-xs text-gray-600 font-medium">
+                  <p className="text-xs text-gray-400 font-medium">
                     Upload an image file (max 5MB). Supported formats: JPG, PNG, GIF, WebP
                   </p>
                   <p className="text-xs text-gray-500 italic">
-                    💡 Tip: For Google Drive, make sure the file is set to "Anyone with the link can view"
+                    Tip: For Google Drive, make sure the file is set to "Anyone with the link can view"
                   </p>
                 </div>
 
                 {/* Or URL Input */}
                 <div className="space-y-2">
-                  <Label htmlFor="profilePhoto" className="text-sm text-gray-700">
+                  <Label htmlFor="profilePhoto" className="text-sm text-gray-300">
                     Or enter photo URL or Google Drive File ID
                   </Label>
                   <Input
@@ -335,11 +334,11 @@ export default function NewPlayerPage() {
                       setImageError(false)
                     }}
                     placeholder="URL, Google Drive link, or just the File ID"
-                    className="border-2 focus:border-gray-500"
+                    className="bg-white/5 border-white/10 text-white placeholder:text-gray-500"
                   />
                   {formData.profilePhoto && formData.profilePhoto.includes('drive.google.com') && (
-                    <div className="text-xs text-blue-600 bg-blue-50 p-2 rounded border border-blue-200">
-                      ℹ️ Using: <code className="bg-white px-1 py-0.5 rounded text-xs">{formData.profilePhoto}</code>
+                    <div className="text-xs text-cyan-400 bg-cyan-500/10 p-2 rounded border border-cyan-500/20">
+                      Using: <code className="bg-white/10 px-1 py-0.5 rounded text-xs">{formData.profilePhoto}</code>
                     </div>
                   )}
                 </div>
@@ -347,11 +346,11 @@ export default function NewPlayerPage() {
 
               {/* Submit Button */}
               <div className="flex gap-3 pt-4">
-                <Button type="button" variant="outline" onClick={() => router.push("/players")} className="flex-1 border-2 hover:bg-gray-50 font-semibold">
-                  ❌ Cancel
+                <Button type="button" variant="outline" onClick={() => router.push("/players")} className="flex-1 border border-white/10 hover:bg-white/5 text-gray-300 font-semibold">
+                  Cancel
                 </Button>
-                <Button type="submit" disabled={isSubmitting} className="flex-1 bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 text-white shadow-lg hover:shadow-xl transition-all font-bold">
-                  {isSubmitting ? "Creating... ⏳" : "✅ Create Player"}
+                <Button type="submit" disabled={isSubmitting} className="flex-1 bg-gradient-to-r from-emerald-500 to-cyan-500 text-black font-semibold hover:from-emerald-400 hover:to-cyan-400 shadow-lg hover:shadow-xl transition-all">
+                  {isSubmitting ? "Creating..." : "Create Player"}
                 </Button>
               </div>
             </form>

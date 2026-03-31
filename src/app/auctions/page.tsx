@@ -40,10 +40,10 @@ export default function AuctionsPage() {
     : auctions.filter((a) => a.status === statusFilter)
 
   const statusColors: Record<string, string> = {
-    SETUP: "bg-gray-100 text-gray-800",
-    LIVE: "bg-green-100 text-green-800",
-    PAUSED: "bg-amber-100 text-amber-800",
-    COMPLETED: "bg-blue-100 text-blue-800",
+    SETUP: "bg-gray-500/20 text-gray-300",
+    LIVE: "bg-emerald-500/20 text-emerald-300",
+    PAUSED: "bg-amber-500/20 text-amber-300",
+    COMPLETED: "bg-cyan-500/20 text-cyan-300",
   }
 
   return (
@@ -51,10 +51,10 @@ export default function AuctionsPage() {
       <Header />
       <main className="container mx-auto px-4 py-4 sm:py-8 max-w-6xl">
         <div className="flex items-center justify-between mb-6">
-          <h1 className="text-2xl font-bold">Auctions</h1>
+          <h1 className="text-2xl font-bold text-white">Auctions</h1>
           {canManage && (
             <Link href="/auctions/new">
-              <Button>Create New Auction</Button>
+              <Button className="bg-gradient-to-r from-emerald-500 to-cyan-500 text-black font-semibold hover:from-emerald-400 hover:to-cyan-400">Create New Auction</Button>
             </Link>
           )}
         </div>
@@ -67,6 +67,7 @@ export default function AuctionsPage() {
               variant={statusFilter === tab ? "default" : "outline"}
               size="sm"
               onClick={() => setStatusFilter(tab)}
+              className={statusFilter !== tab ? "bg-transparent border border-white/10 text-gray-400 hover:text-white hover:bg-white/5" : ""}
             >
               {tab === "ALL" ? "All" : tab.charAt(0) + tab.slice(1).toLowerCase()}
             </Button>
@@ -93,10 +94,10 @@ export default function AuctionsPage() {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             {filtered.map((auction) => (
               <Link key={auction.id} href={`/auctions/${auction.id}`}>
-                <Card className="hover:shadow-lg transition-shadow cursor-pointer h-full">
+                <Card className="hover:shadow-lg transition-shadow cursor-pointer h-full border-white/10 bg-white/[0.03] hover:border-white/20">
                   <CardHeader className="pb-3">
                     <div className="flex items-start justify-between">
-                      <CardTitle className="text-lg truncate">{auction.name}</CardTitle>
+                      <CardTitle className="text-lg truncate text-white">{auction.name}</CardTitle>
                       <span
                         className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium flex-shrink-0 ${
                           statusColors[auction.status]

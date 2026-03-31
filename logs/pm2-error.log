@@ -45,3 +45,421 @@
     at /Users/rahul.gupta/Desktop/devTree/myproject/Badminton_world/node_modules/.pnpm/next@14.2.35_@babel+core@7.29.0_@playwright+test@1.58.1_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/webpack:/next/dist/esm/server/future/route-modules/app-route/module.js:195:37
     at e_.execute (/Users/rahul.gupta/Desktop/devTree/myproject/Badminton_world/node_modules/.pnpm/next@14.2.35_@babel+core@7.29.0_@playwright+test@1.58.1_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/webpack:/next/dist/esm/server/future/route-modules/app-route/module.js:124:26)
 2026-03-26 11:51:54 +05:30: [31m[auth][details][0m: {}
+2026-03-30 22:57:13 +05:30:  ⨯ Error: Cannot find module './chunks/vendor-chunks/next@14.2.35_@babel+core@7.29.0_@playwright+test@1.58.1_react-dom@18.3.1_react@18.3.1__react@18.3.1.js'
+Require stack:
+- /Users/rahul.gupta/Desktop/devTree/myproject/Badminton_world/.next/server/webpack-runtime.js
+- /Users/rahul.gupta/Desktop/devTree/myproject/Badminton_world/.next/server/pages/_document.js
+- /Users/rahul.gupta/Desktop/devTree/myproject/Badminton_world/node_modules/.pnpm/next@14.2.35_@babel+core@7.29.0_@playwright+test@1.58.1_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/server/require.js
+- /Users/rahul.gupta/Desktop/devTree/myproject/Badminton_world/node_modules/.pnpm/next@14.2.35_@babel+core@7.29.0_@playwright+test@1.58.1_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/server/next-server.js
+- /Users/rahul.gupta/Desktop/devTree/myproject/Badminton_world/node_modules/.pnpm/next@14.2.35_@babel+core@7.29.0_@playwright+test@1.58.1_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/server/next.js
+- /Users/rahul.gupta/Desktop/devTree/myproject/Badminton_world/node_modules/.pnpm/next@14.2.35_@babel+core@7.29.0_@playwright+test@1.58.1_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/server/lib/start-server.js
+- /Users/rahul.gupta/Desktop/devTree/myproject/Badminton_world/node_modules/.pnpm/next@14.2.35_@babel+core@7.29.0_@playwright+test@1.58.1_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/cli/next-start.js
+    at Function.call (node:internal/modules/cjs/loader:1401:15)
+    at /Users/rahul.gupta/Desktop/devTree/myproject/Badminton_world/node_modules/.pnpm/next@14.2.35_@babel+core@7.29.0_@playwright+test@1.58.1_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/src/server/require-hook.ts:51:34
+    at Module.call (/Users/rahul.gupta/.nvm/versions/node/v22.17.0/lib/node_modules/pm2/node_modules/require-in-the-middle/index.js:81:25)
+    at Module.mod.require (/Users/rahul.gupta/Desktop/devTree/myproject/Badminton_world/node_modules/.pnpm/next@14.2.35_@babel+core@7.29.0_@playwright+test@1.58.1_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/src/server/require-hook.ts:70:26)
+    at require (node:internal/modules/helpers:135:16)
+    at Object.t.f.require (/Users/rahul.gupta/Desktop/devTree/myproject/Badminton_world/.next/server/webpack-runtime.js:1:1415)
+    at /Users/rahul.gupta/Desktop/devTree/myproject/Badminton_world/.next/server/webpack-runtime.js:1:874
+    at Array.reduce (<anonymous>)
+    at Function.t.e (/Users/rahul.gupta/Desktop/devTree/myproject/Badminton_world/.next/server/webpack-runtime.js:1:853)
+    at Array.map (<anonymous>) {
+  code: 'MODULE_NOT_FOUND',
+  requireStack: [
+    '/Users/rahul.gupta/Desktop/devTree/myproject/Badminton_world/.next/server/webpack-runtime.js',
+    '/Users/rahul.gupta/Desktop/devTree/myproject/Badminton_world/.next/server/pages/_document.js',
+    '/Users/rahul.gupta/Desktop/devTree/myproject/Badminton_world/node_modules/.pnpm/next@14.2.35_@babel+core@7.29.0_@playwright+test@1.58.1_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/server/require.js',
+    '/Users/rahul.gupta/Desktop/devTree/myproject/Badminton_world/node_modules/.pnpm/next@14.2.35_@babel+core@7.29.0_@playwright+test@1.58.1_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/server/next-server.js',
+    '/Users/rahul.gupta/Desktop/devTree/myproject/Badminton_world/node_modules/.pnpm/next@14.2.35_@babel+core@7.29.0_@playwright+test@1.58.1_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/server/next.js',
+    '/Users/rahul.gupta/Desktop/devTree/myproject/Badminton_world/node_modules/.pnpm/next@14.2.35_@babel+core@7.29.0_@playwright+test@1.58.1_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/server/lib/start-server.js',
+    '/Users/rahul.gupta/Desktop/devTree/myproject/Badminton_world/node_modules/.pnpm/next@14.2.35_@babel+core@7.29.0_@playwright+test@1.58.1_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/cli/next-start.js'
+  ]
+}
+2026-03-30 22:57:13 +05:30:  ⨯ Error: Cannot find module '/Users/rahul.gupta/Desktop/devTree/myproject/Badminton_world/.next/server/pages/_error.js'
+Require stack:
+- /Users/rahul.gupta/Desktop/devTree/myproject/Badminton_world/node_modules/.pnpm/next@14.2.35_@babel+core@7.29.0_@playwright+test@1.58.1_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/server/require.js
+- /Users/rahul.gupta/Desktop/devTree/myproject/Badminton_world/node_modules/.pnpm/next@14.2.35_@babel+core@7.29.0_@playwright+test@1.58.1_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/server/next-server.js
+- /Users/rahul.gupta/Desktop/devTree/myproject/Badminton_world/node_modules/.pnpm/next@14.2.35_@babel+core@7.29.0_@playwright+test@1.58.1_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/server/next.js
+- /Users/rahul.gupta/Desktop/devTree/myproject/Badminton_world/node_modules/.pnpm/next@14.2.35_@babel+core@7.29.0_@playwright+test@1.58.1_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/server/lib/start-server.js
+- /Users/rahul.gupta/Desktop/devTree/myproject/Badminton_world/node_modules/.pnpm/next@14.2.35_@babel+core@7.29.0_@playwright+test@1.58.1_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/cli/next-start.js
+    at Function.call (node:internal/modules/cjs/loader:1401:15)
+    at /Users/rahul.gupta/Desktop/devTree/myproject/Badminton_world/node_modules/.pnpm/next@14.2.35_@babel+core@7.29.0_@playwright+test@1.58.1_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/src/server/require-hook.ts:51:34
+    at Module.call (/Users/rahul.gupta/.nvm/versions/node/v22.17.0/lib/node_modules/pm2/node_modules/require-in-the-middle/index.js:81:25)
+    at Module.mod.require (/Users/rahul.gupta/Desktop/devTree/myproject/Badminton_world/node_modules/.pnpm/next@14.2.35_@babel+core@7.29.0_@playwright+test@1.58.1_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/src/server/require-hook.ts:70:26)
+    at require (node:internal/modules/helpers:135:16)
+    at requirePage (/Users/rahul.gupta/Desktop/devTree/myproject/Badminton_world/node_modules/.pnpm/next@14.2.35_@babel+core@7.29.0_@playwright+test@1.58.1_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/src/server/require.ts:127:9)
+    at /Users/rahul.gupta/Desktop/devTree/myproject/Badminton_world/node_modules/.pnpm/next@14.2.35_@babel+core@7.29.0_@playwright+test@1.58.1_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/src/server/load-components.ts:206:16
+    at processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at loadComponentsImpl (/Users/rahul.gupta/Desktop/devTree/myproject/Badminton_world/node_modules/.pnpm/next@14.2.35_@babel+core@7.29.0_@playwright+test@1.58.1_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/src/server/load-components.ts:205:24)
+    at NextNodeServer.findPageComponentsImpl (/Users/rahul.gupta/Desktop/devTree/myproject/Badminton_world/node_modules/.pnpm/next@14.2.35_@babel+core@7.29.0_@playwright+test@1.58.1_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/src/server/next-server.ts:768:28) {
+  code: 'MODULE_NOT_FOUND',
+  requireStack: [
+    '/Users/rahul.gupta/Desktop/devTree/myproject/Badminton_world/node_modules/.pnpm/next@14.2.35_@babel+core@7.29.0_@playwright+test@1.58.1_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/server/require.js',
+    '/Users/rahul.gupta/Desktop/devTree/myproject/Badminton_world/node_modules/.pnpm/next@14.2.35_@babel+core@7.29.0_@playwright+test@1.58.1_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/server/next-server.js',
+    '/Users/rahul.gupta/Desktop/devTree/myproject/Badminton_world/node_modules/.pnpm/next@14.2.35_@babel+core@7.29.0_@playwright+test@1.58.1_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/server/next.js',
+    '/Users/rahul.gupta/Desktop/devTree/myproject/Badminton_world/node_modules/.pnpm/next@14.2.35_@babel+core@7.29.0_@playwright+test@1.58.1_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/server/lib/start-server.js',
+    '/Users/rahul.gupta/Desktop/devTree/myproject/Badminton_world/node_modules/.pnpm/next@14.2.35_@babel+core@7.29.0_@playwright+test@1.58.1_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/cli/next-start.js'
+  ]
+}
+2026-03-30 22:57:13 +05:30:  ⨯ Error: Cannot find module '/Users/rahul.gupta/Desktop/devTree/myproject/Badminton_world/.next/server/app/_not-found/page.js'
+Require stack:
+- /Users/rahul.gupta/Desktop/devTree/myproject/Badminton_world/node_modules/.pnpm/next@14.2.35_@babel+core@7.29.0_@playwright+test@1.58.1_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/server/require.js
+- /Users/rahul.gupta/Desktop/devTree/myproject/Badminton_world/node_modules/.pnpm/next@14.2.35_@babel+core@7.29.0_@playwright+test@1.58.1_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/server/next-server.js
+- /Users/rahul.gupta/Desktop/devTree/myproject/Badminton_world/node_modules/.pnpm/next@14.2.35_@babel+core@7.29.0_@playwright+test@1.58.1_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/server/next.js
+- /Users/rahul.gupta/Desktop/devTree/myproject/Badminton_world/node_modules/.pnpm/next@14.2.35_@babel+core@7.29.0_@playwright+test@1.58.1_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/server/lib/start-server.js
+- /Users/rahul.gupta/Desktop/devTree/myproject/Badminton_world/node_modules/.pnpm/next@14.2.35_@babel+core@7.29.0_@playwright+test@1.58.1_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/cli/next-start.js
+    at Function.call (node:internal/modules/cjs/loader:1401:15)
+    at /Users/rahul.gupta/Desktop/devTree/myproject/Badminton_world/node_modules/.pnpm/next@14.2.35_@babel+core@7.29.0_@playwright+test@1.58.1_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/src/server/require-hook.ts:51:34
+    at Module.call (/Users/rahul.gupta/.nvm/versions/node/v22.17.0/lib/node_modules/pm2/node_modules/require-in-the-middle/index.js:81:25)
+    at Module.mod.require (/Users/rahul.gupta/Desktop/devTree/myproject/Badminton_world/node_modules/.pnpm/next@14.2.35_@babel+core@7.29.0_@playwright+test@1.58.1_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/src/server/require-hook.ts:70:26)
+    at require (node:internal/modules/helpers:135:16)
+    at requirePage (/Users/rahul.gupta/Desktop/devTree/myproject/Badminton_world/node_modules/.pnpm/next@14.2.35_@babel+core@7.29.0_@playwright+test@1.58.1_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/src/server/require.ts:127:9)
+    at /Users/rahul.gupta/Desktop/devTree/myproject/Badminton_world/node_modules/.pnpm/next@14.2.35_@babel+core@7.29.0_@playwright+test@1.58.1_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/src/server/load-components.ts:206:16
+    at processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at loadComponentsImpl (/Users/rahul.gupta/Desktop/devTree/myproject/Badminton_world/node_modules/.pnpm/next@14.2.35_@babel+core@7.29.0_@playwright+test@1.58.1_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/src/server/load-components.ts:205:24)
+    at NextNodeServer.findPageComponentsImpl (/Users/rahul.gupta/Desktop/devTree/myproject/Badminton_world/node_modules/.pnpm/next@14.2.35_@babel+core@7.29.0_@playwright+test@1.58.1_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/src/server/next-server.ts:768:28) {
+  code: 'MODULE_NOT_FOUND',
+  requireStack: [
+    '/Users/rahul.gupta/Desktop/devTree/myproject/Badminton_world/node_modules/.pnpm/next@14.2.35_@babel+core@7.29.0_@playwright+test@1.58.1_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/server/require.js',
+    '/Users/rahul.gupta/Desktop/devTree/myproject/Badminton_world/node_modules/.pnpm/next@14.2.35_@babel+core@7.29.0_@playwright+test@1.58.1_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/server/next-server.js',
+    '/Users/rahul.gupta/Desktop/devTree/myproject/Badminton_world/node_modules/.pnpm/next@14.2.35_@babel+core@7.29.0_@playwright+test@1.58.1_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/server/next.js',
+    '/Users/rahul.gupta/Desktop/devTree/myproject/Badminton_world/node_modules/.pnpm/next@14.2.35_@babel+core@7.29.0_@playwright+test@1.58.1_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/server/lib/start-server.js',
+    '/Users/rahul.gupta/Desktop/devTree/myproject/Badminton_world/node_modules/.pnpm/next@14.2.35_@babel+core@7.29.0_@playwright+test@1.58.1_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/cli/next-start.js'
+  ]
+}
+2026-03-30 23:09:52 +05:30:  ⨯ Error: Cannot find module './chunks/vendor-chunks/next@14.2.35_@babel+core@7.29.0_@playwright+test@1.58.1_react-dom@18.3.1_react@18.3.1__react@18.3.1.js'
+Require stack:
+- /Users/rahul.gupta/Desktop/devTree/myproject/Badminton_world/.next/server/webpack-runtime.js
+- /Users/rahul.gupta/Desktop/devTree/myproject/Badminton_world/.next/server/pages/_document.js
+- /Users/rahul.gupta/Desktop/devTree/myproject/Badminton_world/node_modules/.pnpm/next@14.2.35_@babel+core@7.29.0_@playwright+test@1.58.1_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/server/require.js
+- /Users/rahul.gupta/Desktop/devTree/myproject/Badminton_world/node_modules/.pnpm/next@14.2.35_@babel+core@7.29.0_@playwright+test@1.58.1_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/server/next-server.js
+- /Users/rahul.gupta/Desktop/devTree/myproject/Badminton_world/node_modules/.pnpm/next@14.2.35_@babel+core@7.29.0_@playwright+test@1.58.1_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/server/next.js
+- /Users/rahul.gupta/Desktop/devTree/myproject/Badminton_world/node_modules/.pnpm/next@14.2.35_@babel+core@7.29.0_@playwright+test@1.58.1_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/server/lib/start-server.js
+- /Users/rahul.gupta/Desktop/devTree/myproject/Badminton_world/node_modules/.pnpm/next@14.2.35_@babel+core@7.29.0_@playwright+test@1.58.1_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/cli/next-start.js
+    at Function.call (node:internal/modules/cjs/loader:1401:15)
+    at /Users/rahul.gupta/Desktop/devTree/myproject/Badminton_world/node_modules/.pnpm/next@14.2.35_@babel+core@7.29.0_@playwright+test@1.58.1_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/src/server/require-hook.ts:51:34
+    at Module.call (/Users/rahul.gupta/.nvm/versions/node/v22.17.0/lib/node_modules/pm2/node_modules/require-in-the-middle/index.js:81:25)
+    at Module.mod.require (/Users/rahul.gupta/Desktop/devTree/myproject/Badminton_world/node_modules/.pnpm/next@14.2.35_@babel+core@7.29.0_@playwright+test@1.58.1_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/src/server/require-hook.ts:70:26)
+    at require (node:internal/modules/helpers:135:16)
+    at Object.t.f.require (/Users/rahul.gupta/Desktop/devTree/myproject/Badminton_world/.next/server/webpack-runtime.js:1:1415)
+    at /Users/rahul.gupta/Desktop/devTree/myproject/Badminton_world/.next/server/webpack-runtime.js:1:874
+    at Array.reduce (<anonymous>)
+    at Function.t.e (/Users/rahul.gupta/Desktop/devTree/myproject/Badminton_world/.next/server/webpack-runtime.js:1:853)
+    at Array.map (<anonymous>) {
+  code: 'MODULE_NOT_FOUND',
+  requireStack: [
+    '/Users/rahul.gupta/Desktop/devTree/myproject/Badminton_world/.next/server/webpack-runtime.js',
+    '/Users/rahul.gupta/Desktop/devTree/myproject/Badminton_world/.next/server/pages/_document.js',
+    '/Users/rahul.gupta/Desktop/devTree/myproject/Badminton_world/node_modules/.pnpm/next@14.2.35_@babel+core@7.29.0_@playwright+test@1.58.1_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/server/require.js',
+    '/Users/rahul.gupta/Desktop/devTree/myproject/Badminton_world/node_modules/.pnpm/next@14.2.35_@babel+core@7.29.0_@playwright+test@1.58.1_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/server/next-server.js',
+    '/Users/rahul.gupta/Desktop/devTree/myproject/Badminton_world/node_modules/.pnpm/next@14.2.35_@babel+core@7.29.0_@playwright+test@1.58.1_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/server/next.js',
+    '/Users/rahul.gupta/Desktop/devTree/myproject/Badminton_world/node_modules/.pnpm/next@14.2.35_@babel+core@7.29.0_@playwright+test@1.58.1_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/server/lib/start-server.js',
+    '/Users/rahul.gupta/Desktop/devTree/myproject/Badminton_world/node_modules/.pnpm/next@14.2.35_@babel+core@7.29.0_@playwright+test@1.58.1_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/cli/next-start.js'
+  ]
+}
+2026-03-30 23:09:52 +05:30:  ⨯ Error: Cannot find module '/Users/rahul.gupta/Desktop/devTree/myproject/Badminton_world/.next/server/pages/_error.js'
+Require stack:
+- /Users/rahul.gupta/Desktop/devTree/myproject/Badminton_world/node_modules/.pnpm/next@14.2.35_@babel+core@7.29.0_@playwright+test@1.58.1_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/server/require.js
+- /Users/rahul.gupta/Desktop/devTree/myproject/Badminton_world/node_modules/.pnpm/next@14.2.35_@babel+core@7.29.0_@playwright+test@1.58.1_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/server/next-server.js
+- /Users/rahul.gupta/Desktop/devTree/myproject/Badminton_world/node_modules/.pnpm/next@14.2.35_@babel+core@7.29.0_@playwright+test@1.58.1_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/server/next.js
+- /Users/rahul.gupta/Desktop/devTree/myproject/Badminton_world/node_modules/.pnpm/next@14.2.35_@babel+core@7.29.0_@playwright+test@1.58.1_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/server/lib/start-server.js
+- /Users/rahul.gupta/Desktop/devTree/myproject/Badminton_world/node_modules/.pnpm/next@14.2.35_@babel+core@7.29.0_@playwright+test@1.58.1_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/cli/next-start.js
+    at Function.call (node:internal/modules/cjs/loader:1401:15)
+    at /Users/rahul.gupta/Desktop/devTree/myproject/Badminton_world/node_modules/.pnpm/next@14.2.35_@babel+core@7.29.0_@playwright+test@1.58.1_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/src/server/require-hook.ts:51:34
+    at Module.call (/Users/rahul.gupta/.nvm/versions/node/v22.17.0/lib/node_modules/pm2/node_modules/require-in-the-middle/index.js:81:25)
+    at Module.mod.require (/Users/rahul.gupta/Desktop/devTree/myproject/Badminton_world/node_modules/.pnpm/next@14.2.35_@babel+core@7.29.0_@playwright+test@1.58.1_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/src/server/require-hook.ts:70:26)
+    at require (node:internal/modules/helpers:135:16)
+    at requirePage (/Users/rahul.gupta/Desktop/devTree/myproject/Badminton_world/node_modules/.pnpm/next@14.2.35_@babel+core@7.29.0_@playwright+test@1.58.1_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/src/server/require.ts:127:9)
+    at /Users/rahul.gupta/Desktop/devTree/myproject/Badminton_world/node_modules/.pnpm/next@14.2.35_@babel+core@7.29.0_@playwright+test@1.58.1_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/src/server/load-components.ts:206:16
+    at processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at loadComponentsImpl (/Users/rahul.gupta/Desktop/devTree/myproject/Badminton_world/node_modules/.pnpm/next@14.2.35_@babel+core@7.29.0_@playwright+test@1.58.1_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/src/server/load-components.ts:205:24)
+    at NextNodeServer.findPageComponentsImpl (/Users/rahul.gupta/Desktop/devTree/myproject/Badminton_world/node_modules/.pnpm/next@14.2.35_@babel+core@7.29.0_@playwright+test@1.58.1_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/src/server/next-server.ts:768:28) {
+  code: 'MODULE_NOT_FOUND',
+  requireStack: [
+    '/Users/rahul.gupta/Desktop/devTree/myproject/Badminton_world/node_modules/.pnpm/next@14.2.35_@babel+core@7.29.0_@playwright+test@1.58.1_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/server/require.js',
+    '/Users/rahul.gupta/Desktop/devTree/myproject/Badminton_world/node_modules/.pnpm/next@14.2.35_@babel+core@7.29.0_@playwright+test@1.58.1_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/server/next-server.js',
+    '/Users/rahul.gupta/Desktop/devTree/myproject/Badminton_world/node_modules/.pnpm/next@14.2.35_@babel+core@7.29.0_@playwright+test@1.58.1_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/server/next.js',
+    '/Users/rahul.gupta/Desktop/devTree/myproject/Badminton_world/node_modules/.pnpm/next@14.2.35_@babel+core@7.29.0_@playwright+test@1.58.1_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/server/lib/start-server.js',
+    '/Users/rahul.gupta/Desktop/devTree/myproject/Badminton_world/node_modules/.pnpm/next@14.2.35_@babel+core@7.29.0_@playwright+test@1.58.1_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/cli/next-start.js'
+  ]
+}
+2026-03-30 23:09:52 +05:30:  ⨯ Error: Cannot find module '/Users/rahul.gupta/Desktop/devTree/myproject/Badminton_world/.next/server/app/_not-found/page.js'
+Require stack:
+- /Users/rahul.gupta/Desktop/devTree/myproject/Badminton_world/node_modules/.pnpm/next@14.2.35_@babel+core@7.29.0_@playwright+test@1.58.1_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/server/require.js
+- /Users/rahul.gupta/Desktop/devTree/myproject/Badminton_world/node_modules/.pnpm/next@14.2.35_@babel+core@7.29.0_@playwright+test@1.58.1_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/server/next-server.js
+- /Users/rahul.gupta/Desktop/devTree/myproject/Badminton_world/node_modules/.pnpm/next@14.2.35_@babel+core@7.29.0_@playwright+test@1.58.1_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/server/next.js
+- /Users/rahul.gupta/Desktop/devTree/myproject/Badminton_world/node_modules/.pnpm/next@14.2.35_@babel+core@7.29.0_@playwright+test@1.58.1_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/server/lib/start-server.js
+- /Users/rahul.gupta/Desktop/devTree/myproject/Badminton_world/node_modules/.pnpm/next@14.2.35_@babel+core@7.29.0_@playwright+test@1.58.1_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/cli/next-start.js
+    at Function.call (node:internal/modules/cjs/loader:1401:15)
+    at /Users/rahul.gupta/Desktop/devTree/myproject/Badminton_world/node_modules/.pnpm/next@14.2.35_@babel+core@7.29.0_@playwright+test@1.58.1_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/src/server/require-hook.ts:51:34
+    at Module.call (/Users/rahul.gupta/.nvm/versions/node/v22.17.0/lib/node_modules/pm2/node_modules/require-in-the-middle/index.js:81:25)
+    at Module.mod.require (/Users/rahul.gupta/Desktop/devTree/myproject/Badminton_world/node_modules/.pnpm/next@14.2.35_@babel+core@7.29.0_@playwright+test@1.58.1_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/src/server/require-hook.ts:70:26)
+    at require (node:internal/modules/helpers:135:16)
+    at requirePage (/Users/rahul.gupta/Desktop/devTree/myproject/Badminton_world/node_modules/.pnpm/next@14.2.35_@babel+core@7.29.0_@playwright+test@1.58.1_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/src/server/require.ts:127:9)
+    at /Users/rahul.gupta/Desktop/devTree/myproject/Badminton_world/node_modules/.pnpm/next@14.2.35_@babel+core@7.29.0_@playwright+test@1.58.1_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/src/server/load-components.ts:206:16
+    at processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at loadComponentsImpl (/Users/rahul.gupta/Desktop/devTree/myproject/Badminton_world/node_modules/.pnpm/next@14.2.35_@babel+core@7.29.0_@playwright+test@1.58.1_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/src/server/load-components.ts:205:24)
+    at NextNodeServer.findPageComponentsImpl (/Users/rahul.gupta/Desktop/devTree/myproject/Badminton_world/node_modules/.pnpm/next@14.2.35_@babel+core@7.29.0_@playwright+test@1.58.1_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/src/server/next-server.ts:768:28) {
+  code: 'MODULE_NOT_FOUND',
+  requireStack: [
+    '/Users/rahul.gupta/Desktop/devTree/myproject/Badminton_world/node_modules/.pnpm/next@14.2.35_@babel+core@7.29.0_@playwright+test@1.58.1_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/server/require.js',
+    '/Users/rahul.gupta/Desktop/devTree/myproject/Badminton_world/node_modules/.pnpm/next@14.2.35_@babel+core@7.29.0_@playwright+test@1.58.1_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/server/next-server.js',
+    '/Users/rahul.gupta/Desktop/devTree/myproject/Badminton_world/node_modules/.pnpm/next@14.2.35_@babel+core@7.29.0_@playwright+test@1.58.1_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/server/next.js',
+    '/Users/rahul.gupta/Desktop/devTree/myproject/Badminton_world/node_modules/.pnpm/next@14.2.35_@babel+core@7.29.0_@playwright+test@1.58.1_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/server/lib/start-server.js',
+    '/Users/rahul.gupta/Desktop/devTree/myproject/Badminton_world/node_modules/.pnpm/next@14.2.35_@babel+core@7.29.0_@playwright+test@1.58.1_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/cli/next-start.js'
+  ]
+}
+2026-03-30 23:43:43 +05:30:  ⨯ Error: Cannot find module './chunks/vendor-chunks/next@14.2.35_@babel+core@7.29.0_@playwright+test@1.58.1_react-dom@18.3.1_react@18.3.1__react@18.3.1.js'
+Require stack:
+- /Users/rahul.gupta/Desktop/devTree/myproject/Badminton_world/.next/server/webpack-runtime.js
+- /Users/rahul.gupta/Desktop/devTree/myproject/Badminton_world/.next/server/pages/_document.js
+- /Users/rahul.gupta/Desktop/devTree/myproject/Badminton_world/node_modules/.pnpm/next@14.2.35_@babel+core@7.29.0_@playwright+test@1.58.1_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/server/require.js
+- /Users/rahul.gupta/Desktop/devTree/myproject/Badminton_world/node_modules/.pnpm/next@14.2.35_@babel+core@7.29.0_@playwright+test@1.58.1_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/server/next-server.js
+- /Users/rahul.gupta/Desktop/devTree/myproject/Badminton_world/node_modules/.pnpm/next@14.2.35_@babel+core@7.29.0_@playwright+test@1.58.1_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/server/next.js
+- /Users/rahul.gupta/Desktop/devTree/myproject/Badminton_world/node_modules/.pnpm/next@14.2.35_@babel+core@7.29.0_@playwright+test@1.58.1_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/server/lib/start-server.js
+- /Users/rahul.gupta/Desktop/devTree/myproject/Badminton_world/node_modules/.pnpm/next@14.2.35_@babel+core@7.29.0_@playwright+test@1.58.1_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/cli/next-start.js
+    at Function.call (node:internal/modules/cjs/loader:1401:15)
+    at /Users/rahul.gupta/Desktop/devTree/myproject/Badminton_world/node_modules/.pnpm/next@14.2.35_@babel+core@7.29.0_@playwright+test@1.58.1_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/src/server/require-hook.ts:51:34
+    at Module.call (/Users/rahul.gupta/.nvm/versions/node/v22.17.0/lib/node_modules/pm2/node_modules/require-in-the-middle/index.js:81:25)
+    at Module.mod.require (/Users/rahul.gupta/Desktop/devTree/myproject/Badminton_world/node_modules/.pnpm/next@14.2.35_@babel+core@7.29.0_@playwright+test@1.58.1_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/src/server/require-hook.ts:70:26)
+    at require (node:internal/modules/helpers:135:16)
+    at Object.t.f.require (/Users/rahul.gupta/Desktop/devTree/myproject/Badminton_world/.next/server/webpack-runtime.js:1:1415)
+    at /Users/rahul.gupta/Desktop/devTree/myproject/Badminton_world/.next/server/webpack-runtime.js:1:874
+    at Array.reduce (<anonymous>)
+    at Function.t.e (/Users/rahul.gupta/Desktop/devTree/myproject/Badminton_world/.next/server/webpack-runtime.js:1:853)
+    at Array.map (<anonymous>) {
+  code: 'MODULE_NOT_FOUND',
+  requireStack: [
+    '/Users/rahul.gupta/Desktop/devTree/myproject/Badminton_world/.next/server/webpack-runtime.js',
+    '/Users/rahul.gupta/Desktop/devTree/myproject/Badminton_world/.next/server/pages/_document.js',
+    '/Users/rahul.gupta/Desktop/devTree/myproject/Badminton_world/node_modules/.pnpm/next@14.2.35_@babel+core@7.29.0_@playwright+test@1.58.1_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/server/require.js',
+    '/Users/rahul.gupta/Desktop/devTree/myproject/Badminton_world/node_modules/.pnpm/next@14.2.35_@babel+core@7.29.0_@playwright+test@1.58.1_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/server/next-server.js',
+    '/Users/rahul.gupta/Desktop/devTree/myproject/Badminton_world/node_modules/.pnpm/next@14.2.35_@babel+core@7.29.0_@playwright+test@1.58.1_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/server/next.js',
+    '/Users/rahul.gupta/Desktop/devTree/myproject/Badminton_world/node_modules/.pnpm/next@14.2.35_@babel+core@7.29.0_@playwright+test@1.58.1_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/server/lib/start-server.js',
+    '/Users/rahul.gupta/Desktop/devTree/myproject/Badminton_world/node_modules/.pnpm/next@14.2.35_@babel+core@7.29.0_@playwright+test@1.58.1_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/cli/next-start.js'
+  ]
+}
+2026-03-30 23:43:43 +05:30:  ⨯ Error: Cannot find module '/Users/rahul.gupta/Desktop/devTree/myproject/Badminton_world/.next/server/pages/_error.js'
+Require stack:
+- /Users/rahul.gupta/Desktop/devTree/myproject/Badminton_world/node_modules/.pnpm/next@14.2.35_@babel+core@7.29.0_@playwright+test@1.58.1_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/server/require.js
+- /Users/rahul.gupta/Desktop/devTree/myproject/Badminton_world/node_modules/.pnpm/next@14.2.35_@babel+core@7.29.0_@playwright+test@1.58.1_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/server/next-server.js
+- /Users/rahul.gupta/Desktop/devTree/myproject/Badminton_world/node_modules/.pnpm/next@14.2.35_@babel+core@7.29.0_@playwright+test@1.58.1_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/server/next.js
+- /Users/rahul.gupta/Desktop/devTree/myproject/Badminton_world/node_modules/.pnpm/next@14.2.35_@babel+core@7.29.0_@playwright+test@1.58.1_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/server/lib/start-server.js
+- /Users/rahul.gupta/Desktop/devTree/myproject/Badminton_world/node_modules/.pnpm/next@14.2.35_@babel+core@7.29.0_@playwright+test@1.58.1_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/cli/next-start.js
+    at Function.call (node:internal/modules/cjs/loader:1401:15)
+    at /Users/rahul.gupta/Desktop/devTree/myproject/Badminton_world/node_modules/.pnpm/next@14.2.35_@babel+core@7.29.0_@playwright+test@1.58.1_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/src/server/require-hook.ts:51:34
+    at Module.call (/Users/rahul.gupta/.nvm/versions/node/v22.17.0/lib/node_modules/pm2/node_modules/require-in-the-middle/index.js:81:25)
+    at Module.mod.require (/Users/rahul.gupta/Desktop/devTree/myproject/Badminton_world/node_modules/.pnpm/next@14.2.35_@babel+core@7.29.0_@playwright+test@1.58.1_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/src/server/require-hook.ts:70:26)
+    at require (node:internal/modules/helpers:135:16)
+    at requirePage (/Users/rahul.gupta/Desktop/devTree/myproject/Badminton_world/node_modules/.pnpm/next@14.2.35_@babel+core@7.29.0_@playwright+test@1.58.1_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/src/server/require.ts:127:9)
+    at /Users/rahul.gupta/Desktop/devTree/myproject/Badminton_world/node_modules/.pnpm/next@14.2.35_@babel+core@7.29.0_@playwright+test@1.58.1_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/src/server/load-components.ts:206:16
+    at processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at loadComponentsImpl (/Users/rahul.gupta/Desktop/devTree/myproject/Badminton_world/node_modules/.pnpm/next@14.2.35_@babel+core@7.29.0_@playwright+test@1.58.1_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/src/server/load-components.ts:205:24)
+    at NextNodeServer.findPageComponentsImpl (/Users/rahul.gupta/Desktop/devTree/myproject/Badminton_world/node_modules/.pnpm/next@14.2.35_@babel+core@7.29.0_@playwright+test@1.58.1_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/src/server/next-server.ts:768:28) {
+  code: 'MODULE_NOT_FOUND',
+  requireStack: [
+    '/Users/rahul.gupta/Desktop/devTree/myproject/Badminton_world/node_modules/.pnpm/next@14.2.35_@babel+core@7.29.0_@playwright+test@1.58.1_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/server/require.js',
+    '/Users/rahul.gupta/Desktop/devTree/myproject/Badminton_world/node_modules/.pnpm/next@14.2.35_@babel+core@7.29.0_@playwright+test@1.58.1_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/server/next-server.js',
+    '/Users/rahul.gupta/Desktop/devTree/myproject/Badminton_world/node_modules/.pnpm/next@14.2.35_@babel+core@7.29.0_@playwright+test@1.58.1_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/server/next.js',
+    '/Users/rahul.gupta/Desktop/devTree/myproject/Badminton_world/node_modules/.pnpm/next@14.2.35_@babel+core@7.29.0_@playwright+test@1.58.1_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/server/lib/start-server.js',
+    '/Users/rahul.gupta/Desktop/devTree/myproject/Badminton_world/node_modules/.pnpm/next@14.2.35_@babel+core@7.29.0_@playwright+test@1.58.1_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/cli/next-start.js'
+  ]
+}
+2026-03-31 08:44:26 +05:30:  ⨯ Error: Cannot find module './chunks/vendor-chunks/next@14.2.35_@babel+core@7.29.0_@playwright+test@1.58.1_react-dom@18.3.1_react@18.3.1__react@18.3.1.js'
+Require stack:
+- /Users/rahul.gupta/Desktop/devTree/myproject/Badminton_world/.next/server/webpack-runtime.js
+- /Users/rahul.gupta/Desktop/devTree/myproject/Badminton_world/.next/server/pages/_document.js
+- /Users/rahul.gupta/Desktop/devTree/myproject/Badminton_world/node_modules/.pnpm/next@14.2.35_@babel+core@7.29.0_@playwright+test@1.58.1_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/server/require.js
+- /Users/rahul.gupta/Desktop/devTree/myproject/Badminton_world/node_modules/.pnpm/next@14.2.35_@babel+core@7.29.0_@playwright+test@1.58.1_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/server/next-server.js
+- /Users/rahul.gupta/Desktop/devTree/myproject/Badminton_world/node_modules/.pnpm/next@14.2.35_@babel+core@7.29.0_@playwright+test@1.58.1_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/server/next.js
+- /Users/rahul.gupta/Desktop/devTree/myproject/Badminton_world/node_modules/.pnpm/next@14.2.35_@babel+core@7.29.0_@playwright+test@1.58.1_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/server/lib/start-server.js
+- /Users/rahul.gupta/Desktop/devTree/myproject/Badminton_world/node_modules/.pnpm/next@14.2.35_@babel+core@7.29.0_@playwright+test@1.58.1_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/cli/next-start.js
+    at Function.call (node:internal/modules/cjs/loader:1401:15)
+    at /Users/rahul.gupta/Desktop/devTree/myproject/Badminton_world/node_modules/.pnpm/next@14.2.35_@babel+core@7.29.0_@playwright+test@1.58.1_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/src/server/require-hook.ts:51:34
+    at Module.call (/Users/rahul.gupta/.nvm/versions/node/v22.17.0/lib/node_modules/pm2/node_modules/require-in-the-middle/index.js:81:25)
+    at Module.mod.require (/Users/rahul.gupta/Desktop/devTree/myproject/Badminton_world/node_modules/.pnpm/next@14.2.35_@babel+core@7.29.0_@playwright+test@1.58.1_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/src/server/require-hook.ts:70:26)
+    at require (node:internal/modules/helpers:135:16)
+    at Object.t.f.require (/Users/rahul.gupta/Desktop/devTree/myproject/Badminton_world/.next/server/webpack-runtime.js:1:1415)
+    at /Users/rahul.gupta/Desktop/devTree/myproject/Badminton_world/.next/server/webpack-runtime.js:1:874
+    at Array.reduce (<anonymous>)
+    at Function.t.e (/Users/rahul.gupta/Desktop/devTree/myproject/Badminton_world/.next/server/webpack-runtime.js:1:853)
+    at Array.map (<anonymous>) {
+  code: 'MODULE_NOT_FOUND',
+  requireStack: [
+    '/Users/rahul.gupta/Desktop/devTree/myproject/Badminton_world/.next/server/webpack-runtime.js',
+    '/Users/rahul.gupta/Desktop/devTree/myproject/Badminton_world/.next/server/pages/_document.js',
+    '/Users/rahul.gupta/Desktop/devTree/myproject/Badminton_world/node_modules/.pnpm/next@14.2.35_@babel+core@7.29.0_@playwright+test@1.58.1_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/server/require.js',
+    '/Users/rahul.gupta/Desktop/devTree/myproject/Badminton_world/node_modules/.pnpm/next@14.2.35_@babel+core@7.29.0_@playwright+test@1.58.1_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/server/next-server.js',
+    '/Users/rahul.gupta/Desktop/devTree/myproject/Badminton_world/node_modules/.pnpm/next@14.2.35_@babel+core@7.29.0_@playwright+test@1.58.1_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/server/next.js',
+    '/Users/rahul.gupta/Desktop/devTree/myproject/Badminton_world/node_modules/.pnpm/next@14.2.35_@babel+core@7.29.0_@playwright+test@1.58.1_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/server/lib/start-server.js',
+    '/Users/rahul.gupta/Desktop/devTree/myproject/Badminton_world/node_modules/.pnpm/next@14.2.35_@babel+core@7.29.0_@playwright+test@1.58.1_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/cli/next-start.js'
+  ]
+}
+2026-03-31 08:44:26 +05:30:  ⨯ Error: Cannot find module './chunks/vendor-chunks/next@14.2.35_@babel+core@7.29.0_@playwright+test@1.58.1_react-dom@18.3.1_react@18.3.1__react@18.3.1.js'
+Require stack:
+- /Users/rahul.gupta/Desktop/devTree/myproject/Badminton_world/.next/server/webpack-runtime.js
+- /Users/rahul.gupta/Desktop/devTree/myproject/Badminton_world/.next/server/pages/_document.js
+- /Users/rahul.gupta/Desktop/devTree/myproject/Badminton_world/node_modules/.pnpm/next@14.2.35_@babel+core@7.29.0_@playwright+test@1.58.1_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/server/require.js
+- /Users/rahul.gupta/Desktop/devTree/myproject/Badminton_world/node_modules/.pnpm/next@14.2.35_@babel+core@7.29.0_@playwright+test@1.58.1_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/server/next-server.js
+- /Users/rahul.gupta/Desktop/devTree/myproject/Badminton_world/node_modules/.pnpm/next@14.2.35_@babel+core@7.29.0_@playwright+test@1.58.1_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/server/next.js
+- /Users/rahul.gupta/Desktop/devTree/myproject/Badminton_world/node_modules/.pnpm/next@14.2.35_@babel+core@7.29.0_@playwright+test@1.58.1_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/server/lib/start-server.js
+- /Users/rahul.gupta/Desktop/devTree/myproject/Badminton_world/node_modules/.pnpm/next@14.2.35_@babel+core@7.29.0_@playwright+test@1.58.1_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/cli/next-start.js
+    at Function.call (node:internal/modules/cjs/loader:1401:15)
+    at /Users/rahul.gupta/Desktop/devTree/myproject/Badminton_world/node_modules/.pnpm/next@14.2.35_@babel+core@7.29.0_@playwright+test@1.58.1_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/src/server/require-hook.ts:51:34
+    at Module.call (/Users/rahul.gupta/.nvm/versions/node/v22.17.0/lib/node_modules/pm2/node_modules/require-in-the-middle/index.js:81:25)
+    at Module.mod.require (/Users/rahul.gupta/Desktop/devTree/myproject/Badminton_world/node_modules/.pnpm/next@14.2.35_@babel+core@7.29.0_@playwright+test@1.58.1_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/src/server/require-hook.ts:70:26)
+    at require (node:internal/modules/helpers:135:16)
+    at Object.t.f.require (/Users/rahul.gupta/Desktop/devTree/myproject/Badminton_world/.next/server/webpack-runtime.js:1:1415)
+    at /Users/rahul.gupta/Desktop/devTree/myproject/Badminton_world/.next/server/webpack-runtime.js:1:874
+    at Array.reduce (<anonymous>)
+    at Function.t.e (/Users/rahul.gupta/Desktop/devTree/myproject/Badminton_world/.next/server/webpack-runtime.js:1:853)
+    at Array.map (<anonymous>) {
+  code: 'MODULE_NOT_FOUND',
+  requireStack: [
+    '/Users/rahul.gupta/Desktop/devTree/myproject/Badminton_world/.next/server/webpack-runtime.js',
+    '/Users/rahul.gupta/Desktop/devTree/myproject/Badminton_world/.next/server/pages/_document.js',
+    '/Users/rahul.gupta/Desktop/devTree/myproject/Badminton_world/node_modules/.pnpm/next@14.2.35_@babel+core@7.29.0_@playwright+test@1.58.1_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/server/require.js',
+    '/Users/rahul.gupta/Desktop/devTree/myproject/Badminton_world/node_modules/.pnpm/next@14.2.35_@babel+core@7.29.0_@playwright+test@1.58.1_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/server/next-server.js',
+    '/Users/rahul.gupta/Desktop/devTree/myproject/Badminton_world/node_modules/.pnpm/next@14.2.35_@babel+core@7.29.0_@playwright+test@1.58.1_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/server/next.js',
+    '/Users/rahul.gupta/Desktop/devTree/myproject/Badminton_world/node_modules/.pnpm/next@14.2.35_@babel+core@7.29.0_@playwright+test@1.58.1_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/server/lib/start-server.js',
+    '/Users/rahul.gupta/Desktop/devTree/myproject/Badminton_world/node_modules/.pnpm/next@14.2.35_@babel+core@7.29.0_@playwright+test@1.58.1_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/cli/next-start.js'
+  ]
+}
+2026-03-31 08:44:26 +05:30:  ⨯ Error: Cannot find module './chunks/vendor-chunks/next@14.2.35_@babel+core@7.29.0_@playwright+test@1.58.1_react-dom@18.3.1_react@18.3.1__react@18.3.1.js'
+Require stack:
+- /Users/rahul.gupta/Desktop/devTree/myproject/Badminton_world/.next/server/webpack-runtime.js
+- /Users/rahul.gupta/Desktop/devTree/myproject/Badminton_world/.next/server/pages/_document.js
+- /Users/rahul.gupta/Desktop/devTree/myproject/Badminton_world/node_modules/.pnpm/next@14.2.35_@babel+core@7.29.0_@playwright+test@1.58.1_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/server/require.js
+- /Users/rahul.gupta/Desktop/devTree/myproject/Badminton_world/node_modules/.pnpm/next@14.2.35_@babel+core@7.29.0_@playwright+test@1.58.1_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/server/next-server.js
+- /Users/rahul.gupta/Desktop/devTree/myproject/Badminton_world/node_modules/.pnpm/next@14.2.35_@babel+core@7.29.0_@playwright+test@1.58.1_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/server/next.js
+- /Users/rahul.gupta/Desktop/devTree/myproject/Badminton_world/node_modules/.pnpm/next@14.2.35_@babel+core@7.29.0_@playwright+test@1.58.1_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/server/lib/start-server.js
+- /Users/rahul.gupta/Desktop/devTree/myproject/Badminton_world/node_modules/.pnpm/next@14.2.35_@babel+core@7.29.0_@playwright+test@1.58.1_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/cli/next-start.js
+    at Function.call (node:internal/modules/cjs/loader:1401:15)
+    at /Users/rahul.gupta/Desktop/devTree/myproject/Badminton_world/node_modules/.pnpm/next@14.2.35_@babel+core@7.29.0_@playwright+test@1.58.1_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/src/server/require-hook.ts:51:34
+    at Module.call (/Users/rahul.gupta/.nvm/versions/node/v22.17.0/lib/node_modules/pm2/node_modules/require-in-the-middle/index.js:81:25)
+    at Module.mod.require (/Users/rahul.gupta/Desktop/devTree/myproject/Badminton_world/node_modules/.pnpm/next@14.2.35_@babel+core@7.29.0_@playwright+test@1.58.1_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/src/server/require-hook.ts:70:26)
+    at require (node:internal/modules/helpers:135:16)
+    at Object.t.f.require (/Users/rahul.gupta/Desktop/devTree/myproject/Badminton_world/.next/server/webpack-runtime.js:1:1415)
+    at /Users/rahul.gupta/Desktop/devTree/myproject/Badminton_world/.next/server/webpack-runtime.js:1:874
+    at Array.reduce (<anonymous>)
+    at Function.t.e (/Users/rahul.gupta/Desktop/devTree/myproject/Badminton_world/.next/server/webpack-runtime.js:1:853)
+    at Array.map (<anonymous>) {
+  code: 'MODULE_NOT_FOUND',
+  requireStack: [
+    '/Users/rahul.gupta/Desktop/devTree/myproject/Badminton_world/.next/server/webpack-runtime.js',
+    '/Users/rahul.gupta/Desktop/devTree/myproject/Badminton_world/.next/server/pages/_document.js',
+    '/Users/rahul.gupta/Desktop/devTree/myproject/Badminton_world/node_modules/.pnpm/next@14.2.35_@babel+core@7.29.0_@playwright+test@1.58.1_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/server/require.js',
+    '/Users/rahul.gupta/Desktop/devTree/myproject/Badminton_world/node_modules/.pnpm/next@14.2.35_@babel+core@7.29.0_@playwright+test@1.58.1_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/server/next-server.js',
+    '/Users/rahul.gupta/Desktop/devTree/myproject/Badminton_world/node_modules/.pnpm/next@14.2.35_@babel+core@7.29.0_@playwright+test@1.58.1_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/server/next.js',
+    '/Users/rahul.gupta/Desktop/devTree/myproject/Badminton_world/node_modules/.pnpm/next@14.2.35_@babel+core@7.29.0_@playwright+test@1.58.1_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/server/lib/start-server.js',
+    '/Users/rahul.gupta/Desktop/devTree/myproject/Badminton_world/node_modules/.pnpm/next@14.2.35_@babel+core@7.29.0_@playwright+test@1.58.1_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/cli/next-start.js'
+  ]
+}
+2026-03-31 08:44:26 +05:30:  ⨯ Error: Cannot find module '/Users/rahul.gupta/Desktop/devTree/myproject/Badminton_world/.next/server/pages/_error.js'
+Require stack:
+- /Users/rahul.gupta/Desktop/devTree/myproject/Badminton_world/node_modules/.pnpm/next@14.2.35_@babel+core@7.29.0_@playwright+test@1.58.1_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/server/require.js
+- /Users/rahul.gupta/Desktop/devTree/myproject/Badminton_world/node_modules/.pnpm/next@14.2.35_@babel+core@7.29.0_@playwright+test@1.58.1_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/server/next-server.js
+- /Users/rahul.gupta/Desktop/devTree/myproject/Badminton_world/node_modules/.pnpm/next@14.2.35_@babel+core@7.29.0_@playwright+test@1.58.1_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/server/next.js
+- /Users/rahul.gupta/Desktop/devTree/myproject/Badminton_world/node_modules/.pnpm/next@14.2.35_@babel+core@7.29.0_@playwright+test@1.58.1_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/server/lib/start-server.js
+- /Users/rahul.gupta/Desktop/devTree/myproject/Badminton_world/node_modules/.pnpm/next@14.2.35_@babel+core@7.29.0_@playwright+test@1.58.1_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/cli/next-start.js
+    at Function.call (node:internal/modules/cjs/loader:1401:15)
+    at /Users/rahul.gupta/Desktop/devTree/myproject/Badminton_world/node_modules/.pnpm/next@14.2.35_@babel+core@7.29.0_@playwright+test@1.58.1_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/src/server/require-hook.ts:51:34
+    at Module.call (/Users/rahul.gupta/.nvm/versions/node/v22.17.0/lib/node_modules/pm2/node_modules/require-in-the-middle/index.js:81:25)
+    at Module.mod.require (/Users/rahul.gupta/Desktop/devTree/myproject/Badminton_world/node_modules/.pnpm/next@14.2.35_@babel+core@7.29.0_@playwright+test@1.58.1_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/src/server/require-hook.ts:70:26)
+    at require (node:internal/modules/helpers:135:16)
+    at requirePage (/Users/rahul.gupta/Desktop/devTree/myproject/Badminton_world/node_modules/.pnpm/next@14.2.35_@babel+core@7.29.0_@playwright+test@1.58.1_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/src/server/require.ts:127:9)
+    at /Users/rahul.gupta/Desktop/devTree/myproject/Badminton_world/node_modules/.pnpm/next@14.2.35_@babel+core@7.29.0_@playwright+test@1.58.1_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/src/server/load-components.ts:206:16
+    at processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at loadComponentsImpl (/Users/rahul.gupta/Desktop/devTree/myproject/Badminton_world/node_modules/.pnpm/next@14.2.35_@babel+core@7.29.0_@playwright+test@1.58.1_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/src/server/load-components.ts:205:24)
+    at NextNodeServer.findPageComponentsImpl (/Users/rahul.gupta/Desktop/devTree/myproject/Badminton_world/node_modules/.pnpm/next@14.2.35_@babel+core@7.29.0_@playwright+test@1.58.1_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/src/server/next-server.ts:768:28) {
+  code: 'MODULE_NOT_FOUND',
+  requireStack: [
+    '/Users/rahul.gupta/Desktop/devTree/myproject/Badminton_world/node_modules/.pnpm/next@14.2.35_@babel+core@7.29.0_@playwright+test@1.58.1_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/server/require.js',
+    '/Users/rahul.gupta/Desktop/devTree/myproject/Badminton_world/node_modules/.pnpm/next@14.2.35_@babel+core@7.29.0_@playwright+test@1.58.1_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/server/next-server.js',
+    '/Users/rahul.gupta/Desktop/devTree/myproject/Badminton_world/node_modules/.pnpm/next@14.2.35_@babel+core@7.29.0_@playwright+test@1.58.1_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/server/next.js',
+    '/Users/rahul.gupta/Desktop/devTree/myproject/Badminton_world/node_modules/.pnpm/next@14.2.35_@babel+core@7.29.0_@playwright+test@1.58.1_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/server/lib/start-server.js',
+    '/Users/rahul.gupta/Desktop/devTree/myproject/Badminton_world/node_modules/.pnpm/next@14.2.35_@babel+core@7.29.0_@playwright+test@1.58.1_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/cli/next-start.js'
+  ]
+}
+2026-03-31 08:44:26 +05:30:  ⨯ Error: Cannot find module '/Users/rahul.gupta/Desktop/devTree/myproject/Badminton_world/.next/server/pages/_error.js'
+Require stack:
+- /Users/rahul.gupta/Desktop/devTree/myproject/Badminton_world/node_modules/.pnpm/next@14.2.35_@babel+core@7.29.0_@playwright+test@1.58.1_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/server/require.js
+- /Users/rahul.gupta/Desktop/devTree/myproject/Badminton_world/node_modules/.pnpm/next@14.2.35_@babel+core@7.29.0_@playwright+test@1.58.1_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/server/next-server.js
+- /Users/rahul.gupta/Desktop/devTree/myproject/Badminton_world/node_modules/.pnpm/next@14.2.35_@babel+core@7.29.0_@playwright+test@1.58.1_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/server/next.js
+- /Users/rahul.gupta/Desktop/devTree/myproject/Badminton_world/node_modules/.pnpm/next@14.2.35_@babel+core@7.29.0_@playwright+test@1.58.1_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/server/lib/start-server.js
+- /Users/rahul.gupta/Desktop/devTree/myproject/Badminton_world/node_modules/.pnpm/next@14.2.35_@babel+core@7.29.0_@playwright+test@1.58.1_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/cli/next-start.js
+    at Function.call (node:internal/modules/cjs/loader:1401:15)
+    at /Users/rahul.gupta/Desktop/devTree/myproject/Badminton_world/node_modules/.pnpm/next@14.2.35_@babel+core@7.29.0_@playwright+test@1.58.1_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/src/server/require-hook.ts:51:34
+    at Module.call (/Users/rahul.gupta/.nvm/versions/node/v22.17.0/lib/node_modules/pm2/node_modules/require-in-the-middle/index.js:81:25)
+    at Module.mod.require (/Users/rahul.gupta/Desktop/devTree/myproject/Badminton_world/node_modules/.pnpm/next@14.2.35_@babel+core@7.29.0_@playwright+test@1.58.1_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/src/server/require-hook.ts:70:26)
+    at require (node:internal/modules/helpers:135:16)
+    at requirePage (/Users/rahul.gupta/Desktop/devTree/myproject/Badminton_world/node_modules/.pnpm/next@14.2.35_@babel+core@7.29.0_@playwright+test@1.58.1_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/src/server/require.ts:127:9)
+    at /Users/rahul.gupta/Desktop/devTree/myproject/Badminton_world/node_modules/.pnpm/next@14.2.35_@babel+core@7.29.0_@playwright+test@1.58.1_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/src/server/load-components.ts:206:16
+    at processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at loadComponentsImpl (/Users/rahul.gupta/Desktop/devTree/myproject/Badminton_world/node_modules/.pnpm/next@14.2.35_@babel+core@7.29.0_@playwright+test@1.58.1_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/src/server/load-components.ts:205:24)
+    at NextNodeServer.findPageComponentsImpl (/Users/rahul.gupta/Desktop/devTree/myproject/Badminton_world/node_modules/.pnpm/next@14.2.35_@babel+core@7.29.0_@playwright+test@1.58.1_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/src/server/next-server.ts:768:28) {
+  code: 'MODULE_NOT_FOUND',
+  requireStack: [
+    '/Users/rahul.gupta/Desktop/devTree/myproject/Badminton_world/node_modules/.pnpm/next@14.2.35_@babel+core@7.29.0_@playwright+test@1.58.1_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/server/require.js',
+    '/Users/rahul.gupta/Desktop/devTree/myproject/Badminton_world/node_modules/.pnpm/next@14.2.35_@babel+core@7.29.0_@playwright+test@1.58.1_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/server/next-server.js',
+    '/Users/rahul.gupta/Desktop/devTree/myproject/Badminton_world/node_modules/.pnpm/next@14.2.35_@babel+core@7.29.0_@playwright+test@1.58.1_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/server/next.js',
+    '/Users/rahul.gupta/Desktop/devTree/myproject/Badminton_world/node_modules/.pnpm/next@14.2.35_@babel+core@7.29.0_@playwright+test@1.58.1_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/server/lib/start-server.js',
+    '/Users/rahul.gupta/Desktop/devTree/myproject/Badminton_world/node_modules/.pnpm/next@14.2.35_@babel+core@7.29.0_@playwright+test@1.58.1_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/cli/next-start.js'
+  ]
+}
+2026-03-31 08:44:26 +05:30:  ⨯ Error: Cannot find module './chunks/vendor-chunks/next@14.2.35_@babel+core@7.29.0_@playwright+test@1.58.1_react-dom@18.3.1_react@18.3.1__react@18.3.1.js'
+Require stack:
+- /Users/rahul.gupta/Desktop/devTree/myproject/Badminton_world/.next/server/webpack-runtime.js
+- /Users/rahul.gupta/Desktop/devTree/myproject/Badminton_world/.next/server/pages/_document.js
+- /Users/rahul.gupta/Desktop/devTree/myproject/Badminton_world/node_modules/.pnpm/next@14.2.35_@babel+core@7.29.0_@playwright+test@1.58.1_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/server/require.js
+- /Users/rahul.gupta/Desktop/devTree/myproject/Badminton_world/node_modules/.pnpm/next@14.2.35_@babel+core@7.29.0_@playwright+test@1.58.1_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/server/next-server.js
+- /Users/rahul.gupta/Desktop/devTree/myproject/Badminton_world/node_modules/.pnpm/next@14.2.35_@babel+core@7.29.0_@playwright+test@1.58.1_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/server/next.js
+- /Users/rahul.gupta/Desktop/devTree/myproject/Badminton_world/node_modules/.pnpm/next@14.2.35_@babel+core@7.29.0_@playwright+test@1.58.1_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/server/lib/start-server.js
+- /Users/rahul.gupta/Desktop/devTree/myproject/Badminton_world/node_modules/.pnpm/next@14.2.35_@babel+core@7.29.0_@playwright+test@1.58.1_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/cli/next-start.js
+    at Function.call (node:internal/modules/cjs/loader:1401:15)
+    at /Users/rahul.gupta/Desktop/devTree/myproject/Badminton_world/node_modules/.pnpm/next@14.2.35_@babel+core@7.29.0_@playwright+test@1.58.1_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/src/server/require-hook.ts:51:34
+    at Module.call (/Users/rahul.gupta/.nvm/versions/node/v22.17.0/lib/node_modules/pm2/node_modules/require-in-the-middle/index.js:81:25)
+    at Module.mod.require (/Users/rahul.gupta/Desktop/devTree/myproject/Badminton_world/node_modules/.pnpm/next@14.2.35_@babel+core@7.29.0_@playwright+test@1.58.1_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/src/server/require-hook.ts:70:26)
+    at require (node:internal/modules/helpers:135:16)
+    at Object.t.f.require (/Users/rahul.gupta/Desktop/devTree/myproject/Badminton_world/.next/server/webpack-runtime.js:1:1415)
+    at /Users/rahul.gupta/Desktop/devTree/myproject/Badminton_world/.next/server/webpack-runtime.js:1:874
+    at Array.reduce (<anonymous>)
+    at Function.t.e (/Users/rahul.gupta/Desktop/devTree/myproject/Badminton_world/.next/server/webpack-runtime.js:1:853)
+    at Array.map (<anonymous>) {
+  code: 'MODULE_NOT_FOUND',
+  requireStack: [
+    '/Users/rahul.gupta/Desktop/devTree/myproject/Badminton_world/.next/server/webpack-runtime.js',
+    '/Users/rahul.gupta/Desktop/devTree/myproject/Badminton_world/.next/server/pages/_document.js',
+    '/Users/rahul.gupta/Desktop/devTree/myproject/Badminton_world/node_modules/.pnpm/next@14.2.35_@babel+core@7.29.0_@playwright+test@1.58.1_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/server/require.js',
+    '/Users/rahul.gupta/Desktop/devTree/myproject/Badminton_world/node_modules/.pnpm/next@14.2.35_@babel+core@7.29.0_@playwright+test@1.58.1_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/server/next-server.js',
+    '/Users/rahul.gupta/Desktop/devTree/myproject/Badminton_world/node_modules/.pnpm/next@14.2.35_@babel+core@7.29.0_@playwright+test@1.58.1_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/server/next.js',
+    '/Users/rahul.gupta/Desktop/devTree/myproject/Badminton_world/node_modules/.pnpm/next@14.2.35_@babel+core@7.29.0_@playwright+test@1.58.1_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/server/lib/start-server.js',
+    '/Users/rahul.gupta/Desktop/devTree/myproject/Badminton_world/node_modules/.pnpm/next@14.2.35_@babel+core@7.29.0_@playwright+test@1.58.1_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/cli/next-start.js'
+  ]
+}
+2026-03-31 08:44:26 +05:30:  ⨯ Error: Cannot find module '/Users/rahul.gupta/Desktop/devTree/myproject/Badminton_world/.next/server/pages/_error.js'
+Require stack:
+- /Users/rahul.gupta/Desktop/devTree/myproject/Badminton_world/node_modules/.pnpm/next@14.2.35_@babel+core@7.29.0_@playwright+test@1.58.1_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/server/require.js
+- /Users/rahul.gupta/Desktop/devTree/myproject/Badminton_world/node_modules/.pnpm/next@14.2.35_@babel+core@7.29.0_@playwright+test@1.58.1_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/server/next-server.js
+- /Users/rahul.gupta/Desktop/devTree/myproject/Badminton_world/node_modules/.pnpm/next@14.2.35_@babel+core@7.29.0_@playwright+test@1.58.1_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/server/next.js
+- /Users/rahul.gupta/Desktop/devTree/myproject/Badminton_world/node_modules/.pnpm/next@14.2.35_@babel+core@7.29.0_@playwright+test@1.58.1_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/server/lib/start-server.js
+- /Users/rahul.gupta/Desktop/devTree/myproject/Badminton_world/node_modules/.pnpm/next@14.2.35_@babel+core@7.29.0_@playwright+test@1.58.1_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/cli/next-start.js
+    at Function.call (node:internal/modules/cjs/loader:1401:15)
+    at /Users/rahul.gupta/Desktop/devTree/myproject/Badminton_world/node_modules/.pnpm/next@14.2.35_@babel+core@7.29.0_@playwright+test@1.58.1_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/src/server/require-hook.ts:51:34
+    at Module.call (/Users/rahul.gupta/.nvm/versions/node/v22.17.0/lib/node_modules/pm2/node_modules/require-in-the-middle/index.js:81:25)
+    at Module.mod.require (/Users/rahul.gupta/Desktop/devTree/myproject/Badminton_world/node_modules/.pnpm/next@14.2.35_@babel+core@7.29.0_@playwright+test@1.58.1_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/src/server/require-hook.ts:70:26)
+    at require (node:internal/modules/helpers:135:16)
+    at requirePage (/Users/rahul.gupta/Desktop/devTree/myproject/Badminton_world/node_modules/.pnpm/next@14.2.35_@babel+core@7.29.0_@playwright+test@1.58.1_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/src/server/require.ts:127:9)
+    at /Users/rahul.gupta/Desktop/devTree/myproject/Badminton_world/node_modules/.pnpm/next@14.2.35_@babel+core@7.29.0_@playwright+test@1.58.1_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/src/server/load-components.ts:206:16
+    at processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at loadComponentsImpl (/Users/rahul.gupta/Desktop/devTree/myproject/Badminton_world/node_modules/.pnpm/next@14.2.35_@babel+core@7.29.0_@playwright+test@1.58.1_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/src/server/load-components.ts:205:24)
+    at NextNodeServer.findPageComponentsImpl (/Users/rahul.gupta/Desktop/devTree/myproject/Badminton_world/node_modules/.pnpm/next@14.2.35_@babel+core@7.29.0_@playwright+test@1.58.1_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/src/server/next-server.ts:768:28) {
+  code: 'MODULE_NOT_FOUND',
+  requireStack: [
+    '/Users/rahul.gupta/Desktop/devTree/myproject/Badminton_world/node_modules/.pnpm/next@14.2.35_@babel+core@7.29.0_@playwright+test@1.58.1_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/server/require.js',
+    '/Users/rahul.gupta/Desktop/devTree/myproject/Badminton_world/node_modules/.pnpm/next@14.2.35_@babel+core@7.29.0_@playwright+test@1.58.1_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/server/next-server.js',
+    '/Users/rahul.gupta/Desktop/devTree/myproject/Badminton_world/node_modules/.pnpm/next@14.2.35_@babel+core@7.29.0_@playwright+test@1.58.1_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/server/next.js',
+    '/Users/rahul.gupta/Desktop/devTree/myproject/Badminton_world/node_modules/.pnpm/next@14.2.35_@babel+core@7.29.0_@playwright+test@1.58.1_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/server/lib/start-server.js',
+    '/Users/rahul.gupta/Desktop/devTree/myproject/Badminton_world/node_modules/.pnpm/next@14.2.35_@babel+core@7.29.0_@playwright+test@1.58.1_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/cli/next-start.js'
+  ]
+}

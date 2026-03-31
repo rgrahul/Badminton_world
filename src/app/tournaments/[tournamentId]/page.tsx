@@ -848,10 +848,10 @@ export default function TournamentDetailPage({ params }: { params: { tournamentI
 
   const getStatusBadge = (status: string) => {
     const colors = {
-      NOT_STARTED: "bg-gray-100 text-gray-800",
-      IN_PROGRESS: "bg-blue-100 text-blue-800",
-      COMPLETED: "bg-green-100 text-green-800",
-      ABANDONED: "bg-red-100 text-red-800",
+      NOT_STARTED: "bg-gray-500/20 text-gray-300",
+      IN_PROGRESS: "bg-cyan-500/20 text-cyan-300",
+      COMPLETED: "bg-emerald-500/20 text-emerald-300",
+      ABANDONED: "bg-red-500/20 text-red-300",
     }
     return (
       <span
@@ -914,10 +914,10 @@ export default function TournamentDetailPage({ params }: { params: { tournamentI
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-background">
+      <div className="min-h-screen bg-[#0a0a0a]">
         <Header />
         <main className="container mx-auto px-4 py-8">
-          <div className="text-center">Loading tournament...</div>
+          <div className="text-center text-gray-400">Loading tournament...</div>
         </main>
       </div>
     )
@@ -925,10 +925,10 @@ export default function TournamentDetailPage({ params }: { params: { tournamentI
 
   if (error || !tournament) {
     return (
-      <div className="min-h-screen bg-background">
+      <div className="min-h-screen bg-[#0a0a0a]">
         <Header />
         <main className="container mx-auto px-4 py-8">
-          <div className="text-center text-destructive">{error || "Tournament not found"}</div>
+          <div className="text-center text-red-300">{error || "Tournament not found"}</div>
         </main>
       </div>
     )
@@ -954,12 +954,12 @@ export default function TournamentDetailPage({ params }: { params: { tournamentI
     })
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-[#0a0a0a]">
       <Header />
       <main className="container mx-auto px-4 py-4 sm:py-8 max-w-6xl">
         <div className="mb-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
-          <Button variant="outline" size="sm" onClick={() => router.push("/tournaments")}>
-            ← Back to Tournaments
+          <Button variant="outline" size="sm" onClick={() => router.push("/tournaments")} className="border border-white/10 hover:bg-white/5 text-gray-300">
+            Back to Tournaments
           </Button>
           {canManage && (
             <div className="flex flex-wrap gap-2 w-full sm:w-auto">
@@ -969,9 +969,9 @@ export default function TournamentDetailPage({ params }: { params: { tournamentI
                     onClick={handleStartTournament}
                     disabled={isStarting}
                     size="sm"
-                    className="bg-green-600 hover:bg-green-700 flex-1 sm:flex-initial"
+                    className="bg-gradient-to-r from-emerald-500 to-cyan-500 text-black font-semibold hover:from-emerald-400 hover:to-cyan-400 flex-1 sm:flex-initial"
                   >
-                    {isStarting ? "⏳ Starting..." : "🏁 Start"}
+                    {isStarting ? "Starting..." : "Start"}
                   </Button>
                   <Link href={`/tournaments/${tournament.id}/edit`}>
                     <Button variant="outline" size="lg">
@@ -985,12 +985,12 @@ export default function TournamentDetailPage({ params }: { params: { tournamentI
                   onClick={handleFinishTournament}
                   disabled={isFinishing}
                   size="sm"
-                  className="bg-blue-600 hover:bg-blue-700 flex-1 sm:flex-initial"
+                  className="bg-cyan-500/20 text-cyan-300 hover:bg-cyan-500/30 border border-cyan-500/20 flex-1 sm:flex-initial"
                 >
-                  {isFinishing ? "⏳ Finishing..." : "🏆 Finish Tournament"}
+                  {isFinishing ? "Finishing..." : "Finish Tournament"}
                 </Button>
               )}
-              <Button variant="destructive" onClick={handleDelete} disabled={isDeleting}>
+              <Button onClick={handleDelete} disabled={isDeleting} className="bg-red-500/20 text-red-300 hover:bg-red-500/30 border border-red-500/20">
                 {isDeleting ? "Deleting..." : "Delete Tournament"}
               </Button>
             </div>
@@ -998,7 +998,7 @@ export default function TournamentDetailPage({ params }: { params: { tournamentI
         </div>
 
         {/* Tournament Info Card */}
-        <Card className="mb-6">
+        <Card className="mb-6 border-white/10 bg-white/[0.03]">
           {tournament.titlePhoto ? (
             <div className="relative w-full h-48 sm:h-64 overflow-hidden rounded-t-lg group">
               {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -1065,7 +1065,7 @@ export default function TournamentDetailPage({ params }: { params: { tournamentI
                 setTitlePhotoUrl("")
                 setTitlePhotoDialogOpen(true)
               }}
-              className="w-full h-32 border-b border-dashed flex flex-col items-center justify-center gap-2 text-muted-foreground hover:bg-muted/50 transition-colors rounded-t-lg"
+              className="w-full h-32 border-b border-dashed flex flex-col items-center justify-center gap-2 text-gray-400 hover:bg-muted/50 transition-colors rounded-t-lg"
             >
               <svg xmlns="http://www.w3.org/2000/svg" className="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
@@ -1076,14 +1076,14 @@ export default function TournamentDetailPage({ params }: { params: { tournamentI
           <CardHeader>
             <div className="flex items-start justify-between">
               <div>
-                <CardTitle className="text-2xl">{tournament.name}</CardTitle>
-                <CardDescription className="mt-2">
+                <CardTitle className="text-2xl text-white">{tournament.name}</CardTitle>
+                <CardDescription className="mt-2 text-gray-400">
                   {formatDate(tournament.dateFrom)} - {formatDate(tournament.dateTo)}
                 </CardDescription>
               </div>
               <div className="flex items-center gap-2">
                 {tournament.requiresTeams && tournament.format && tournament.format !== "CUSTOM" && (
-                  <span className="inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium bg-teal-100 text-teal-800">
+                  <span className="inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium bg-cyan-500/20 text-cyan-300">
                     {getFormatLabel(tournament.format)}
                   </span>
                 )}
@@ -1094,49 +1094,49 @@ export default function TournamentDetailPage({ params }: { params: { tournamentI
           <CardContent className="space-y-6">
             {tournament.description && (
               <div>
-                <h3 className="font-semibold mb-2">Description</h3>
-                <p className="text-muted-foreground">{tournament.description}</p>
+                <h3 className="font-semibold mb-2 text-white">Description</h3>
+                <p className="text-gray-400">{tournament.description}</p>
               </div>
             )}
 
             <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
               {tournament.venue && (
                 <div>
-                  <div className="text-sm text-muted-foreground">Venue</div>
-                  <div className="font-medium">{tournament.venue}</div>
+                  <div className="text-sm text-gray-400">Venue</div>
+                  <div className="font-medium text-white">{tournament.venue}</div>
                 </div>
               )}
               {tournament.city && (
                 <div>
-                  <div className="text-sm text-muted-foreground">City</div>
-                  <div className="font-medium">{tournament.city}</div>
+                  <div className="text-sm text-gray-400">City</div>
+                  <div className="font-medium text-white">{tournament.city}</div>
                 </div>
               )}
               {tournament.category && (
                 <div>
-                  <div className="text-sm text-muted-foreground">Category</div>
-                  <div className="font-medium">{tournament.category}</div>
+                  <div className="text-sm text-gray-400">Category</div>
+                  <div className="font-medium text-white">{tournament.category}</div>
                 </div>
               )}
             </div>
 
             <div>
-              <h3 className="font-semibold mb-3">Organizer Details</h3>
+              <h3 className="font-semibold mb-3 text-white">Organizer Details</h3>
               <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
                 <div>
-                  <div className="text-sm text-muted-foreground">Name</div>
-                  <div className="font-medium">{tournament.organizerName}</div>
+                  <div className="text-sm text-gray-400">Name</div>
+                  <div className="font-medium text-white">{tournament.organizerName}</div>
                 </div>
                 {tournament.organizerEmail && (
                   <div>
-                    <div className="text-sm text-muted-foreground">Email</div>
-                    <div className="font-medium">{tournament.organizerEmail}</div>
+                    <div className="text-sm text-gray-400">Email</div>
+                    <div className="font-medium text-white">{tournament.organizerEmail}</div>
                   </div>
                 )}
                 {tournament.organizerPhone && (
                   <div>
-                    <div className="text-sm text-muted-foreground">Phone</div>
-                    <div className="font-medium">{tournament.organizerPhone}</div>
+                    <div className="text-sm text-gray-400">Phone</div>
+                    <div className="font-medium text-white">{tournament.organizerPhone}</div>
                   </div>
                 )}
               </div>
@@ -1236,7 +1236,7 @@ export default function TournamentDetailPage({ params }: { params: { tournamentI
                 <CardContent>
                   {!hasGroups ? (
                     <div className="text-center py-8">
-                      <p className="text-muted-foreground mb-4">
+                      <p className="text-gray-400 mb-4">
                         No groups generated yet. Add teams first, then generate groups.
                       </p>
                       <div className="flex gap-2 justify-center">
@@ -1281,7 +1281,7 @@ export default function TournamentDetailPage({ params }: { params: { tournamentI
                               <div className="overflow-x-auto">
                                 <table className="w-full text-sm">
                                   <thead>
-                                    <tr className="border-b text-left">
+                                    <tr className="border-b border-white/10 text-left">
                                       <th className="pb-2 pr-2 font-medium">#</th>
                                       <th className="pb-2 pr-2 font-medium">Team</th>
                                       <th className="pb-2 pr-2 font-medium text-center">P</th>
@@ -1300,12 +1300,12 @@ export default function TournamentDetailPage({ params }: { params: { tournamentI
                                       return (
                                         <tr
                                           key={s.teamId}
-                                          className={`border-b last:border-0 ${isQualified ? "bg-green-50" : ""}`}
+                                          className={`border-b border-white/10 last:border-0 ${isQualified ? "bg-emerald-500/5" : ""}`}
                                         >
                                           <td className="py-2 pr-2 font-medium">
                                             {i + 1}
                                             {isQualified && (
-                                              <span className="ml-1 inline-flex items-center rounded-full bg-green-100 px-1.5 py-0.5 text-[10px] font-bold text-green-700">
+                                              <span className="ml-1 inline-flex items-center rounded-full bg-emerald-500/20 px-1.5 py-0.5 text-[10px] font-bold text-emerald-300">
                                                 Q
                                               </span>
                                             )}
@@ -1323,7 +1323,7 @@ export default function TournamentDetailPage({ params }: { params: { tournamentI
                                           <td className="py-2 pr-2 text-center">{s.lost}</td>
                                           <td className="py-2 pr-2 text-center">{s.drawn}</td>
                                           <td className="py-2 pr-2 text-center">
-                                            <span className={diff > 0 ? "text-green-600" : diff < 0 ? "text-red-600" : ""}>
+                                            <span className={diff > 0 ? "text-emerald-400" : diff < 0 ? "text-red-400" : ""}>
                                               {diff > 0 ? "+" : ""}{diff}
                                             </span>
                                           </td>
@@ -1334,12 +1334,12 @@ export default function TournamentDetailPage({ params }: { params: { tournamentI
                                   </tbody>
                                 </table>
                               </div>
-                              <p className="text-[10px] text-muted-foreground mt-2">
+                              <p className="text-[10px] text-gray-400 mt-2">
                                 P=Played, W=Won, L=Lost, D=Drawn, PD=Point Diff, Pts=Points (Win=2, Draw=1)
                               </p>
                             </>
                           ) : (
-                            <p className="text-sm text-muted-foreground">No matches played yet.</p>
+                            <p className="text-sm text-gray-400">No matches played yet.</p>
                           )}
                         </CardContent>
                       </Card>
@@ -1401,7 +1401,7 @@ export default function TournamentDetailPage({ params }: { params: { tournamentI
                     />
                   ) : (
                     <div className="text-center py-8">
-                      <p className="text-muted-foreground">
+                      <p className="text-gray-400">
                         {isLeagueKnockout
                           ? allLeagueMatchesDone
                             ? "All league matches are complete. Generate the knockout bracket to continue."
@@ -1435,7 +1435,7 @@ export default function TournamentDetailPage({ params }: { params: { tournamentI
                 <CardContent>
                   {(!tournament.teams || tournament.teams.length === 0) ? (
                     <div className="text-center py-8">
-                      <p className="text-muted-foreground mb-4">No teams in this tournament yet</p>
+                      <p className="text-gray-400 mb-4">No teams in this tournament yet</p>
                       {canManage && (
                         <Link href={`/tournaments/${tournament.id}/teams/new`}>
                           <Button>Create First Team</Button>
@@ -1453,34 +1453,34 @@ export default function TournamentDetailPage({ params }: { params: { tournamentI
                                   <img
                                     src={team.logoUrl}
                                     alt={`${team.name} logo`}
-                                    className="w-10 h-10 rounded-full object-cover border-2 border-gray-200 flex-shrink-0"
+                                    className="w-10 h-10 rounded-full object-cover border-2 border-white/10 flex-shrink-0"
                                     onError={(e) => { (e.target as HTMLImageElement).style.display = "none" }}
                                   />
                                 ) : (
-                                  <div className="w-10 h-10 rounded-full bg-gradient-to-br from-blue-400 to-green-400 flex items-center justify-center text-white font-bold text-sm flex-shrink-0">
+                                  <div className="w-10 h-10 rounded-full bg-gradient-to-br from-cyan-500 to-emerald-500 flex items-center justify-center text-black font-bold text-sm flex-shrink-0">
                                     {team.name.charAt(0).toUpperCase()}
                                   </div>
                                 )}
                                 <div>
                                   <div className="flex items-center gap-2 mb-1">
-                                    <span className="font-medium">{team.name}</span>
-                                    <span className="text-xs text-muted-foreground">
+                                    <span className="font-medium text-white">{team.name}</span>
+                                    <span className="text-xs text-gray-400">
                                       ({team._count.players} players)
                                     </span>
                                   </div>
                                   <div className="flex flex-wrap gap-1.5">
                                     {team.requiredMale > 0 && (
-                                      <span className="inline-flex items-center rounded-full px-2 py-0.5 text-xs font-medium bg-blue-100 text-blue-800">
+                                      <span className="inline-flex items-center rounded-full px-2 py-0.5 text-xs font-medium bg-cyan-500/20 text-cyan-300">
                                         {team.requiredMale}M
                                       </span>
                                     )}
                                     {team.requiredFemale > 0 && (
-                                      <span className="inline-flex items-center rounded-full px-2 py-0.5 text-xs font-medium bg-pink-100 text-pink-800">
+                                      <span className="inline-flex items-center rounded-full px-2 py-0.5 text-xs font-medium bg-pink-500/20 text-pink-300">
                                         {team.requiredFemale}F
                                       </span>
                                     )}
                                     {team.requiredKid > 0 && (
-                                      <span className="inline-flex items-center rounded-full px-2 py-0.5 text-xs font-medium bg-amber-100 text-amber-800">
+                                      <span className="inline-flex items-center rounded-full px-2 py-0.5 text-xs font-medium bg-amber-500/20 text-amber-300">
                                         {team.requiredKid}K
                                       </span>
                                     )}
@@ -1534,7 +1534,7 @@ export default function TournamentDetailPage({ params }: { params: { tournamentI
                 <CardContent>
                   {(!tournament.teamMatches || tournament.teamMatches.length === 0) ? (
                     <div className="text-center py-8">
-                      <p className="text-muted-foreground mb-4">No team matches created yet</p>
+                      <p className="text-gray-400 mb-4">No team matches created yet</p>
                       {canManage && (
                         <Link href={`/tournaments/${tournament.id}/team-matches/new`}>
                           <Button>Create First Team Match</Button>
@@ -1552,24 +1552,24 @@ export default function TournamentDetailPage({ params }: { params: { tournamentI
                               <div className="flex items-center justify-between">
                                 <div className="flex-1 min-w-0">
                                   <div className="flex items-center gap-2 mb-1">
-                                    <span className="font-medium">{tm.name}</span>
+                                    <span className="font-medium text-white">{tm.name}</span>
                                     <span className={`inline-flex items-center rounded-full px-2 py-0.5 text-xs font-medium ${
                                       tm.category === "ADULT"
-                                        ? "bg-blue-100 text-blue-800"
-                                        : "bg-amber-100 text-amber-800"
+                                        ? "bg-cyan-500/20 text-cyan-300"
+                                        : "bg-amber-500/20 text-amber-300"
                                     }`}>
                                       {tm.category}
                                     </span>
                                     <span className={`inline-flex items-center rounded-full px-2 py-0.5 text-xs font-medium ${
-                                      tm.status === "DRAFT" ? "bg-gray-100 text-gray-800" :
-                                      tm.status === "READY" ? "bg-green-100 text-green-800" :
-                                      tm.status === "IN_PROGRESS" ? "bg-blue-100 text-blue-800" :
-                                      "bg-green-100 text-green-800"
+                                      tm.status === "DRAFT" ? "bg-gray-500/20 text-gray-300" :
+                                      tm.status === "READY" ? "bg-emerald-500/20 text-emerald-300" :
+                                      tm.status === "IN_PROGRESS" ? "bg-cyan-500/20 text-cyan-300" :
+                                      "bg-emerald-500/20 text-emerald-300"
                                     }`}>
                                       {tm.status.replace("_", " ")}
                                     </span>
                                   </div>
-                                  <div className="text-sm text-muted-foreground">
+                                  <div className="text-sm text-gray-400">
                                     {tm.teamA.name} vs {tm.teamB.name}
                                   </div>
                                   {tm.status === "COMPLETED" ? (
@@ -1578,13 +1578,13 @@ export default function TournamentDetailPage({ params }: { params: { tournamentI
                                         {tm.fixturesWonByTeamA} - {tm.fixturesWonByTeamB}
                                       </span>
                                       {tm.winningTeam && (
-                                        <span className="text-green-600 ml-2 text-xs">
+                                        <span className="text-emerald-400 ml-2 text-xs">
                                           {tm.winningTeam.name} won
                                         </span>
                                       )}
                                     </div>
                                   ) : (
-                                    <div className="text-xs text-muted-foreground mt-1">
+                                    <div className="text-xs text-gray-400 mt-1">
                                       {assignedCount}/{totalFixtures} fixtures assigned
                                     </div>
                                   )}
@@ -1632,14 +1632,14 @@ export default function TournamentDetailPage({ params }: { params: { tournamentI
                       <CardContent>
                         {!hasCompletedMatches ? (
                           <div className="text-center py-8">
-                            <p className="text-muted-foreground">No completed team matches yet. Standings will appear once matches are completed.</p>
+                            <p className="text-gray-400">No completed team matches yet. Standings will appear once matches are completed.</p>
                           </div>
                         ) : (
                           <>
                             <div className="overflow-x-auto">
                               <table className="w-full text-sm">
                                 <thead>
-                                  <tr className="border-b text-left">
+                                  <tr className="border-b border-white/10 text-left">
                                     <th className="pb-2 pr-3 font-medium">#</th>
                                     <th className="pb-2 pr-3 font-medium">Team</th>
                                     <th className="pb-2 pr-3 font-medium text-center">P</th>
@@ -1657,7 +1657,7 @@ export default function TournamentDetailPage({ params }: { params: { tournamentI
                                     const pts = s.won * 2 + s.drawn
                                     const diff = s.pointsFor - s.pointsAgainst
                                     return (
-                                      <tr key={s.teamId} className="border-b last:border-0">
+                                      <tr key={s.teamId} className="border-b border-white/10 last:border-0">
                                         <td className="py-2 pr-3 font-medium">{i + 1}</td>
                                         <td className="py-2 pr-3 font-medium">{s.teamName}</td>
                                         <td className="py-2 pr-3 text-center">{s.played}</td>
@@ -1667,7 +1667,7 @@ export default function TournamentDetailPage({ params }: { params: { tournamentI
                                         <td className="py-2 pr-3 text-center">{s.fixturesWon}</td>
                                         <td className="py-2 pr-3 text-center">{s.fixturesLost}</td>
                                         <td className="py-2 pr-3 text-center">
-                                          <span className={diff > 0 ? "text-green-600" : diff < 0 ? "text-red-600" : ""}>
+                                          <span className={diff > 0 ? "text-emerald-400" : diff < 0 ? "text-red-400" : ""}>
                                             {diff > 0 ? "+" : ""}{diff}
                                           </span>
                                         </td>
@@ -1678,7 +1678,7 @@ export default function TournamentDetailPage({ params }: { params: { tournamentI
                                 </tbody>
                               </table>
                             </div>
-                            <p className="text-xs text-muted-foreground mt-3">
+                            <p className="text-xs text-gray-400 mt-3">
                               P=Played, W=Won, L=Lost, D=Drawn, FW=Fixtures Won, FL=Fixtures Lost, PD=Point Differential, Pts=Points (Win=2, Draw=1)
                             </p>
                           </>
@@ -1702,13 +1702,13 @@ export default function TournamentDetailPage({ params }: { params: { tournamentI
                 </CardHeader>
                 <CardContent>
                   {auctionLoading ? (
-                    <div className="text-center py-8 text-muted-foreground">Loading...</div>
+                    <div className="text-center py-8 text-gray-400">Loading...</div>
                   ) : !auctionData ? (
                     <div className="text-center py-8">
                       <div className="flex justify-center mb-4">
-                        <GavelIcon size={64} className="text-muted-foreground" />
+                        <GavelIcon size={64} className="text-gray-400" />
                       </div>
-                      <p className="text-muted-foreground mb-4">
+                      <p className="text-gray-400 mb-4">
                         No auction has been created for this tournament yet.
                       </p>
                       {canManage && (
@@ -1722,15 +1722,15 @@ export default function TournamentDetailPage({ params }: { params: { tournamentI
                     </div>
                   ) : (
                     <div className="space-y-4">
-                      <div className="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
+                      <div className="flex items-center justify-between p-4 bg-white/5 border border-white/10 rounded-lg">
                         <div>
                           <h3 className="font-semibold">{auctionData.name}</h3>
-                          <div className="flex items-center gap-3 mt-1 text-sm text-muted-foreground">
+                          <div className="flex items-center gap-3 mt-1 text-sm text-gray-400">
                             <span className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium ${
-                              auctionData.status === "LIVE" ? "bg-green-100 text-green-800" :
-                              auctionData.status === "PAUSED" ? "bg-amber-100 text-amber-800" :
-                              auctionData.status === "COMPLETED" ? "bg-blue-100 text-blue-800" :
-                              "bg-gray-100 text-gray-800"
+                              auctionData.status === "LIVE" ? "bg-emerald-500/20 text-emerald-300" :
+                              auctionData.status === "PAUSED" ? "bg-amber-500/20 text-amber-300" :
+                              auctionData.status === "COMPLETED" ? "bg-cyan-500/20 text-cyan-300" :
+                              "bg-gray-500/20 text-gray-300"
                             }`}>
                               {auctionData.status}
                             </span>
@@ -1770,10 +1770,10 @@ export default function TournamentDetailPage({ params }: { params: { tournamentI
                 </CardHeader>
                 <CardContent>
                   {fixturesLoading ? (
-                    <div className="text-center py-8 text-muted-foreground">Loading fixtures...</div>
+                    <div className="text-center py-8 text-gray-400">Loading fixtures...</div>
                   ) : fixtures.length === 0 ? (
                     <div className="text-center py-8">
-                      <p className="text-muted-foreground">No fixtures yet. Create team matches first.</p>
+                      <p className="text-gray-400">No fixtures yet. Create team matches first.</p>
                     </div>
                   ) : (
                     <div className="space-y-3">
@@ -1812,7 +1812,7 @@ export default function TournamentDetailPage({ params }: { params: { tournamentI
                                       </button>
                                     </div>
                                   ) : (
-                                    <label className="w-20 h-20 rounded-lg border-2 border-dashed border-gray-300 flex flex-col items-center justify-center cursor-pointer hover:border-blue-400 hover:bg-blue-50 transition-colors">
+                                    <label className="w-20 h-20 rounded-lg border-2 border-dashed border-white/10 flex flex-col items-center justify-center cursor-pointer hover:border-cyan-500/30 hover:bg-white/5 transition-colors">
                                       <svg xmlns="http://www.w3.org/2000/svg" className="w-6 h-6 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
                                       </svg>
@@ -1840,32 +1840,32 @@ export default function TournamentDetailPage({ params }: { params: { tournamentI
                                     </span>
                                     {matchStatus && (
                                       <span className={`inline-flex items-center rounded-full px-2 py-0.5 text-xs font-medium ${
-                                        matchStatus === "COMPLETED" ? "bg-green-100 text-green-800" :
-                                        matchStatus === "IN_PROGRESS" ? "bg-blue-100 text-blue-800" :
-                                        "bg-gray-100 text-gray-800"
+                                        matchStatus === "COMPLETED" ? "bg-emerald-500/20 text-emerald-300" :
+                                        matchStatus === "IN_PROGRESS" ? "bg-cyan-500/20 text-cyan-300" :
+                                        "bg-gray-500/20 text-gray-300"
                                       }`}>
                                         {matchStatus.replace("_", " ")}
                                       </span>
                                     )}
                                     {uploadingFixtureId === fixture.id && (
-                                      <span className="text-xs text-muted-foreground">Uploading...</span>
+                                      <span className="text-xs text-gray-400">Uploading...</span>
                                     )}
                                   </div>
-                                  <div className="text-xs text-muted-foreground mb-1.5">
+                                  <div className="text-xs text-gray-400 mb-1.5">
                                     {fixture.teamMatch.teamA.name} vs {fixture.teamMatch.teamB.name}
                                   </div>
-                                  <div className="text-xs text-muted-foreground mb-1">
+                                  <div className="text-xs text-gray-400 mb-1">
                                     {fixture.teamMatch.name}
                                   </div>
                                   {fixture.teamAPlayer1 && (
                                     <div className="flex flex-wrap gap-x-4 gap-y-1 text-xs">
                                       <span>
-                                        <span className="text-muted-foreground">A: </span>
+                                        <span className="text-gray-400">A: </span>
                                         {fixture.teamAPlayer1.name}
                                         {fixture.teamAPlayer2 && ` & ${fixture.teamAPlayer2.name}`}
                                       </span>
                                       <span>
-                                        <span className="text-muted-foreground">B: </span>
+                                        <span className="text-gray-400">B: </span>
                                         {fixture.teamBPlayer1?.name}
                                         {fixture.teamBPlayer2 && ` & ${fixture.teamBPlayer2.name}`}
                                       </span>
@@ -1949,7 +1949,7 @@ export default function TournamentDetailPage({ params }: { params: { tournamentI
               <CardContent>
                 {tournament.matches.length === 0 ? (
                   <div className="text-center py-8">
-                    <p className="text-muted-foreground mb-4">No matches in this tournament yet</p>
+                    <p className="text-gray-400 mb-4">No matches in this tournament yet</p>
                     {canManage && (
                       <Link href={`/tournaments/${tournament.id}/matches/new`}>
                         <Button>Create First Match</Button>
@@ -1964,10 +1964,10 @@ export default function TournamentDetailPage({ params }: { params: { tournamentI
                           <div className="flex items-center justify-between">
                             <div className="flex-1">
                               <div className="flex items-center gap-2 mb-2">
-                                <span className="font-medium">{match.name}</span>
+                                <span className="font-medium text-white">{match.name}</span>
                                 {getStatusBadge(match.status)}
                               </div>
-                              <div className="text-sm text-muted-foreground">
+                              <div className="text-sm text-gray-400">
                                 <PlayerLink name={match.sideAPlayer1} playerMap={playerMap} />
                                 {match.sideAPlayer2 && <>{" & "}<PlayerLink name={match.sideAPlayer2} playerMap={playerMap} /></>}
                                 {" vs "}
@@ -1981,7 +1981,7 @@ export default function TournamentDetailPage({ params }: { params: { tournamentI
                                   {match.setsWonBySideA} - {match.setsWonBySideB}
                                 </div>
                                 {match.winningSide && (
-                                  <div className="text-xs text-green-600 font-medium mt-1">
+                                  <div className="text-xs text-emerald-400 font-medium mt-1">
                                     Side {match.winningSide} Won
                                   </div>
                                 )}
@@ -2015,14 +2015,14 @@ export default function TournamentDetailPage({ params }: { params: { tournamentI
                             <div className="text-sm">
                               <div className="mb-1">
                                 <span className="font-medium">Team A:</span>
-                                <div className="text-muted-foreground">
+                                <div className="text-gray-400">
                                   <PlayerLink name={match.sideAPlayer1} playerMap={playerMap} />
                                   {match.sideAPlayer2 && <>{" & "}<PlayerLink name={match.sideAPlayer2} playerMap={playerMap} /></>}
                                 </div>
                               </div>
                               <div>
                                 <span className="font-medium">Team B:</span>
-                                <div className="text-muted-foreground">
+                                <div className="text-gray-400">
                                   <PlayerLink name={match.sideBPlayer1} playerMap={playerMap} />
                                   {match.sideBPlayer2 && <>{" & "}<PlayerLink name={match.sideBPlayer2} playerMap={playerMap} /></>}
                                 </div>
@@ -2034,7 +2034,7 @@ export default function TournamentDetailPage({ params }: { params: { tournamentI
                                   {match.setsWonBySideA} - {match.setsWonBySideB}
                                 </div>
                                 {match.winningSide && (
-                                  <div className="text-xs text-green-600 font-medium">
+                                  <div className="text-xs text-emerald-400 font-medium">
                                     Side {match.winningSide} Won
                                   </div>
                                 )}
@@ -2160,7 +2160,7 @@ export default function TournamentDetailPage({ params }: { params: { tournamentI
                     e.target.value = ""
                   }}
                 />
-                <p className="text-xs text-muted-foreground">
+                <p className="text-xs text-gray-400">
                   Max 5MB. For Google Drive, make sure the file is set to "Anyone with the link can view"
                 </p>
               </div>

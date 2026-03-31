@@ -109,10 +109,10 @@ export default function ScorePage({ params }: { params: { matchId: string } }) {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-background">
+      <div className="min-h-screen bg-[#0a0a0a]">
         <Header />
         <main className="container mx-auto px-4 py-8">
-          <div className="text-center">Loading match...</div>
+          <div className="text-center text-gray-400">Loading match...</div>
         </main>
       </div>
     )
@@ -120,7 +120,7 @@ export default function ScorePage({ params }: { params: { matchId: string } }) {
 
   if (error || !match) {
     return (
-      <div className="min-h-screen bg-background">
+      <div className="min-h-screen bg-[#0a0a0a]">
         <Header />
         <main className="container mx-auto px-4 py-8">
           <div className="text-center text-destructive">{error || "Match not found"}</div>
@@ -136,7 +136,7 @@ export default function ScorePage({ params }: { params: { matchId: string } }) {
   // If currentSet is not found, show error
   if (!currentSet) {
     return (
-      <div className="min-h-screen bg-background">
+      <div className="min-h-screen bg-[#0a0a0a]">
         <Header />
         <main className="container mx-auto px-4 py-8">
           <div className="text-center text-destructive">Current set not found</div>
@@ -164,38 +164,38 @@ export default function ScorePage({ params }: { params: { matchId: string } }) {
   const effectiveCourtSwapped = endChanges % 2 === 0 ? tossSwapped : !tossSwapped
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-[#0a0a0a]">
       <Header />
       <main className="container mx-auto px-4 py-4 sm:py-8 max-w-6xl">
         {/* Match Header */}
         <div className="mb-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
           <div>
-            <h1 className="text-xl sm:text-2xl font-bold">{match.name}</h1>
-            <p className="text-muted-foreground text-sm sm:text-base">{match.type} Match</p>
+            <h1 className="text-xl sm:text-2xl font-bold text-white">{match.name}</h1>
+            <p className="text-gray-400 text-sm sm:text-base">{match.type} Match</p>
           </div>
-          <Button variant="outline" size="sm" onClick={() => router.push(`/matches/${match.id}`)}>
-            📋 View Details
+          <Button variant="outline" size="sm" onClick={() => router.push(`/matches/${match.id}`)} className="border border-white/10 hover:bg-white/5 text-gray-300">
+            View Details
           </Button>
         </div>
 
         {/* Match Completed Banner */}
         {isCompleted && (
-          <div className="mb-6 rounded-xl bg-gradient-to-r from-yellow-50 via-yellow-100 to-yellow-50 border-4 border-yellow-400 p-4 sm:p-8 text-center shadow-2xl">
-            <h2 className="text-2xl sm:text-4xl font-black text-yellow-800 mb-4">🎉 Match Completed! 🎉</h2>
-            <div className="bg-white rounded-lg p-3 sm:p-4 mb-3 shadow-lg">
-              <p className="text-lg sm:text-2xl font-black bg-gradient-to-r from-yellow-600 to-orange-600 bg-clip-text text-transparent">
-                🏆 Winner: Side {match.winningSide} 🏆
+          <div className="mb-6 rounded-xl bg-white/5 border border-white/10 p-4 sm:p-8 text-center">
+            <h2 className="text-2xl sm:text-4xl font-black text-white mb-4">Match Completed!</h2>
+            <div className="bg-white/[0.03] rounded-lg p-3 sm:p-4 mb-3 border border-white/10">
+              <p className="text-lg sm:text-2xl font-black text-white">
+                Winner: Side {match.winningSide}
               </p>
-              <p className="text-base sm:text-xl text-gray-800 font-bold mt-2">
+              <p className="text-base sm:text-xl text-gray-300 font-bold mt-2">
                 {match.winningSide === "A"
                   ? `${match.sideAPlayer1}${match.sideAPlayer2 ? ` & ${match.sideAPlayer2}` : ""}`
                   : `${match.sideBPlayer1}${match.sideBPlayer2 ? ` & ${match.sideBPlayer2}` : ""}`}
               </p>
             </div>
             <div className="flex items-center justify-center gap-4 text-xl sm:text-2xl font-black">
-              <span className="text-green-600">{match.setsWonBySideA}</span>
+              <span className="text-emerald-400">{match.setsWonBySideA}</span>
               <span className="text-gray-400">-</span>
-              <span className="text-blue-600">{match.setsWonBySideB}</span>
+              <span className="text-cyan-400">{match.setsWonBySideB}</span>
             </div>
           </div>
         )}
@@ -268,16 +268,16 @@ export default function ScorePage({ params }: { params: { matchId: string } }) {
               variant="outline"
               onClick={handleCompleteMatch}
               disabled={isScoring || isUndoing || isCompleting}
-              className="border-green-500 text-green-600 hover:bg-green-50"
+              className="border border-emerald-500/20 text-emerald-400 hover:bg-emerald-500/10"
             >
-              {isCompleting ? "Completing..." : "✓ Complete Match"}
+              {isCompleting ? "Completing..." : "Complete Match"}
             </Button>
           )}
         </div>
 
         {/* Keyboard Shortcuts Hint */}
         {!isCompleted && (
-          <div className="mt-8 text-center text-sm text-muted-foreground">
+          <div className="mt-8 text-center text-sm text-gray-400">
             <p>Tip: You can use keyboard shortcuts for faster scoring (to be implemented)</p>
           </div>
         )}

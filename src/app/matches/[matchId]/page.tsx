@@ -21,7 +21,7 @@ import { useRole } from "@/hooks/useRole"
 
 function MatchDetailAvatar({ name, src, color }: { name: string; src?: string | null; color: "green" | "blue" }) {
   const [error, setError] = useState(false)
-  const gradient = color === "green" ? "from-green-400 to-green-600" : "from-blue-400 to-blue-600"
+  const gradient = color === "green" ? "from-emerald-400 to-emerald-600" : "from-cyan-400 to-cyan-600"
   return (
     <div className={`w-12 h-12 rounded-full bg-gradient-to-br ${gradient} flex items-center justify-center text-xl font-black text-white shadow-lg flex-shrink-0 overflow-hidden`}>
       {src && !error ? (
@@ -254,10 +254,10 @@ export default function MatchDetailPage({ params }: { params: { matchId: string 
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-background">
+      <div className="min-h-screen bg-[#0a0a0a]">
         <Header />
         <main className="container mx-auto px-4 py-8">
-          <div className="text-center">Loading match...</div>
+          <div className="text-center text-gray-400">Loading match...</div>
         </main>
       </div>
     )
@@ -265,7 +265,7 @@ export default function MatchDetailPage({ params }: { params: { matchId: string 
 
   if (error || !match) {
     return (
-      <div className="min-h-screen bg-background">
+      <div className="min-h-screen bg-[#0a0a0a]">
         <Header />
         <main className="container mx-auto px-4 py-8">
           <div className="text-center text-destructive">{error || "Match not found"}</div>
@@ -285,7 +285,7 @@ export default function MatchDetailPage({ params }: { params: { matchId: string 
   const canStartMatch = !tournament || tournament.status !== "UPCOMING"
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-[#0a0a0a]">
       <Header />
 
       {/* Toss Dialog */}
@@ -304,7 +304,7 @@ export default function MatchDetailPage({ params }: { params: { matchId: string 
 
       <main className="container mx-auto px-4 py-8 max-w-4xl">
         <div className="mb-6 flex items-center justify-between">
-          <Button variant="outline" onClick={() => router.push("/matches")}>
+          <Button variant="outline" onClick={() => router.push("/matches")} className="border border-white/10 hover:bg-white/5 text-gray-300">
             ← Back to Matches
           </Button>
           {canManage && (
@@ -315,18 +315,18 @@ export default function MatchDetailPage({ params }: { params: { matchId: string 
                     onClick={handleStartMatch}
                     disabled={isStarting || !canStartMatch}
                     size="lg"
-                    className="bg-green-600 hover:bg-green-700"
+                    className="bg-gradient-to-r from-emerald-500 to-cyan-500 text-black font-semibold hover:from-emerald-400 hover:to-cyan-400"
                   >
-                    {isStarting ? "Starting..." : "🏸 Start Match"}
+                    {isStarting ? "Starting..." : "Start Match"}
                   </Button>
                   <Link href={`/matches/${match.id}/edit`}>
-                    <Button variant="outline" size="lg">
+                    <Button variant="outline" size="lg" className="border border-white/10 hover:bg-white/5 text-gray-300">
                       Edit Match
                     </Button>
                   </Link>
                   {!canStartMatch && tournament && (
-                    <div className="flex items-center px-3 py-2 bg-amber-50 border border-amber-200 rounded-md">
-                      <span className="text-sm text-amber-800">⚠️ Tournament not started yet</span>
+                    <div className="flex items-center px-3 py-2 bg-amber-500/10 border border-amber-500/20 rounded-md">
+                      <span className="text-sm text-amber-400">Tournament not started yet</span>
                     </div>
                   )}
                 </>
@@ -334,16 +334,16 @@ export default function MatchDetailPage({ params }: { params: { matchId: string 
               {match.status === "IN_PROGRESS" && (
                 <>
                   <Link href={`/matches/${match.id}/score`}>
-                    <Button size="lg">Continue Scoring</Button>
+                    <Button size="lg" className="bg-gradient-to-r from-emerald-500 to-cyan-500 text-black font-semibold hover:from-emerald-400 hover:to-cyan-400">Continue Scoring</Button>
                   </Link>
                   {hasWinner && (
                     <Button
                       onClick={handleCompleteMatch}
                       disabled={isCompleting}
                       size="lg"
-                      className="bg-green-600 hover:bg-green-700"
+                      className="bg-gradient-to-r from-emerald-500 to-cyan-500 text-black font-semibold hover:from-emerald-400 hover:to-cyan-400"
                     >
-                      {isCompleting ? "Completing..." : "✓ Complete Match"}
+                      {isCompleting ? "Completing..." : "Complete Match"}
                     </Button>
                   )}
                 </>
@@ -355,23 +355,23 @@ export default function MatchDetailPage({ params }: { params: { matchId: string 
           )}
         </div>
 
-        <Card className="mb-6">
+        <Card className="mb-6 border-white/10 bg-white/[0.03]">
           <CardHeader>
-            <CardTitle>{match.name}</CardTitle>
-            <CardDescription>
+            <CardTitle className="text-white">{match.name}</CardTitle>
+            <CardDescription className="text-gray-400">
               {match.type} • Status: {match.status.replace("_", " ")}
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-6">
             {/* Players */}
             <div>
-              <h3 className="font-semibold mb-3 text-gray-700">Players</h3>
+              <h3 className="font-semibold mb-3 text-gray-300">Players</h3>
               <div className="grid grid-cols-2 gap-4">
-                <div className="bg-gradient-to-br from-green-50 to-green-100 p-4 rounded-lg border-2 border-green-200">
+                <div className="bg-emerald-500/10 border border-emerald-500/20 p-4 rounded-lg">
                   <div className="flex items-center gap-3 mb-2">
                     <MatchDetailAvatar name={match.sideAPlayer1} src={match.sideAPlayer1Photo} color="green" />
                     <div className="flex-1">
-                      <div className="font-bold text-gray-800 flex items-center gap-2">
+                      <div className="font-bold text-white flex items-center gap-2">
                         <PlayerLink name={match.sideAPlayer1} playerMap={playerMap} />
                         {match.winningSide === "A" && <span>🏆</span>}
                       </div>
@@ -381,7 +381,7 @@ export default function MatchDetailPage({ params }: { params: { matchId: string 
                     <div className="flex items-center gap-3 mt-3">
                       <MatchDetailAvatar name={match.sideAPlayer2} src={match.sideAPlayer2Photo} color="green" />
                       <div className="flex-1">
-                        <div className="font-bold text-gray-800 flex items-center gap-2">
+                        <div className="font-bold text-white flex items-center gap-2">
                           <PlayerLink name={match.sideAPlayer2} playerMap={playerMap} />
                           {match.winningSide === "A" && <span>🏆</span>}
                         </div>
@@ -389,11 +389,11 @@ export default function MatchDetailPage({ params }: { params: { matchId: string 
                     </div>
                   )}
                 </div>
-                <div className="bg-gradient-to-br from-blue-50 to-blue-100 p-4 rounded-lg border-2 border-blue-200">
+                <div className="bg-cyan-500/10 border border-cyan-500/20 p-4 rounded-lg">
                   <div className="flex items-center gap-3 mb-2">
                     <MatchDetailAvatar name={match.sideBPlayer1} src={match.sideBPlayer1Photo} color="blue" />
                     <div className="flex-1">
-                      <div className="font-bold text-gray-800 flex items-center gap-2">
+                      <div className="font-bold text-white flex items-center gap-2">
                         <PlayerLink name={match.sideBPlayer1} playerMap={playerMap} />
                         {match.winningSide === "B" && <span>🏆</span>}
                       </div>
@@ -403,7 +403,7 @@ export default function MatchDetailPage({ params }: { params: { matchId: string 
                     <div className="flex items-center gap-3 mt-3">
                       <MatchDetailAvatar name={match.sideBPlayer2} src={match.sideBPlayer2Photo} color="blue" />
                       <div className="flex-1">
-                        <div className="font-bold text-gray-800 flex items-center gap-2">
+                        <div className="font-bold text-white flex items-center gap-2">
                           <PlayerLink name={match.sideBPlayer2} playerMap={playerMap} />
                           {match.winningSide === "B" && <span>🏆</span>}
                         </div>
@@ -417,25 +417,25 @@ export default function MatchDetailPage({ params }: { params: { matchId: string 
             {/* Match Score */}
             {match.status !== "NOT_STARTED" && (
               <div>
-                <h3 className="font-semibold mb-3 text-gray-700">Match Score</h3>
-                <div className="bg-gradient-to-r from-gray-100 to-gray-200 rounded-xl p-6 border-2 border-gray-300 shadow-lg">
+                <h3 className="font-semibold mb-3 text-gray-300">Match Score</h3>
+                <div className="bg-white/5 border border-white/10 rounded-xl p-6 shadow-lg">
                   <div className="flex items-center justify-center gap-8">
                     <div className="text-center">
-                      <div className="text-xs font-bold text-gray-600 mb-2">
+                      <div className="text-xs font-bold text-gray-400 mb-2">
                         <PlayerLink name={match.sideAPlayer1} playerMap={playerMap} />
                         {match.sideAPlayer2 && <>{" & "}<PlayerLink name={match.sideAPlayer2} playerMap={playerMap} /></>}
                       </div>
-                      <div className="text-6xl font-black tabular-nums text-green-600">
+                      <div className="text-6xl font-black tabular-nums text-emerald-400">
                         {match.setsWonBySideA}
                       </div>
                     </div>
                     <div className="text-4xl font-bold text-gray-400">VS</div>
                     <div className="text-center">
-                      <div className="text-xs font-bold text-gray-600 mb-2">
+                      <div className="text-xs font-bold text-gray-400 mb-2">
                         <PlayerLink name={match.sideBPlayer1} playerMap={playerMap} />
                         {match.sideBPlayer2 && <>{" & "}<PlayerLink name={match.sideBPlayer2} playerMap={playerMap} /></>}
                       </div>
-                      <div className="text-6xl font-black tabular-nums text-blue-600">
+                      <div className="text-6xl font-black tabular-nums text-cyan-400">
                         {match.setsWonBySideB}
                       </div>
                     </div>
@@ -443,9 +443,9 @@ export default function MatchDetailPage({ params }: { params: { matchId: string 
                   {match.winningSide && (
                     <div className="mt-6 text-center">
                       <div className="inline-block bg-gradient-to-r from-yellow-400 to-yellow-500 text-white px-6 py-3 rounded-full font-black text-xl shadow-lg">
-                        🎉 {match.winningSide === "A"
+                        {match.winningSide === "A"
                           ? `${match.sideAPlayer1}${match.sideAPlayer2 ? ` & ${match.sideAPlayer2}` : ""}`
-                          : `${match.sideBPlayer1}${match.sideBPlayer2 ? ` & ${match.sideBPlayer2}` : ""}`} Won! 🎉
+                          : `${match.sideBPlayer1}${match.sideBPlayer2 ? ` & ${match.sideBPlayer2}` : ""}`} Won!
                       </div>
                     </div>
                   )}
@@ -456,17 +456,17 @@ export default function MatchDetailPage({ params }: { params: { matchId: string 
             {/* Sets */}
             {match.sets && match.sets.length > 0 && (
               <div>
-                <h3 className="font-semibold mb-3 text-gray-700">Set Details</h3>
+                <h3 className="font-semibold mb-3 text-gray-300">Set Details</h3>
                 <div className="space-y-3">
                   {match.sets.map((set) => (
-                    <Card key={set.setNumber} className="border-2 border-gray-200">
-                      <CardContent className="p-4 bg-gradient-to-r from-gray-50 to-gray-100">
+                    <Card key={set.setNumber} className="border-white/10 bg-white/[0.03]">
+                      <CardContent className="p-4">
                         <div className="grid grid-cols-3 items-center">
-                          <span className="font-bold text-gray-800">🏸 Set {set.setNumber}</span>
+                          <span className="font-bold text-white">Set {set.setNumber}</span>
                           <div className="flex items-center justify-center gap-3">
                             <div className="flex items-center gap-1">
                               <span
-                                className={`text-xl font-black ${set.winningSide === "A" ? "text-yellow-500" : "text-green-600"}`}
+                                className={`text-xl font-black ${set.winningSide === "A" ? "text-yellow-500" : "text-emerald-400"}`}
                               >
                                 {set.scoreA}
                               </span>
@@ -476,7 +476,7 @@ export default function MatchDetailPage({ params }: { params: { matchId: string 
                             <div className="flex items-center gap-1">
                               {set.winningSide === "B" && <span className="text-xl">🏆</span>}
                               <span
-                                className={`text-xl font-black ${set.winningSide === "B" ? "text-yellow-500" : "text-blue-600"}`}
+                                className={`text-xl font-black ${set.winningSide === "B" ? "text-yellow-500" : "text-cyan-400"}`}
                               >
                                 {set.scoreB}
                               </span>
@@ -484,7 +484,7 @@ export default function MatchDetailPage({ params }: { params: { matchId: string 
                           </div>
                           <div className="text-right">
                             {set.winningSide && (
-                              <span className="text-sm bg-green-100 text-green-700 px-3 py-1 rounded-full font-bold">
+                              <span className="text-sm bg-emerald-500/20 text-emerald-300 px-3 py-1 rounded-full font-bold">
                                 {set.winningSide === "A"
                                   ? `${match.sideAPlayer1}${match.sideAPlayer2 ? ` & ${match.sideAPlayer2}` : ""}`
                                   : `${match.sideBPlayer1}${match.sideBPlayer2 ? ` & ${match.sideBPlayer2}` : ""}`} won
@@ -492,7 +492,7 @@ export default function MatchDetailPage({ params }: { params: { matchId: string 
                             )}
                             {!set.winningSide &&
                               match.sets.indexOf(set) === match.sets.length - 1 && (
-                                <span className="text-sm bg-blue-100 text-blue-700 px-3 py-1 rounded-full font-bold animate-pulse">
+                                <span className="text-sm bg-cyan-500/20 text-cyan-300 px-3 py-1 rounded-full font-bold animate-pulse">
                                   In Progress
                                 </span>
                               )}
@@ -507,7 +507,7 @@ export default function MatchDetailPage({ params }: { params: { matchId: string 
 
             {/* Tournament Association */}
             <div>
-              <h3 className="font-semibold mb-3">Tournament</h3>
+              <h3 className="font-semibold mb-3 text-gray-300">Tournament</h3>
               <div className="space-y-2">
                 <div className="flex items-center gap-4">
                   <Select
@@ -515,7 +515,7 @@ export default function MatchDetailPage({ params }: { params: { matchId: string 
                     onValueChange={handleTournamentChange}
                     disabled={isUpdatingTournament || match.status !== "NOT_STARTED"}
                   >
-                    <SelectTrigger className="w-full">
+                    <SelectTrigger className="w-full bg-white/5 border-white/10 text-white">
                       <SelectValue placeholder="No tournament" />
                     </SelectTrigger>
                     <SelectContent>
@@ -529,27 +529,27 @@ export default function MatchDetailPage({ params }: { params: { matchId: string 
                   </Select>
                   {(match as any).tournament && (
                     <Link href={`/tournaments/${(match as any).tournament.id}`}>
-                      <Button variant="outline" size="sm">
+                      <Button variant="outline" size="sm" className="border border-white/10 hover:bg-white/5 text-gray-300">
                         View Tournament
                       </Button>
                     </Link>
                   )}
                 </div>
                 {match.status !== "NOT_STARTED" && (
-                  <p className="text-xs text-muted-foreground">
+                  <p className="text-xs text-gray-400">
                     Tournament cannot be changed once match has started
                   </p>
                 )}
                 {tournament && match.status === "NOT_STARTED" && !canStartMatch && (
-                  <div className="p-3 bg-amber-50 border border-amber-200 rounded-md">
-                    <p className="text-sm text-amber-800 font-medium">
-                      ⚠️ Match cannot start until tournament begins
+                  <div className="p-3 bg-amber-500/10 border border-amber-500/20 rounded-md">
+                    <p className="text-sm text-amber-400 font-medium">
+                      Match cannot start until tournament begins
                     </p>
-                    <p className="text-xs text-amber-700 mt-1">
+                    <p className="text-xs text-amber-400/80 mt-1">
                       Tournament Status: <span className="font-semibold">{tournament.status}</span>
                     </p>
                     {tournament.status === "UPCOMING" && (
-                      <p className="text-xs text-amber-700">
+                      <p className="text-xs text-amber-400/80">
                         Please start the tournament from the tournament page first.
                       </p>
                     )}
@@ -560,41 +560,41 @@ export default function MatchDetailPage({ params }: { params: { matchId: string 
 
             {/* Match Configuration */}
             <div>
-              <h3 className="font-semibold mb-3">Configuration</h3>
+              <h3 className="font-semibold mb-3 text-gray-300">Configuration</h3>
               <div className="grid grid-cols-3 gap-4 text-sm">
                 <div>
-                  <div className="text-muted-foreground">Sets</div>
-                  <div className="font-medium">Best of {match.setsCount}</div>
+                  <div className="text-gray-400">Sets</div>
+                  <div className="font-medium text-white">Best of {match.setsCount}</div>
                 </div>
                 <div>
-                  <div className="text-muted-foreground">Points to Win</div>
-                  <div className="font-medium">{match.pointsToWin}</div>
+                  <div className="text-gray-400">Points to Win</div>
+                  <div className="font-medium text-white">{match.pointsToWin}</div>
                 </div>
                 <div>
-                  <div className="text-muted-foreground">Deuce Cap</div>
-                  <div className="font-medium">{match.deuceCap}</div>
+                  <div className="text-gray-400">Deuce Cap</div>
+                  <div className="font-medium text-white">{match.deuceCap}</div>
                 </div>
               </div>
             </div>
 
             {/* Timestamps */}
             <div>
-              <h3 className="font-semibold mb-3">Timestamps</h3>
+              <h3 className="font-semibold mb-3 text-gray-300">Timestamps</h3>
               <div className="space-y-2 text-sm">
                 <div className="flex justify-between">
-                  <span className="text-muted-foreground">Created:</span>
-                  <span>{new Date(match.createdAt).toLocaleString()}</span>
+                  <span className="text-gray-400">Created:</span>
+                  <span className="text-white">{new Date(match.createdAt).toLocaleString()}</span>
                 </div>
                 {match.startedAt && (
                   <div className="flex justify-between">
-                    <span className="text-muted-foreground">Started:</span>
-                    <span>{new Date(match.startedAt).toLocaleString()}</span>
+                    <span className="text-gray-400">Started:</span>
+                    <span className="text-white">{new Date(match.startedAt).toLocaleString()}</span>
                   </div>
                 )}
                 {match.completedAt && (
                   <div className="flex justify-between">
-                    <span className="text-muted-foreground">Completed:</span>
-                    <span>{new Date(match.completedAt).toLocaleString()}</span>
+                    <span className="text-gray-400">Completed:</span>
+                    <span className="text-white">{new Date(match.completedAt).toLocaleString()}</span>
                   </div>
                 )}
               </div>

@@ -113,21 +113,21 @@ export function BadmintonCourt({
   const PlayerBubble = ({ player, side }: { player: Position; side: "A" | "B" }) => {
     if (!player) return null
     const bgColor = side === "A"
-      ? "bg-gradient-to-br from-green-500 to-green-700"
-      : "bg-gradient-to-br from-blue-500 to-blue-700"
+      ? "bg-gradient-to-br from-emerald-500 to-emerald-700"
+      : "bg-gradient-to-br from-cyan-500 to-cyan-700"
 
     return (
       <div className="flex flex-col items-center gap-1">
         <div className="relative">
           <div
             className={`w-14 h-14 sm:w-16 sm:h-16 rounded-full ${bgColor} flex items-center justify-center text-white font-bold text-base sm:text-xl shadow-md ${
-              player.isServer ? "ring-4 ring-yellow-400 ring-offset-2" : ""
+              player.isServer ? "ring-4 ring-yellow-400 ring-offset-2 ring-offset-[#1a2a1a]" : ""
             }`}
           >
             {getInitials(player.name)}
           </div>
           {player.isServer && (
-            <span className="absolute -top-1.5 -right-1.5 text-xl">🏸</span>
+            <span className="absolute -top-1.5 -right-1.5 w-5 h-5 rounded-full bg-yellow-400 flex items-center justify-center text-[10px] font-bold text-black">S</span>
           )}
         </div>
         <span className="text-xs sm:text-sm font-medium text-white/90 max-w-[100px] sm:max-w-[120px] truncate text-center">
@@ -147,7 +147,7 @@ export function BadmintonCourt({
     label: string
   }) => (
     <div className="flex-1 flex flex-col items-center justify-center relative min-h-[120px] sm:min-h-[150px]">
-      <span className="absolute top-1.5 left-2.5 text-[10px] sm:text-xs font-medium text-white/40 uppercase">
+      <span className="absolute top-1.5 left-2.5 text-[10px] sm:text-xs font-medium text-white/30 uppercase">
         {label}
       </span>
       {player && <PlayerBubble player={player} side={side} />}
@@ -165,11 +165,11 @@ export function BadmintonCourt({
   const leftLabel = `Side ${leftSide}`
   const rightLabel = `Side ${rightSide}`
   const leftLabelClass = leftSide === "A"
-    ? "text-green-600 bg-green-50"
-    : "text-blue-600 bg-blue-50"
+    ? "text-emerald-300 bg-emerald-500/20"
+    : "text-cyan-300 bg-cyan-500/20"
   const rightLabelClass = rightSide === "A"
-    ? "text-green-600 bg-green-50"
-    : "text-blue-600 bg-blue-50"
+    ? "text-emerald-300 bg-emerald-500/20"
+    : "text-cyan-300 bg-cyan-500/20"
 
   return (
     <div className="w-full max-w-4xl mx-auto">
@@ -183,18 +183,18 @@ export function BadmintonCourt({
         </div>
 
         {/* Court */}
-        <div className="flex-1 flex rounded-lg overflow-hidden border-2 border-green-800 bg-green-700 shadow-lg">
+        <div className="flex-1 flex rounded-lg overflow-hidden border-2 border-emerald-800/60 bg-[#0f1f15] shadow-lg">
           {/* Left half */}
           <div className="flex-1 flex flex-col">
             <CourtQuadrant player={leftLeft} side={leftSide as "A" | "B"} label="L" />
-            <div className="h-px bg-white/60" />
+            <div className="h-px bg-white/20" />
             <CourtQuadrant player={leftRight} side={leftSide as "A" | "B"} label="R" />
           </div>
 
           {/* Net (vertical) */}
-          <div className="relative w-4 sm:w-5 bg-green-900/40 flex items-center justify-center">
-            <div className="absolute inset-y-0 left-1/2 border-l-2 border-dashed border-white/70" />
-            <span className="relative z-10 text-[8px] sm:text-[9px] font-bold text-white/60 bg-green-800 px-0.5 py-1 rounded [writing-mode:vertical-lr]">
+          <div className="relative w-4 sm:w-5 bg-white/5 flex items-center justify-center">
+            <div className="absolute inset-y-0 left-1/2 border-l-2 border-dashed border-white/30" />
+            <span className="relative z-10 text-[8px] sm:text-[9px] font-bold text-white/40 bg-[#0a1a10] px-0.5 py-1 rounded [writing-mode:vertical-lr]">
               NET
             </span>
           </div>
@@ -202,7 +202,7 @@ export function BadmintonCourt({
           {/* Right half */}
           <div className="flex-1 flex flex-col">
             <CourtQuadrant player={rightRight} side={rightSide as "A" | "B"} label="R" />
-            <div className="h-px bg-white/60" />
+            <div className="h-px bg-white/20" />
             <CourtQuadrant player={rightLeft} side={rightSide as "A" | "B"} label="L" />
           </div>
         </div>

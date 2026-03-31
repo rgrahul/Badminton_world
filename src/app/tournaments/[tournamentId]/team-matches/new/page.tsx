@@ -180,30 +180,30 @@ export default function NewTeamMatchPage({ params }: { params: { tournamentId: s
     formData.category === "KIDS" && !formData.genderRestriction
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-50 via-blue-50 to-green-50">
+    <div className="min-h-screen bg-[#0a0a0a]">
       <Header />
       <main className="container mx-auto px-4 py-4 sm:py-8 max-w-2xl">
-        <Card className="border-2 border-purple-200 shadow-2xl">
-          <CardHeader className="bg-gradient-to-r from-purple-50 to-blue-50">
-            <CardTitle className="text-2xl sm:text-3xl font-black bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent">
+        <Card className="border-white/10 bg-white/[0.03] shadow-2xl">
+          <CardHeader>
+            <CardTitle className="text-2xl sm:text-3xl font-black text-white">
               Create Team Match
             </CardTitle>
-            <CardDescription className="text-sm sm:text-base text-gray-600 font-medium">
+            <CardDescription className="text-sm sm:text-base text-gray-400 font-medium">
               Set up a structured match between two teams
             </CardDescription>
           </CardHeader>
           <CardContent className="pt-6">
             <form onSubmit={handleSubmit} className="space-y-6">
               {error && (
-                <div className="rounded-lg bg-red-50 border-2 border-red-200 p-4 text-sm text-red-700 font-semibold">
+                <div className="rounded-lg bg-red-500/20 border border-red-500/20 p-4 text-sm text-red-300 font-semibold">
                   {error}
                 </div>
               )}
 
               {/* Match Name */}
-              <div className="space-y-2 bg-gradient-to-br from-yellow-50 to-yellow-100 p-4 rounded-lg border border-yellow-200">
-                <Label htmlFor="name" className="text-yellow-800 font-bold">
-                  Match Name <span className="text-red-500">*</span>
+              <div className="space-y-2 bg-white/5 border border-white/10 p-4 rounded-lg">
+                <Label htmlFor="name" className="text-gray-300 font-bold">
+                  Match Name <span className="text-red-400">*</span>
                 </Label>
                 <Input
                   id="name"
@@ -212,23 +212,23 @@ export default function NewTeamMatchPage({ params }: { params: { tournamentId: s
                   onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                   required
                   disabled={isLoading}
-                  className="border-2 focus:border-yellow-500"
+                  className="bg-white/5 border-white/10 text-white placeholder:text-gray-500"
                 />
               </div>
 
               {/* Select Teams */}
-              <div className="space-y-4 bg-gradient-to-br from-green-50 to-green-100 p-4 rounded-lg border-2 border-green-200">
-                <h3 className="font-bold text-green-800 text-lg">Select Teams</h3>
+              <div className="space-y-4 bg-white/5 border border-white/10 p-4 rounded-lg">
+                <h3 className="font-bold text-white text-lg">Select Teams</h3>
                 {teamsLoading ? (
-                  <p className="text-sm text-muted-foreground">Loading teams...</p>
+                  <p className="text-sm text-gray-400">Loading teams...</p>
                 ) : teams.length < 2 ? (
-                  <p className="text-sm text-red-600">
+                  <p className="text-sm text-red-300">
                     Need at least 2 teams in this tournament to create a team match.
                   </p>
                 ) : (
                   <div className="grid grid-cols-2 gap-4">
                     <div className="space-y-2">
-                      <Label htmlFor="teamA" className="text-green-700 font-semibold">
+                      <Label htmlFor="teamA" className="text-gray-300 font-semibold">
                         Team A
                       </Label>
                       <select
@@ -238,7 +238,7 @@ export default function NewTeamMatchPage({ params }: { params: { tournamentId: s
                           setFormData({ ...formData, teamAId: e.target.value })
                         }
                         disabled={isLoading}
-                        className="w-full rounded-md border-2 border-gray-200 px-3 py-2 text-sm focus:border-green-500 focus:outline-none"
+                        className="w-full rounded-md bg-white/5 border border-white/10 px-3 py-2 text-sm text-white focus:border-emerald-500 focus:outline-none"
                       >
                         <option value="">Select team...</option>
                         {teams.map((t) => (
@@ -249,7 +249,7 @@ export default function NewTeamMatchPage({ params }: { params: { tournamentId: s
                       </select>
                     </div>
                     <div className="space-y-2">
-                      <Label htmlFor="teamB" className="text-green-700 font-semibold">
+                      <Label htmlFor="teamB" className="text-gray-300 font-semibold">
                         Team B
                       </Label>
                       <select
@@ -259,7 +259,7 @@ export default function NewTeamMatchPage({ params }: { params: { tournamentId: s
                           setFormData({ ...formData, teamBId: e.target.value })
                         }
                         disabled={isLoading}
-                        className="w-full rounded-md border-2 border-gray-200 px-3 py-2 text-sm focus:border-green-500 focus:outline-none"
+                        className="w-full rounded-md bg-white/5 border border-white/10 px-3 py-2 text-sm text-white focus:border-emerald-500 focus:outline-none"
                       >
                         <option value="">Select team...</option>
                         {teams.map((t) => (
@@ -274,16 +274,16 @@ export default function NewTeamMatchPage({ params }: { params: { tournamentId: s
               </div>
 
               {/* Category */}
-              <div className="space-y-4 bg-gradient-to-br from-blue-50 to-blue-100 p-4 rounded-lg border-2 border-blue-200">
-                <h3 className="font-bold text-blue-800 text-lg">Category</h3>
+              <div className="space-y-4 bg-white/5 border border-white/10 p-4 rounded-lg">
+                <h3 className="font-bold text-white text-lg">Category</h3>
                 <div className="flex gap-2">
                   <button
                     type="button"
                     onClick={() => handleCategoryChange("ADULT")}
                     className={`flex-1 py-2 px-4 rounded-lg font-semibold text-sm transition-all ${
                       formData.category === "ADULT"
-                        ? "bg-blue-600 text-white shadow-md"
-                        : "bg-white text-blue-700 border-2 border-blue-300 hover:bg-blue-50"
+                        ? "bg-cyan-500/20 text-cyan-300 border border-cyan-500/30 shadow-md"
+                        : "bg-white/5 text-gray-300 border border-white/10 hover:bg-white/10"
                     }`}
                   >
                     Adult
@@ -293,8 +293,8 @@ export default function NewTeamMatchPage({ params }: { params: { tournamentId: s
                     onClick={() => handleCategoryChange("KIDS")}
                     className={`flex-1 py-2 px-4 rounded-lg font-semibold text-sm transition-all ${
                       formData.category === "KIDS"
-                        ? "bg-amber-600 text-white shadow-md"
-                        : "bg-white text-amber-700 border-2 border-amber-300 hover:bg-amber-50"
+                        ? "bg-amber-500/20 text-amber-300 border border-amber-500/30 shadow-md"
+                        : "bg-white/5 text-gray-300 border border-white/10 hover:bg-white/10"
                     }`}
                   >
                     Kids
@@ -322,7 +322,7 @@ export default function NewTeamMatchPage({ params }: { params: { tournamentId: s
                         }
                         className="w-4 h-4"
                       />
-                      <span className="text-sm font-medium text-blue-700">
+                      <span className="text-sm font-medium text-gray-300">
                         Enable gender restriction (separate boys/girls fixtures)
                       </span>
                     </label>
@@ -331,16 +331,16 @@ export default function NewTeamMatchPage({ params }: { params: { tournamentId: s
               </div>
 
               {/* Format Builder */}
-              <div className="space-y-4 bg-gradient-to-br from-purple-50 to-purple-100 p-4 rounded-lg border-2 border-purple-200">
-                <h3 className="font-bold text-purple-800 text-lg">Format Builder</h3>
-                <p className="text-sm text-purple-600">
+              <div className="space-y-4 bg-white/5 border border-white/10 p-4 rounded-lg">
+                <h3 className="font-bold text-white text-lg">Format Builder</h3>
+                <p className="text-sm text-gray-400">
                   Set the number of each fixture type for this team match.
                 </p>
 
                 {showAdultFormats && (
                   <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
                     <div className="space-y-1">
-                      <Label className="text-purple-700 font-semibold text-xs">
+                      <Label className="text-gray-300 font-semibold text-xs">
                         Men&apos;s Doubles
                       </Label>
                       <Input
@@ -354,11 +354,11 @@ export default function NewTeamMatchPage({ params }: { params: { tournamentId: s
                           })
                         }
                         disabled={isLoading}
-                        className="border-2 focus:border-purple-500"
+                        className="bg-white/5 border-white/10 text-white placeholder:text-gray-500"
                       />
                     </div>
                     <div className="space-y-1">
-                      <Label className="text-purple-700 font-semibold text-xs">
+                      <Label className="text-gray-300 font-semibold text-xs">
                         Women&apos;s Doubles
                       </Label>
                       <Input
@@ -372,11 +372,11 @@ export default function NewTeamMatchPage({ params }: { params: { tournamentId: s
                           })
                         }
                         disabled={isLoading}
-                        className="border-2 focus:border-purple-500"
+                        className="bg-white/5 border-white/10 text-white placeholder:text-gray-500"
                       />
                     </div>
                     <div className="space-y-1">
-                      <Label className="text-purple-700 font-semibold text-xs">
+                      <Label className="text-gray-300 font-semibold text-xs">
                         Mixed Doubles
                       </Label>
                       <Input
@@ -390,11 +390,11 @@ export default function NewTeamMatchPage({ params }: { params: { tournamentId: s
                           })
                         }
                         disabled={isLoading}
-                        className="border-2 focus:border-purple-500"
+                        className="bg-white/5 border-white/10 text-white placeholder:text-gray-500"
                       />
                     </div>
                     <div className="space-y-1">
-                      <Label className="text-purple-700 font-semibold text-xs">
+                      <Label className="text-gray-300 font-semibold text-xs">
                         Men&apos;s Singles
                       </Label>
                       <Input
@@ -408,11 +408,11 @@ export default function NewTeamMatchPage({ params }: { params: { tournamentId: s
                           })
                         }
                         disabled={isLoading}
-                        className="border-2 focus:border-purple-500"
+                        className="bg-white/5 border-white/10 text-white placeholder:text-gray-500"
                       />
                     </div>
                     <div className="space-y-1">
-                      <Label className="text-purple-700 font-semibold text-xs">
+                      <Label className="text-gray-300 font-semibold text-xs">
                         Women&apos;s Singles
                       </Label>
                       <Input
@@ -426,7 +426,7 @@ export default function NewTeamMatchPage({ params }: { params: { tournamentId: s
                           })
                         }
                         disabled={isLoading}
-                        className="border-2 focus:border-purple-500"
+                        className="bg-white/5 border-white/10 text-white placeholder:text-gray-500"
                       />
                     </div>
                   </div>
@@ -435,7 +435,7 @@ export default function NewTeamMatchPage({ params }: { params: { tournamentId: s
                 {showKidsFormats && (
                   <div className="grid grid-cols-2 gap-3">
                     <div className="space-y-1">
-                      <Label className="text-purple-700 font-semibold text-xs">
+                      <Label className="text-gray-300 font-semibold text-xs">
                         Kids Singles
                       </Label>
                       <Input
@@ -449,11 +449,11 @@ export default function NewTeamMatchPage({ params }: { params: { tournamentId: s
                           })
                         }
                         disabled={isLoading}
-                        className="border-2 focus:border-purple-500"
+                        className="bg-white/5 border-white/10 text-white placeholder:text-gray-500"
                       />
                     </div>
                     <div className="space-y-1">
-                      <Label className="text-purple-700 font-semibold text-xs">
+                      <Label className="text-gray-300 font-semibold text-xs">
                         Kids Doubles
                       </Label>
                       <Input
@@ -467,7 +467,7 @@ export default function NewTeamMatchPage({ params }: { params: { tournamentId: s
                           })
                         }
                         disabled={isLoading}
-                        className="border-2 focus:border-purple-500"
+                        className="bg-white/5 border-white/10 text-white placeholder:text-gray-500"
                       />
                     </div>
                   </div>
@@ -475,7 +475,7 @@ export default function NewTeamMatchPage({ params }: { params: { tournamentId: s
               </div>
 
               {/* Player Reuse */}
-              <div className="bg-gradient-to-br from-teal-50 to-teal-100 p-4 rounded-lg border-2 border-teal-200">
+              <div className="bg-white/5 border border-white/10 p-4 rounded-lg">
                 <label className="flex items-center gap-3 cursor-pointer">
                   <input
                     type="checkbox"
@@ -487,10 +487,10 @@ export default function NewTeamMatchPage({ params }: { params: { tournamentId: s
                     className="w-4 h-4"
                   />
                   <div>
-                    <span className="text-sm font-bold text-teal-800">
+                    <span className="text-sm font-bold text-white">
                       Allow players to play in multiple fixtures
                     </span>
-                    <p className="text-xs text-teal-600">
+                    <p className="text-xs text-gray-400">
                       When enabled, the same player can be assigned to more than one fixture in this team match.
                     </p>
                   </div>
@@ -498,14 +498,14 @@ export default function NewTeamMatchPage({ params }: { params: { tournamentId: s
               </div>
 
               {/* Scoring Format */}
-              <div className="space-y-4 bg-gradient-to-br from-orange-50 to-orange-100 p-4 rounded-lg border-2 border-orange-200">
-                <h3 className="font-bold text-orange-800 text-lg">Scoring Format</h3>
-                <p className="text-sm text-orange-600">
+              <div className="space-y-4 bg-white/5 border border-white/10 p-4 rounded-lg">
+                <h3 className="font-bold text-white text-lg">Scoring Format</h3>
+                <p className="text-sm text-gray-400">
                   Applied to all fixture matches in this team match.
                 </p>
                 <div className="grid grid-cols-3 gap-3">
                   <div className="space-y-1">
-                    <Label className="text-orange-700 font-semibold text-xs">
+                    <Label className="text-gray-300 font-semibold text-xs">
                       Best of (Sets)
                     </Label>
                     <select
@@ -514,7 +514,7 @@ export default function NewTeamMatchPage({ params }: { params: { tournamentId: s
                         setFormData({ ...formData, setsCount: parseInt(e.target.value) })
                       }
                       disabled={isLoading}
-                      className="w-full rounded-md border-2 border-gray-200 px-3 py-2 text-sm focus:border-orange-500 focus:outline-none"
+                      className="w-full rounded-md bg-white/5 border border-white/10 px-3 py-2 text-sm text-white focus:border-emerald-500 focus:outline-none"
                     >
                       <option value={1}>1 Set</option>
                       <option value={3}>3 Sets</option>
@@ -522,7 +522,7 @@ export default function NewTeamMatchPage({ params }: { params: { tournamentId: s
                     </select>
                   </div>
                   <div className="space-y-1">
-                    <Label className="text-orange-700 font-semibold text-xs">
+                    <Label className="text-gray-300 font-semibold text-xs">
                       Points to Win
                     </Label>
                     <Input
@@ -537,11 +537,11 @@ export default function NewTeamMatchPage({ params }: { params: { tournamentId: s
                         })
                       }
                       disabled={isLoading}
-                      className="border-2 focus:border-orange-500"
+                      className="bg-white/5 border-white/10 text-white placeholder:text-gray-500"
                     />
                   </div>
                   <div className="space-y-1">
-                    <Label className="text-orange-700 font-semibold text-xs">
+                    <Label className="text-gray-300 font-semibold text-xs">
                       Deuce Cap
                     </Label>
                     <Input
@@ -556,39 +556,39 @@ export default function NewTeamMatchPage({ params }: { params: { tournamentId: s
                         })
                       }
                       disabled={isLoading}
-                      className="border-2 focus:border-orange-500"
+                      className="bg-white/5 border-white/10 text-white placeholder:text-gray-500"
                     />
                   </div>
                 </div>
               </div>
 
               {/* Live Preview */}
-              <div className="space-y-3 bg-gradient-to-br from-gray-50 to-gray-100 p-4 rounded-lg border-2 border-gray-200">
-                <h3 className="font-bold text-gray-800 text-lg">Preview</h3>
+              <div className="space-y-3 bg-white/5 border border-white/10 p-4 rounded-lg">
+                <h3 className="font-bold text-white text-lg">Preview</h3>
                 <div className="grid grid-cols-2 gap-3 text-sm">
-                  <div className="bg-white rounded-lg p-3 border">
-                    <div className="text-gray-500 text-xs font-medium">Total Fixtures</div>
-                    <div className="text-2xl font-bold text-gray-800">{totalFixtures}</div>
+                  <div className="bg-white/5 rounded-lg p-3 border border-white/10">
+                    <div className="text-gray-400 text-xs font-medium">Total Fixtures</div>
+                    <div className="text-2xl font-bold text-white">{totalFixtures}</div>
                   </div>
-                  <div className="bg-white rounded-lg p-3 border">
-                    <div className="text-gray-500 text-xs font-medium">Players per Team</div>
-                    <div className="text-2xl font-bold text-gray-800">{breakdown.total}</div>
+                  <div className="bg-white/5 rounded-lg p-3 border border-white/10">
+                    <div className="text-gray-400 text-xs font-medium">Players per Team</div>
+                    <div className="text-2xl font-bold text-white">{breakdown.total}</div>
                   </div>
                 </div>
                 {breakdown.total > 0 && (
                   <div className="flex flex-wrap gap-2">
                     {breakdown.male > 0 && (
-                      <span className="inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium bg-blue-100 text-blue-800">
+                      <span className="inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium bg-cyan-500/20 text-cyan-300">
                         {breakdown.male} Male
                       </span>
                     )}
                     {breakdown.female > 0 && (
-                      <span className="inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium bg-pink-100 text-pink-800">
+                      <span className="inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium bg-pink-500/20 text-pink-300">
                         {breakdown.female} Female
                       </span>
                     )}
                     {breakdown.kids > 0 && (
-                      <span className="inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium bg-amber-100 text-amber-800">
+                      <span className="inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium bg-amber-500/20 text-amber-300">
                         {breakdown.kids} Kid
                       </span>
                     )}
@@ -603,14 +603,14 @@ export default function NewTeamMatchPage({ params }: { params: { tournamentId: s
                   variant="outline"
                   onClick={() => router.back()}
                   disabled={isLoading}
-                  className="flex-1 border-2 hover:bg-gray-50 font-semibold"
+                  className="flex-1 border border-white/10 hover:bg-white/5 text-gray-300 font-semibold"
                 >
                   Cancel
                 </Button>
                 <Button
                   type="submit"
                   disabled={isLoading || totalFixtures === 0}
-                  className="flex-1 bg-gradient-to-r from-purple-600 to-purple-700 hover:from-purple-700 hover:to-purple-800 text-white shadow-lg hover:shadow-xl transition-all font-bold"
+                  className="flex-1 bg-gradient-to-r from-emerald-500 to-cyan-500 text-black font-semibold hover:from-emerald-400 hover:to-cyan-400 shadow-lg hover:shadow-xl transition-all"
                 >
                   {isLoading ? "Creating..." : "Create Team Match"}
                 </Button>

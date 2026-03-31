@@ -119,35 +119,35 @@ export default function EditMatchPage({ params }: { params: { matchId: string } 
 
   if (isFetching) {
     return (
-      <div className="min-h-screen bg-background">
+      <div className="min-h-screen bg-[#0a0a0a]">
         <Header />
         <main className="container mx-auto px-4 py-8 max-w-2xl">
-          <div className="text-center">Loading match...</div>
+          <div className="text-center text-gray-400">Loading match...</div>
         </main>
       </div>
     )
   }
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-[#0a0a0a]">
       <Header />
       <main className="container mx-auto px-4 py-8 max-w-2xl">
-        <Card>
+        <Card className="border-white/10 bg-white/[0.03]">
           <CardHeader>
-            <CardTitle>Edit Match</CardTitle>
-            <CardDescription>Update match details</CardDescription>
+            <CardTitle className="text-white">Edit Match</CardTitle>
+            <CardDescription className="text-gray-400">Update match details</CardDescription>
           </CardHeader>
           <CardContent>
             <form onSubmit={handleSubmit} className="space-y-6">
               {error && (
-                <div className="rounded-md bg-destructive/15 p-3 text-sm text-destructive">
+                <div className="rounded-md bg-red-500/10 border border-red-500/20 p-3 text-sm text-red-400">
                   {error}
                 </div>
               )}
 
               {/* Match Name */}
               <div className="space-y-2">
-                <Label htmlFor="name">Match Name</Label>
+                <Label htmlFor="name" className="text-gray-300">Match Name</Label>
                 <Input
                   id="name"
                   placeholder="e.g., Friendly Match, Tournament Round 1"
@@ -155,18 +155,19 @@ export default function EditMatchPage({ params }: { params: { matchId: string } 
                   onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                   required
                   disabled={isLoading}
+                  className="bg-white/5 border-white/10 text-white placeholder:text-gray-500"
                 />
               </div>
 
               {/* Match Type */}
               <div className="space-y-2">
-                <Label htmlFor="type">Match Type</Label>
+                <Label htmlFor="type" className="text-gray-300">Match Type</Label>
                 <Select
                   value={formData.type}
                   onValueChange={(value) => setFormData({ ...formData, type: value })}
                   disabled={isLoading}
                 >
-                  <SelectTrigger>
+                  <SelectTrigger className="bg-white/5 border-white/10 text-white">
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
@@ -178,9 +179,9 @@ export default function EditMatchPage({ params }: { params: { matchId: string } 
 
               {/* Team A Players */}
               <div className="space-y-4">
-                <h3 className="font-semibold">Team A Players</h3>
+                <h3 className="font-semibold text-gray-300">Team A Players</h3>
                 <div className="space-y-2">
-                  <Label htmlFor="sideAPlayer1">Player 1</Label>
+                  <Label htmlFor="sideAPlayer1" className="text-gray-300">Player 1</Label>
                   <PlayerSelect
                     value={formData.sideAPlayer1}
                     onChange={(value) => setFormData({ ...formData, sideAPlayer1: value })}
@@ -190,7 +191,7 @@ export default function EditMatchPage({ params }: { params: { matchId: string } 
                 </div>
                 {formData.type === "DOUBLES" && (
                   <div className="space-y-2">
-                    <Label htmlFor="sideAPlayer2">Player 2</Label>
+                    <Label htmlFor="sideAPlayer2" className="text-gray-300">Player 2</Label>
                     <PlayerSelect
                       value={formData.sideAPlayer2}
                       onChange={(value) => setFormData({ ...formData, sideAPlayer2: value })}
@@ -203,9 +204,9 @@ export default function EditMatchPage({ params }: { params: { matchId: string } 
 
               {/* Team B Players */}
               <div className="space-y-4">
-                <h3 className="font-semibold">Team B Players</h3>
+                <h3 className="font-semibold text-gray-300">Team B Players</h3>
                 <div className="space-y-2">
-                  <Label htmlFor="sideBPlayer1">Player 1</Label>
+                  <Label htmlFor="sideBPlayer1" className="text-gray-300">Player 1</Label>
                   <PlayerSelect
                     value={formData.sideBPlayer1}
                     onChange={(value) => setFormData({ ...formData, sideBPlayer1: value })}
@@ -215,7 +216,7 @@ export default function EditMatchPage({ params }: { params: { matchId: string } 
                 </div>
                 {formData.type === "DOUBLES" && (
                   <div className="space-y-2">
-                    <Label htmlFor="sideBPlayer2">Player 2</Label>
+                    <Label htmlFor="sideBPlayer2" className="text-gray-300">Player 2</Label>
                     <PlayerSelect
                       value={formData.sideBPlayer2}
                       onChange={(value) => setFormData({ ...formData, sideBPlayer2: value })}
@@ -228,10 +229,10 @@ export default function EditMatchPage({ params }: { params: { matchId: string } 
 
               {/* Match Configuration */}
               <div className="space-y-4">
-                <h3 className="font-semibold">Match Configuration</h3>
+                <h3 className="font-semibold text-gray-300">Match Configuration</h3>
                 <div className="grid grid-cols-3 gap-4">
                   <div className="space-y-2">
-                    <Label htmlFor="setsCount">Sets</Label>
+                    <Label htmlFor="setsCount" className="text-gray-400">Sets</Label>
                     <Select
                       value={formData.setsCount.toString()}
                       onValueChange={(value) =>
@@ -239,7 +240,7 @@ export default function EditMatchPage({ params }: { params: { matchId: string } 
                       }
                       disabled={isLoading}
                     >
-                      <SelectTrigger>
+                      <SelectTrigger className="bg-white/5 border-white/10 text-white">
                         <SelectValue />
                       </SelectTrigger>
                       <SelectContent>
@@ -249,7 +250,7 @@ export default function EditMatchPage({ params }: { params: { matchId: string } 
                     </Select>
                   </div>
                   <div className="space-y-2">
-                    <Label htmlFor="pointsToWin">Points to Win</Label>
+                    <Label htmlFor="pointsToWin" className="text-gray-400">Points to Win</Label>
                     <Input
                       id="pointsToWin"
                       type="number"
@@ -259,10 +260,11 @@ export default function EditMatchPage({ params }: { params: { matchId: string } 
                         setFormData({ ...formData, pointsToWin: parseInt(e.target.value) })
                       }
                       disabled={isLoading}
+                      className="bg-white/5 border-white/10 text-white placeholder:text-gray-500"
                     />
                   </div>
                   <div className="space-y-2">
-                    <Label htmlFor="deuceCap">Deuce Cap</Label>
+                    <Label htmlFor="deuceCap" className="text-gray-400">Deuce Cap</Label>
                     <Input
                       id="deuceCap"
                       type="number"
@@ -272,6 +274,7 @@ export default function EditMatchPage({ params }: { params: { matchId: string } 
                         setFormData({ ...formData, deuceCap: parseInt(e.target.value) })
                       }
                       disabled={isLoading}
+                      className="bg-white/5 border-white/10 text-white placeholder:text-gray-500"
                     />
                   </div>
                 </div>
@@ -284,11 +287,11 @@ export default function EditMatchPage({ params }: { params: { matchId: string } 
                   variant="outline"
                   onClick={() => router.push(`/matches/${params.matchId}`)}
                   disabled={isLoading}
-                  className="flex-1"
+                  className="flex-1 border border-white/10 hover:bg-white/5 text-gray-300"
                 >
                   Cancel
                 </Button>
-                <Button type="submit" disabled={isLoading} className="flex-1">
+                <Button type="submit" disabled={isLoading} className="flex-1 bg-gradient-to-r from-emerald-500 to-cyan-500 text-black font-semibold hover:from-emerald-400 hover:to-cyan-400">
                   {isLoading ? "Updating..." : "Update Match"}
                 </Button>
               </div>

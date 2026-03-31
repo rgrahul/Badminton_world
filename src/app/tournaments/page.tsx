@@ -53,17 +53,16 @@ export default function TournamentsPage() {
 
   const getStatusBadge = (status: string) => {
     const configs = {
-      UPCOMING: { bg: "bg-gradient-to-r from-blue-500 to-blue-600", icon: "📅" },
-      ONGOING: { bg: "bg-gradient-to-r from-green-500 to-green-600", icon: "▶️" },
-      COMPLETED: { bg: "bg-gradient-to-r from-gray-500 to-gray-600", icon: "✅" },
-      CANCELLED: { bg: "bg-gradient-to-r from-red-500 to-red-600", icon: "❌" },
+      UPCOMING: { bg: "bg-cyan-500/20 text-cyan-300" },
+      ONGOING: { bg: "bg-emerald-500/20 text-emerald-300" },
+      COMPLETED: { bg: "bg-gray-500/20 text-gray-300" },
+      CANCELLED: { bg: "bg-red-500/20 text-red-300" },
     }
     const config = configs[status as keyof typeof configs]
     return (
       <span
-        className={`inline-flex items-center gap-1 rounded-full px-3 py-1 text-xs font-bold text-white shadow-md ${config.bg}`}
+        className={`inline-flex items-center gap-1 rounded-full px-3 py-1 text-xs font-bold ${config.bg}`}
       >
-        <span>{config.icon}</span>
         {status}
       </span>
     )
@@ -78,21 +77,20 @@ export default function TournamentsPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-green-50 via-blue-50 to-green-50">
+    <div className="min-h-screen bg-[#0a0a0a]">
       <Header />
       <main className="container mx-auto px-4 py-8">
         <div className="mb-8 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
           <div>
-            <h1 className="text-3xl sm:text-4xl font-black bg-gradient-to-r from-green-600 to-blue-600 bg-clip-text text-transparent flex items-center gap-2 sm:gap-3">
-              <span className="text-4xl sm:text-5xl">🏆</span>
+            <h1 className="text-3xl sm:text-4xl font-black text-white">
               Tournaments
             </h1>
-            <p className="text-gray-600 mt-2 text-base sm:text-lg">Manage your badminton tournaments</p>
+            <p className="text-gray-400 mt-2 text-base sm:text-lg">Manage your badminton tournaments</p>
           </div>
           {canManage && (
             <Link href="/tournaments/new" className="w-full sm:w-auto">
-              <Button size="lg" className="w-full sm:w-auto bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 text-white shadow-lg hover:shadow-xl transition-all">
-                ➕ <span className="hidden sm:inline">Create New Tournament</span><span className="sm:hidden">New Tournament</span>
+              <Button size="lg" className="w-full sm:w-auto bg-gradient-to-r from-emerald-500 to-cyan-500 text-black font-semibold hover:from-emerald-400 hover:to-cyan-400 shadow-lg hover:shadow-xl transition-all">
+                <span className="hidden sm:inline">Create New Tournament</span><span className="sm:hidden">New Tournament</span>
               </Button>
             </Link>
           )}
@@ -102,31 +100,31 @@ export default function TournamentsPage() {
         <div className="mb-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
           <div className="flex gap-2 flex-wrap">
             {[
-              { value: "all", label: "All", icon: "📋" },
-              { value: "UPCOMING", label: "Upcoming", icon: "📅" },
-              { value: "ONGOING", label: "Ongoing", icon: "▶️" },
-              { value: "COMPLETED", label: "Completed", icon: "✅" },
-              { value: "CANCELLED", label: "Cancelled", icon: "❌" }
+              { value: "all", label: "All" },
+              { value: "UPCOMING", label: "Upcoming" },
+              { value: "ONGOING", label: "Ongoing" },
+              { value: "COMPLETED", label: "Completed" },
+              { value: "CANCELLED", label: "Cancelled" }
             ].map((status) => (
               <Button
                 key={status.value}
                 variant={filter === status.value ? "default" : "outline"}
                 onClick={() => setFilter(status.value)}
                 size="sm"
-                className={filter === status.value ? "bg-gradient-to-r from-green-600 to-green-700 shadow-md" : "border-2 hover:bg-gray-50"}
+                className={filter === status.value ? "bg-emerald-500/20 text-emerald-300 border border-emerald-500/20" : "bg-transparent border border-white/10 text-gray-400 hover:text-white hover:bg-white/5"}
               >
-                <span className="mr-1">{status.icon}</span>
                 <span className="hidden sm:inline">{status.label}</span>
               </Button>
             ))}
           </div>
 
           {/* View Mode Toggle */}
-          <div className="flex gap-2">
+          <div className="bg-white/5 rounded-lg p-1 border border-white/10 flex gap-2">
             <Button
-              variant={viewMode === "grid" ? "default" : "outline"}
+              variant="ghost"
               size="sm"
               onClick={() => setViewMode("grid")}
+              className={viewMode === "grid" ? "bg-white/10 text-white" : "text-gray-400 hover:text-white hover:bg-white/5"}
             >
               <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                 <rect x="3" y="3" width="7" height="7"></rect>
@@ -136,9 +134,10 @@ export default function TournamentsPage() {
               </svg>
             </Button>
             <Button
-              variant={viewMode === "list" ? "default" : "outline"}
+              variant="ghost"
               size="sm"
               onClick={() => setViewMode("list")}
+              className={viewMode === "list" ? "bg-white/10 text-white" : "text-gray-400 hover:text-white hover:bg-white/5"}
             >
               <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                 <line x1="8" y1="6" x2="21" y2="6"></line>
@@ -167,64 +166,63 @@ export default function TournamentsPage() {
         ) : viewMode === "grid" ? (
           <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
             {tournaments.map((tournament) => (
-              <Card key={tournament.id} className="hover:shadow-2xl transition-all hover:scale-105 bg-white border-2 border-green-100">
-                <CardHeader className="bg-gradient-to-r from-green-50 to-blue-50 pb-4">
+              <Card key={tournament.id} className="hover:shadow-2xl transition-all hover:scale-105 border-white/10 bg-white/[0.03] hover:border-white/20">
+                <CardHeader className="pb-4">
                   <div className="flex items-start justify-between">
-                    <CardTitle className="text-lg font-bold text-gray-800">{tournament.name}</CardTitle>
+                    <CardTitle className="text-lg font-bold text-white">{tournament.name}</CardTitle>
                     {getStatusBadge(tournament.status)}
                   </div>
-                  <CardDescription className="flex items-center gap-1 text-gray-600 font-semibold">
-                    <span>📅</span>
+                  <CardDescription className="flex items-center gap-1 text-gray-400 font-semibold">
                     {formatDate(tournament.dateFrom)} - {formatDate(tournament.dateTo)}
                   </CardDescription>
                 </CardHeader>
                 <CardContent>
                   <div className="space-y-4">
                     {/* Details */}
-                    <div className="space-y-2 text-sm bg-gradient-to-br from-gray-50 to-gray-100 p-3 rounded-lg border border-gray-200">
+                    <div className="space-y-2 text-sm bg-white/5 p-3 rounded-lg border border-white/10">
                       {tournament.venue && (
                         <div className="flex justify-between items-center">
-                          <span className="text-gray-600 flex items-center gap-1">
-                            <span>📍</span> Venue:
+                          <span className="text-gray-400 flex items-center gap-1">
+                            Venue:
                           </span>
-                          <span className="font-bold text-gray-800">{tournament.venue}</span>
+                          <span className="font-bold text-white">{tournament.venue}</span>
                         </div>
                       )}
                       {tournament.city && (
                         <div className="flex justify-between items-center">
-                          <span className="text-gray-600 flex items-center gap-1">
-                            <span>🌆</span> City:
+                          <span className="text-gray-400 flex items-center gap-1">
+                            City:
                           </span>
-                          <span className="font-bold text-gray-800">{tournament.city}</span>
+                          <span className="font-bold text-white">{tournament.city}</span>
                         </div>
                       )}
                       {tournament.category && (
                         <div className="flex justify-between items-center">
-                          <span className="text-gray-600 flex items-center gap-1">
-                            <span>🏅</span> Category:
+                          <span className="text-gray-400 flex items-center gap-1">
+                            Category:
                           </span>
-                          <span className="font-bold text-gray-800">{tournament.category}</span>
+                          <span className="font-bold text-white">{tournament.category}</span>
                         </div>
                       )}
                       <div className="flex justify-between items-center">
-                        <span className="text-gray-600 flex items-center gap-1">
-                          <span>🎯</span> Matches:
+                        <span className="text-gray-400 flex items-center gap-1">
+                          Matches:
                         </span>
-                        <span className="font-black text-green-600 text-lg">{tournament._count.matches}</span>
+                        <span className="font-black text-emerald-400 text-lg">{tournament._count.matches}</span>
                       </div>
                       <div className="flex justify-between items-center">
-                        <span className="text-gray-600 flex items-center gap-1">
-                          <span>👤</span> Organizer:
+                        <span className="text-gray-400 flex items-center gap-1">
+                          Organizer:
                         </span>
-                        <span className="font-bold text-gray-800">{tournament.organizerName}</span>
+                        <span className="font-bold text-white">{tournament.organizerName}</span>
                       </div>
                     </div>
 
                     {/* Actions */}
                     <div className="pt-2">
                       <Link href={`/tournaments/${tournament.id}`} className="block">
-                        <Button variant="outline" className="w-full border-2 hover:bg-gray-50 font-semibold">
-                          👁️ View Details
+                        <Button variant="outline" className="w-full border border-white/10 hover:bg-white/5 text-gray-300 font-semibold">
+                          View Details
                         </Button>
                       </Link>
                     </div>
@@ -236,52 +234,46 @@ export default function TournamentsPage() {
         ) : (
           <div className="space-y-3">
             {tournaments.map((tournament) => (
-              <Card key={tournament.id} className="hover:shadow-xl transition-all hover:scale-[1.02] bg-white border-2 border-green-100">
+              <Card key={tournament.id} className="hover:shadow-xl transition-all hover:scale-[1.02] border-white/10 bg-white/[0.03] hover:border-white/20">
                 <CardContent className="p-4">
                   {/* Mobile Layout */}
                   <div className="block md:hidden space-y-3">
                     <div className="flex items-center gap-3 flex-wrap">
-                      <h3 className="font-bold text-gray-800 text-lg flex-1">{tournament.name}</h3>
+                      <h3 className="font-bold text-white text-lg flex-1">{tournament.name}</h3>
                       {getStatusBadge(tournament.status)}
                     </div>
-                    <div className="text-sm font-semibold text-gray-600 flex items-center gap-1">
-                      <span>📅</span>
+                    <div className="text-sm font-semibold text-gray-400 flex items-center gap-1">
                       {formatDate(tournament.dateFrom)} - {formatDate(tournament.dateTo)}
                     </div>
                     <div className="flex flex-wrap gap-2 text-sm">
                       {tournament.venue && (
-                        <span className="flex items-center gap-1 bg-blue-50 px-2 py-1 rounded border border-blue-200">
-                          <span>📍</span>
-                          <span className="font-semibold text-blue-700">{tournament.venue}</span>
+                        <span className="flex items-center gap-1 bg-cyan-500/10 px-2 py-1 rounded border border-cyan-500/20">
+                          <span className="font-semibold text-cyan-300">{tournament.venue}</span>
                         </span>
                       )}
                       {tournament.city && (
-                        <span className="flex items-center gap-1 bg-green-50 px-2 py-1 rounded border border-green-200">
-                          <span>🌆</span>
-                          <span className="font-semibold text-green-700">{tournament.city}</span>
+                        <span className="flex items-center gap-1 bg-emerald-500/10 px-2 py-1 rounded border border-emerald-500/20">
+                          <span className="font-semibold text-emerald-300">{tournament.city}</span>
                         </span>
                       )}
                       {tournament.category && (
-                        <span className="flex items-center gap-1 bg-purple-50 px-2 py-1 rounded border border-purple-200">
-                          <span>🏅</span>
-                          <span className="font-semibold text-purple-700">{tournament.category}</span>
+                        <span className="flex items-center gap-1 bg-purple-500/10 px-2 py-1 rounded border border-purple-500/20">
+                          <span className="font-semibold text-purple-300">{tournament.category}</span>
                         </span>
                       )}
-                      <span className="flex items-center gap-1 bg-orange-50 px-2 py-1 rounded border border-orange-200">
-                        <span>🎯</span>
-                        <span className="font-black text-orange-700">{tournament._count.matches} matches</span>
+                      <span className="flex items-center gap-1 bg-amber-500/10 px-2 py-1 rounded border border-amber-500/20">
+                        <span className="font-black text-amber-300">{tournament._count.matches} matches</span>
                       </span>
                     </div>
-                    <div className="text-sm bg-gradient-to-br from-gray-50 to-gray-100 px-3 py-2 rounded-lg border border-gray-200">
-                      <div className="text-gray-600 text-xs font-bold flex items-center gap-1">
-                        <span>👤</span>
+                    <div className="text-sm bg-white/5 px-3 py-2 rounded-lg border border-white/10">
+                      <div className="text-gray-400 text-xs font-bold flex items-center gap-1">
                         Organizer:
                       </div>
-                      <div className="font-bold text-gray-800">{tournament.organizerName}</div>
+                      <div className="font-bold text-white">{tournament.organizerName}</div>
                     </div>
                     <Link href={`/tournaments/${tournament.id}`}>
-                      <Button variant="outline" size="sm" className="w-full border-2 hover:bg-gray-50 font-semibold">
-                        👁️ View Details
+                      <Button variant="outline" size="sm" className="w-full border border-white/10 hover:bg-white/5 text-gray-300 font-semibold">
+                        View Details
                       </Button>
                     </Link>
                   </div>
@@ -291,51 +283,45 @@ export default function TournamentsPage() {
                     {/* Tournament Info */}
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center gap-3 mb-2">
-                        <h3 className="font-bold truncate text-gray-800 text-lg">{tournament.name}</h3>
+                        <h3 className="font-bold truncate text-white text-lg">{tournament.name}</h3>
                         {getStatusBadge(tournament.status)}
                       </div>
-                      <div className="text-sm font-semibold text-gray-600 flex items-center gap-1 mb-2">
-                        <span>📅</span>
+                      <div className="text-sm font-semibold text-gray-400 flex items-center gap-1 mb-2">
                         {formatDate(tournament.dateFrom)} - {formatDate(tournament.dateTo)}
                       </div>
                       <div className="flex gap-4 text-sm">
                         {tournament.venue && (
-                          <span className="flex items-center gap-1 bg-blue-50 px-2 py-1 rounded border border-blue-200">
-                            <span>📍</span>
-                            <span className="font-semibold text-blue-700">{tournament.venue}</span>
+                          <span className="flex items-center gap-1 bg-cyan-500/10 px-2 py-1 rounded border border-cyan-500/20">
+                            <span className="font-semibold text-cyan-300">{tournament.venue}</span>
                           </span>
                         )}
                         {tournament.city && (
-                          <span className="flex items-center gap-1 bg-green-50 px-2 py-1 rounded border border-green-200">
-                            <span>🌆</span>
-                            <span className="font-semibold text-green-700">{tournament.city}</span>
+                          <span className="flex items-center gap-1 bg-emerald-500/10 px-2 py-1 rounded border border-emerald-500/20">
+                            <span className="font-semibold text-emerald-300">{tournament.city}</span>
                           </span>
                         )}
                         {tournament.category && (
-                          <span className="flex items-center gap-1 bg-purple-50 px-2 py-1 rounded border border-purple-200">
-                            <span>🏅</span>
-                            <span className="font-semibold text-purple-700">{tournament.category}</span>
+                          <span className="flex items-center gap-1 bg-purple-500/10 px-2 py-1 rounded border border-purple-500/20">
+                            <span className="font-semibold text-purple-300">{tournament.category}</span>
                           </span>
                         )}
-                        <span className="flex items-center gap-1 bg-orange-50 px-2 py-1 rounded border border-orange-200">
-                          <span>🎯</span>
-                          <span className="font-black text-orange-700">{tournament._count.matches} matches</span>
+                        <span className="flex items-center gap-1 bg-amber-500/10 px-2 py-1 rounded border border-amber-500/20">
+                          <span className="font-black text-amber-300">{tournament._count.matches} matches</span>
                         </span>
                       </div>
                     </div>
 
                     {/* Organizer and Action */}
                     <div className="flex items-center gap-4">
-                      <div className="text-right text-sm bg-gradient-to-br from-gray-50 to-gray-100 px-3 py-2 rounded-lg border border-gray-200">
-                        <div className="text-gray-600 text-xs font-bold flex items-center gap-1 justify-end">
-                          <span>👤</span>
+                      <div className="text-right text-sm bg-white/5 px-3 py-2 rounded-lg border border-white/10">
+                        <div className="text-gray-400 text-xs font-bold flex items-center gap-1 justify-end">
                           Organizer
                         </div>
-                        <div className="font-bold text-gray-800">{tournament.organizerName}</div>
+                        <div className="font-bold text-white">{tournament.organizerName}</div>
                       </div>
                       <Link href={`/tournaments/${tournament.id}`}>
-                        <Button variant="outline" size="sm" className="border-2 hover:bg-gray-50 font-semibold">
-                          👁️ View
+                        <Button variant="outline" size="sm" className="border border-white/10 hover:bg-white/5 text-gray-300 font-semibold">
+                          View
                         </Button>
                       </Link>
                     </div>

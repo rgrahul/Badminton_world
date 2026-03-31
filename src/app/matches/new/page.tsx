@@ -67,30 +67,28 @@ export default function NewMatchPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-green-50 via-blue-50 to-green-50">
+    <div className="min-h-screen bg-[#0a0a0a]">
       <Header />
       <main className="container mx-auto px-4 py-4 sm:py-8 max-w-2xl">
-        <Card className="border-2 border-green-200 shadow-2xl">
-          <CardHeader className="bg-gradient-to-r from-green-50 to-blue-50">
-            <CardTitle className="text-2xl sm:text-3xl font-black bg-gradient-to-r from-green-600 to-blue-600 bg-clip-text text-transparent flex items-center gap-2">
-              <span className="text-3xl sm:text-4xl">🏸</span>
+        <Card className="border-white/10 bg-white/[0.03]">
+          <CardHeader>
+            <CardTitle className="text-2xl sm:text-3xl font-black text-white flex items-center gap-2">
               Create New Match
             </CardTitle>
-            <CardDescription className="text-sm sm:text-base text-gray-600 font-medium">Set up a new badminton match</CardDescription>
+            <CardDescription className="text-sm sm:text-base text-gray-400 font-medium">Set up a new badminton match</CardDescription>
           </CardHeader>
           <CardContent className="pt-6">
             <form onSubmit={handleSubmit} className="space-y-6">
               {error && (
-                <div className="rounded-lg bg-red-50 border-2 border-red-200 p-4 text-sm text-red-700 font-semibold flex items-center gap-2">
-                  <span className="text-xl">⚠️</span>
+                <div className="rounded-lg bg-red-500/10 border border-red-500/20 p-4 text-sm text-red-400 font-semibold flex items-center gap-2">
                   {error}
                 </div>
               )}
 
               {/* Match Name */}
-              <div className="space-y-2 bg-gradient-to-br from-gray-50 to-gray-100 p-4 rounded-lg border border-gray-200">
-                <Label htmlFor="name" className="text-gray-800 font-bold flex items-center gap-1">
-                  <span>📝</span> Match Name
+              <div className="space-y-2 bg-white/5 border border-white/10 p-4 rounded-lg">
+                <Label htmlFor="name" className="text-white font-bold flex items-center gap-1">
+                  Match Name
                 </Label>
                 <Input
                   id="name"
@@ -99,37 +97,37 @@ export default function NewMatchPage() {
                   onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                   required
                   disabled={isLoading}
-                  className="border-2 focus:border-green-500"
+                  className="bg-white/5 border-white/10 text-white placeholder:text-gray-500"
                 />
               </div>
 
               {/* Match Type */}
-              <div className="space-y-2 bg-gradient-to-br from-blue-50 to-blue-100 p-4 rounded-lg border border-blue-200">
-                <Label htmlFor="type" className="text-blue-800 font-bold flex items-center gap-1">
-                  <span>🎯</span> Match Type
+              <div className="space-y-2 bg-cyan-500/10 border border-cyan-500/20 p-4 rounded-lg">
+                <Label htmlFor="type" className="text-cyan-400 font-bold flex items-center gap-1">
+                  Match Type
                 </Label>
                 <Select
                   value={formData.type}
                   onValueChange={(value) => setFormData({ ...formData, type: value })}
                   disabled={isLoading}
                 >
-                  <SelectTrigger className="border-2 focus:border-blue-500">
+                  <SelectTrigger className="bg-white/5 border-white/10 text-white">
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="SINGLES">🧍 Singles</SelectItem>
-                    <SelectItem value="DOUBLES">👥 Doubles</SelectItem>
+                    <SelectItem value="SINGLES">Singles</SelectItem>
+                    <SelectItem value="DOUBLES">Doubles</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
 
               {/* Team A Players */}
-              <div className="space-y-4 bg-gradient-to-br from-green-50 to-green-100 p-4 rounded-lg border-2 border-green-200">
-                <h3 className="font-bold text-green-800 flex items-center gap-2 text-lg">
-                  <span>🟢</span> Team A Players
+              <div className="space-y-4 bg-emerald-500/10 border border-emerald-500/20 p-4 rounded-lg">
+                <h3 className="font-bold text-emerald-400 flex items-center gap-2 text-lg">
+                  Team A Players
                 </h3>
                 <div className="space-y-2">
-                  <Label htmlFor="sideAPlayer1">Player 1</Label>
+                  <Label htmlFor="sideAPlayer1" className="text-gray-300">Player 1</Label>
                   <PlayerSelect
                     value={formData.sideAPlayer1}
                     onChange={(value) => setFormData({ ...formData, sideAPlayer1: value })}
@@ -139,7 +137,7 @@ export default function NewMatchPage() {
                 </div>
                 {formData.type === "DOUBLES" && (
                   <div className="space-y-2">
-                    <Label htmlFor="sideAPlayer2">Player 2</Label>
+                    <Label htmlFor="sideAPlayer2" className="text-gray-300">Player 2</Label>
                     <PlayerSelect
                       value={formData.sideAPlayer2}
                       onChange={(value) => setFormData({ ...formData, sideAPlayer2: value })}
@@ -151,12 +149,12 @@ export default function NewMatchPage() {
               </div>
 
               {/* Team B Players */}
-              <div className="space-y-4 bg-gradient-to-br from-blue-50 to-blue-100 p-4 rounded-lg border-2 border-blue-200">
-                <h3 className="font-bold text-blue-800 flex items-center gap-2 text-lg">
-                  <span>🔵</span> Team B Players
+              <div className="space-y-4 bg-cyan-500/10 border border-cyan-500/20 p-4 rounded-lg">
+                <h3 className="font-bold text-cyan-400 flex items-center gap-2 text-lg">
+                  Team B Players
                 </h3>
                 <div className="space-y-2">
-                  <Label htmlFor="sideBPlayer1">Player 1</Label>
+                  <Label htmlFor="sideBPlayer1" className="text-gray-300">Player 1</Label>
                   <PlayerSelect
                     value={formData.sideBPlayer1}
                     onChange={(value) => setFormData({ ...formData, sideBPlayer1: value })}
@@ -166,7 +164,7 @@ export default function NewMatchPage() {
                 </div>
                 {formData.type === "DOUBLES" && (
                   <div className="space-y-2">
-                    <Label htmlFor="sideBPlayer2">Player 2</Label>
+                    <Label htmlFor="sideBPlayer2" className="text-gray-300">Player 2</Label>
                     <PlayerSelect
                       value={formData.sideBPlayer2}
                       onChange={(value) => setFormData({ ...formData, sideBPlayer2: value })}
@@ -178,13 +176,13 @@ export default function NewMatchPage() {
               </div>
 
               {/* Match Configuration */}
-              <div className="space-y-4 bg-gradient-to-br from-purple-50 to-purple-100 p-4 rounded-lg border-2 border-purple-200">
-                <h3 className="font-bold text-purple-800 flex items-center gap-2 text-lg">
-                  <span>⚙️</span> Match Configuration
+              <div className="space-y-4 bg-white/5 border border-white/10 p-4 rounded-lg">
+                <h3 className="font-bold text-gray-300 flex items-center gap-2 text-lg">
+                  Match Configuration
                 </h3>
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                   <div className="space-y-2">
-                    <Label htmlFor="setsCount" className="text-purple-700 font-semibold">Sets</Label>
+                    <Label htmlFor="setsCount" className="text-gray-400 font-semibold">Sets</Label>
                     <Select
                       value={formData.setsCount.toString()}
                       onValueChange={(value) =>
@@ -192,7 +190,7 @@ export default function NewMatchPage() {
                       }
                       disabled={isLoading}
                     >
-                      <SelectTrigger>
+                      <SelectTrigger className="bg-white/5 border-white/10 text-white">
                         <SelectValue />
                       </SelectTrigger>
                       <SelectContent>
@@ -203,7 +201,7 @@ export default function NewMatchPage() {
                     </Select>
                   </div>
                   <div className="space-y-2">
-                    <Label htmlFor="pointsToWin" className="text-purple-700 font-semibold">Points to Win</Label>
+                    <Label htmlFor="pointsToWin" className="text-gray-400 font-semibold">Points to Win</Label>
                     <Input
                       id="pointsToWin"
                       type="number"
@@ -213,11 +211,11 @@ export default function NewMatchPage() {
                         setFormData({ ...formData, pointsToWin: parseInt(e.target.value) })
                       }
                       disabled={isLoading}
-                      className="border-2 focus:border-purple-500"
+                      className="bg-white/5 border-white/10 text-white placeholder:text-gray-500"
                     />
                   </div>
                   <div className="space-y-2">
-                    <Label htmlFor="deuceCap" className="text-purple-700 font-semibold">Deuce Cap</Label>
+                    <Label htmlFor="deuceCap" className="text-gray-400 font-semibold">Deuce Cap</Label>
                     <Input
                       id="deuceCap"
                       type="number"
@@ -227,7 +225,7 @@ export default function NewMatchPage() {
                         setFormData({ ...formData, deuceCap: parseInt(e.target.value) })
                       }
                       disabled={isLoading}
-                      className="border-2 focus:border-purple-500"
+                      className="bg-white/5 border-white/10 text-white placeholder:text-gray-500"
                     />
                   </div>
                 </div>
@@ -240,12 +238,12 @@ export default function NewMatchPage() {
                   variant="outline"
                   onClick={() => router.back()}
                   disabled={isLoading}
-                  className="flex-1 border-2 hover:bg-gray-50 font-semibold"
+                  className="flex-1 border border-white/10 hover:bg-white/5 text-gray-300 font-semibold"
                 >
-                  ❌ Cancel
+                  Cancel
                 </Button>
-                <Button type="submit" disabled={isLoading} className="flex-1 bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 text-white shadow-lg hover:shadow-xl transition-all font-bold">
-                  {isLoading ? "Creating... ⏳" : "✅ Create Match"}
+                <Button type="submit" disabled={isLoading} className="flex-1 bg-gradient-to-r from-emerald-500 to-cyan-500 text-black font-semibold hover:from-emerald-400 hover:to-cyan-400 shadow-lg hover:shadow-xl transition-all font-bold">
+                  {isLoading ? "Creating..." : "Create Match"}
                 </Button>
               </div>
             </form>

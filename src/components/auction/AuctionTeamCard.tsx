@@ -29,7 +29,7 @@ export function AuctionTeamCard({ team }: AuctionTeamCardProps) {
             <span className="text-muted-foreground">Budget</span>
             <span className="font-medium">{remaining.toLocaleString()} / {team.budget.toLocaleString()}</span>
           </div>
-          <div className="w-full bg-gray-200 rounded-full h-2.5">
+          <div className="w-full bg-white/10 rounded-full h-2.5">
             <div
               className={`h-2.5 rounded-full transition-all ${
                 usedPercent > 90 ? "bg-red-500" : usedPercent > 70 ? "bg-amber-500" : "bg-green-500"
@@ -49,7 +49,7 @@ export function AuctionTeamCard({ team }: AuctionTeamCardProps) {
             {team.soldPlayers.map((ap) => (
               <div
                 key={ap.id}
-                className="flex items-center justify-between text-sm p-2 bg-gray-50 rounded"
+                className="flex items-center justify-between text-sm p-2 bg-white/5 rounded"
               >
                 <div className="flex items-center gap-2">
                   <PlayerAvatar name={ap.player.name} photoUrl={ap.player.profilePhoto} size="sm" />

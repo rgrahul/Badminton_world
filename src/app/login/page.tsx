@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import { BirdieLogo } from "@/components/icons/BirdieLogo"
 
 function LoginForm() {
   const router = useRouter()
@@ -45,33 +46,38 @@ function LoginForm() {
   }
 
   return (
-    <div className="flex min-h-screen items-center justify-center p-4">
-      <Card className="w-full max-w-md">
+    <div className="flex min-h-screen items-center justify-center p-4 bg-[#0a0a0a]">
+      <Card className="w-full max-w-md border-white/10 bg-white/[0.03] backdrop-blur-sm">
         <CardHeader>
-          <CardTitle>Login</CardTitle>
-          <CardDescription>Enter your credentials to access the app</CardDescription>
+          <div className="flex items-center justify-center gap-1 mb-2">
+            <BirdieLogo className="w-12 h-12" />
+            <span className="text-2xl font-bold"><span className="text-sky-300">Bird</span><span className="text-amber-400">ie</span></span>
+          </div>
+          <CardTitle className="text-white text-center">Welcome back</CardTitle>
+          <CardDescription className="text-center">Enter your credentials to access your account</CardDescription>
         </CardHeader>
         <CardContent>
           <form onSubmit={handleSubmit} className="space-y-4">
             {error && (
-              <div className="rounded-md bg-destructive/15 p-3 text-sm text-destructive">
+              <div className="rounded-md bg-red-500/15 border border-red-500/20 p-3 text-sm text-red-400">
                 {error}
               </div>
             )}
             <div className="space-y-2">
-              <Label htmlFor="email">Email</Label>
+              <Label htmlFor="email" className="text-gray-300">Email</Label>
               <Input
                 id="email"
                 type="email"
-                placeholder="umpire@example.com"
+                placeholder="you@example.com"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
                 disabled={isLoading}
+                className="bg-white/5 border-white/10 text-white placeholder:text-gray-500 focus:border-emerald-500/50"
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="password">Password</Label>
+              <Label htmlFor="password" className="text-gray-300">Password</Label>
               <Input
                 id="password"
                 type="password"
@@ -79,14 +85,15 @@ function LoginForm() {
                 onChange={(e) => setPassword(e.target.value)}
                 required
                 disabled={isLoading}
+                className="bg-white/5 border-white/10 text-white placeholder:text-gray-500 focus:border-emerald-500/50"
               />
             </div>
-            <Button type="submit" className="w-full" disabled={isLoading}>
+            <Button type="submit" className="w-full bg-gradient-to-r from-emerald-500 to-cyan-500 text-black font-semibold hover:from-emerald-400 hover:to-cyan-400" disabled={isLoading}>
               {isLoading ? "Logging in..." : "Login"}
             </Button>
-            <div className="text-center text-sm">
+            <div className="text-center text-sm text-gray-400">
               Don&apos;t have an account?{" "}
-              <Link href="/register" className="text-primary hover:underline">
+              <Link href="/register" className="text-emerald-400 hover:text-emerald-300 hover:underline">
                 Register
               </Link>
             </div>
@@ -100,7 +107,7 @@ function LoginForm() {
 export default function LoginPage() {
   return (
     <Suspense
-      fallback={<div className="flex min-h-screen items-center justify-center">Loading...</div>}
+      fallback={<div className="flex min-h-screen items-center justify-center bg-[#0a0a0a] text-gray-400">Loading...</div>}
     >
       <LoginForm />
     </Suspense>

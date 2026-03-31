@@ -47,8 +47,8 @@ export function PlayerQueue({ players, currentPlayerId, onSelectPlayer }: Player
                 onClick={() => onSelectPlayer(ap)}
                 className={`w-full p-3 rounded-lg border text-left transition-all ${
                   isActive
-                    ? "border-primary bg-primary/10 ring-2 ring-primary"
-                    : "border-gray-200 hover:border-gray-300 hover:bg-gray-50"
+                    ? "border-emerald-500/50 bg-emerald-500/10 ring-2 ring-emerald-500/50"
+                    : "border-white/10 hover:border-white/20 hover:bg-white/5"
                 }`}
               >
                 <div className="flex items-center gap-3">

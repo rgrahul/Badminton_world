@@ -141,14 +141,14 @@ export default function TeamDetailPage({
 
   const getCategoryBadge = (category: string) => {
     const styles: Record<string, string> = {
-      MALE: "bg-blue-100 text-blue-800",
-      FEMALE: "bg-pink-100 text-pink-800",
-      KID: "bg-amber-100 text-amber-800",
+      MALE: "bg-cyan-500/20 text-cyan-300",
+      FEMALE: "bg-pink-500/20 text-pink-300",
+      KID: "bg-amber-500/20 text-amber-300",
     }
     return (
       <span
         className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium ${
-          styles[category] || "bg-gray-100 text-gray-800"
+          styles[category] || "bg-gray-500/20 text-gray-300"
         }`}
       >
         {category}
@@ -158,10 +158,10 @@ export default function TeamDetailPage({
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-background">
+      <div className="min-h-screen bg-[#0a0a0a]">
         <Header />
         <main className="container mx-auto px-4 py-8">
-          <div className="text-center">Loading team...</div>
+          <div className="text-center text-gray-400">Loading team...</div>
         </main>
       </div>
     )
@@ -169,17 +169,17 @@ export default function TeamDetailPage({
 
   if (error || !team) {
     return (
-      <div className="min-h-screen bg-background">
+      <div className="min-h-screen bg-[#0a0a0a]">
         <Header />
         <main className="container mx-auto px-4 py-8">
-          <div className="text-center text-destructive">{error || "Team not found"}</div>
+          <div className="text-center text-red-300">{error || "Team not found"}</div>
         </main>
       </div>
     )
   }
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-[#0a0a0a]">
       <Header />
       <main className="container mx-auto px-4 py-4 sm:py-8 max-w-4xl">
         <div className="mb-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
@@ -187,21 +187,22 @@ export default function TeamDetailPage({
             variant="outline"
             size="sm"
             onClick={() => router.push(`/tournaments/${params.tournamentId}`)}
+            className="border border-white/10 hover:bg-white/5 text-gray-300"
           >
-            ← Back to Tournament
+            Back to Tournament
           </Button>
           {canManage && (
             <div className="flex flex-wrap gap-2 w-full sm:w-auto">
               <Link href={`/tournaments/${params.tournamentId}/teams/${team.id}/edit`}>
-                <Button variant="outline" size="sm">
+                <Button variant="outline" size="sm" className="bg-cyan-500/20 text-cyan-300 hover:bg-cyan-500/30 border border-cyan-500/20">
                   Edit Team
                 </Button>
               </Link>
               <Button
-                variant="destructive"
                 size="sm"
                 onClick={handleDelete}
                 disabled={isDeleting}
+                className="bg-red-500/20 text-red-300 hover:bg-red-500/30 border border-red-500/20"
               >
                 {isDeleting ? "Deleting..." : "Delete Team"}
               </Button>
@@ -210,24 +211,24 @@ export default function TeamDetailPage({
         </div>
 
         {/* Team Info Card */}
-        <Card className="mb-6">
+        <Card className="mb-6 border-white/10 bg-white/[0.03]">
           <CardHeader>
             <div className="flex items-center gap-4">
               {team.logoUrl ? (
                 <img
                   src={team.logoUrl}
                   alt={`${team.name} logo`}
-                  className="w-16 h-16 rounded-full object-cover border-2 border-gray-200 flex-shrink-0"
+                  className="w-16 h-16 rounded-full object-cover border-2 border-white/10 flex-shrink-0"
                   onError={(e) => { (e.target as HTMLImageElement).style.display = "none" }}
                 />
               ) : (
-                <div className="w-16 h-16 rounded-full bg-gradient-to-br from-blue-400 to-green-400 flex items-center justify-center text-white font-bold text-2xl flex-shrink-0">
+                <div className="w-16 h-16 rounded-full bg-gradient-to-br from-cyan-500 to-emerald-500 flex items-center justify-center text-black font-bold text-2xl flex-shrink-0">
                   {team.name.charAt(0).toUpperCase()}
                 </div>
               )}
               <div>
-                <CardTitle className="text-2xl">{team.name}</CardTitle>
-                <CardDescription>
+                <CardTitle className="text-2xl text-white">{team.name}</CardTitle>
+                <CardDescription className="text-gray-400">
                   Tournament: {team.tournament.name}
                 </CardDescription>
               </div>
@@ -236,43 +237,43 @@ export default function TeamDetailPage({
           <CardContent className="space-y-6">
             {/* Composition Rules */}
             <div>
-              <h3 className="font-semibold mb-3">Composition Rules</h3>
+              <h3 className="font-semibold mb-3 text-white">Composition Rules</h3>
               <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                <div className="bg-gray-50 rounded-lg p-3 text-center">
-                  <div className="text-2xl font-bold">{team.teamSize}</div>
-                  <div className="text-sm text-muted-foreground">Team Size</div>
+                <div className="bg-white/5 border border-white/10 rounded-lg p-3 text-center">
+                  <div className="text-2xl font-bold text-white">{team.teamSize}</div>
+                  <div className="text-sm text-gray-400">Team Size</div>
                 </div>
-                <div className="bg-blue-50 rounded-lg p-3 text-center">
-                  <div className="text-2xl font-bold text-blue-700">{team.requiredMale}</div>
-                  <div className="text-sm text-blue-600">Male</div>
+                <div className="bg-cyan-500/10 border border-cyan-500/20 rounded-lg p-3 text-center">
+                  <div className="text-2xl font-bold text-cyan-400">{team.requiredMale}</div>
+                  <div className="text-sm text-cyan-300">Male</div>
                 </div>
-                <div className="bg-pink-50 rounded-lg p-3 text-center">
-                  <div className="text-2xl font-bold text-pink-700">{team.requiredFemale}</div>
-                  <div className="text-sm text-pink-600">Female</div>
+                <div className="bg-pink-500/10 border border-pink-500/20 rounded-lg p-3 text-center">
+                  <div className="text-2xl font-bold text-pink-400">{team.requiredFemale}</div>
+                  <div className="text-sm text-pink-300">Female</div>
                 </div>
-                <div className="bg-amber-50 rounded-lg p-3 text-center">
-                  <div className="text-2xl font-bold text-amber-700">{team.requiredKid}</div>
-                  <div className="text-sm text-amber-600">Kid</div>
+                <div className="bg-amber-500/10 border border-amber-500/20 rounded-lg p-3 text-center">
+                  <div className="text-2xl font-bold text-amber-400">{team.requiredKid}</div>
+                  <div className="text-sm text-amber-300">Kid</div>
                 </div>
               </div>
             </div>
 
             {/* Players */}
             <div>
-              <h3 className="font-semibold mb-3">Players ({team._count.players})</h3>
+              <h3 className="font-semibold mb-3 text-white">Players ({team._count.players})</h3>
               <div className="space-y-2">
                 {team.players.map((tp) => (
                   <div
                     key={tp.id}
-                    className="flex items-center justify-between bg-gray-50 rounded-lg px-4 py-3"
+                    className="flex items-center justify-between bg-white/5 border border-white/10 rounded-lg px-4 py-3"
                   >
                     <div className="flex items-center gap-3">
                       <PlayerAvatar name={tp.player.name} profilePhoto={tp.player.profilePhoto} size="lg" />
                       <div>
-                        <div className="font-medium">
+                        <div className="font-medium text-white">
                           <PlayerLink name={tp.player.name} playerId={tp.player.id} />
                         </div>
-                        <div className="text-sm text-muted-foreground">
+                        <div className="text-sm text-gray-400">
                           {tp.player.gender || "N/A"}
                           {tp.player.age ? ` | Age ${tp.player.age}` : ""}
                         </div>
@@ -288,10 +289,10 @@ export default function TeamDetailPage({
 
         {/* Team Matches */}
         {team.teamMatches && team.teamMatches.length > 0 && (
-          <Card>
+          <Card className="border-white/10 bg-white/[0.03]">
             <CardHeader>
-              <CardTitle>Team Matches ({team.teamMatches.length})</CardTitle>
-              <CardDescription>
+              <CardTitle className="text-white">Team Matches ({team.teamMatches.length})</CardTitle>
+              <CardDescription className="text-gray-400">
                 All matches this team has played or is scheduled to play
               </CardDescription>
             </CardHeader>
@@ -314,25 +315,25 @@ export default function TeamDetailPage({
                       className={`border ${
                         isCompleted
                           ? isWinner
-                            ? "border-green-200 bg-green-50/50"
+                            ? "border-emerald-500/20 bg-emerald-500/5"
                             : isLoser
-                            ? "border-red-200 bg-red-50/50"
-                            : "border-gray-200 bg-gray-50/50"
-                          : ""
+                            ? "border-red-500/20 bg-red-500/5"
+                            : "border-white/10 bg-white/[0.03]"
+                          : "border-white/10 bg-white/[0.03]"
                       }`}
                     >
                       <CardContent className="p-4">
                         <div className="flex items-center justify-between">
                           <div className="flex-1 min-w-0">
                             <div className="flex items-center gap-2 mb-1">
-                              <span className="font-medium">{tm.name}</span>
+                              <span className="font-medium text-white">{tm.name}</span>
                               <span
                                 className={`inline-flex items-center rounded-full px-2 py-0.5 text-xs font-medium ${
                                   tm.status === "COMPLETED"
-                                    ? "bg-green-100 text-green-800"
+                                    ? "bg-emerald-500/20 text-emerald-300"
                                     : tm.status === "IN_PROGRESS"
-                                    ? "bg-blue-100 text-blue-800"
-                                    : "bg-gray-100 text-gray-800"
+                                    ? "bg-cyan-500/20 text-cyan-300"
+                                    : "bg-gray-500/20 text-gray-300"
                                 }`}
                               >
                                 {tm.status.replace("_", " ")}
@@ -341,28 +342,28 @@ export default function TeamDetailPage({
                                 <span
                                   className={`inline-flex items-center rounded-full px-2 py-0.5 text-xs font-bold ${
                                     isWinner
-                                      ? "bg-green-100 text-green-800"
+                                      ? "bg-emerald-500/20 text-emerald-300"
                                       : isLoser
-                                      ? "bg-red-100 text-red-800"
-                                      : "bg-gray-100 text-gray-800"
+                                      ? "bg-red-500/20 text-red-300"
+                                      : "bg-gray-500/20 text-gray-300"
                                   }`}
                                 >
                                   {isWinner ? "WON" : isLoser ? "LOST" : "DRAW"}
                                 </span>
                               )}
                             </div>
-                            <div className="text-sm text-muted-foreground">
+                            <div className="text-sm text-gray-400">
                               vs {opponent.name}
                             </div>
                             {isCompleted && (
                               <div className="mt-1.5 text-sm">
-                                <span className="font-semibold">
+                                <span className="font-semibold text-white">
                                   {fixturesWon} - {fixturesLost}
                                 </span>
-                                <span className="text-muted-foreground ml-3">
+                                <span className="text-gray-400 ml-3">
                                   Points: {pointsFor} - {pointsAgainst}
                                   {" ("}
-                                  <span className={pointsFor - pointsAgainst > 0 ? "text-green-600" : pointsFor - pointsAgainst < 0 ? "text-red-600" : ""}>
+                                  <span className={pointsFor - pointsAgainst > 0 ? "text-emerald-400" : pointsFor - pointsAgainst < 0 ? "text-red-400" : ""}>
                                     {pointsFor - pointsAgainst > 0 ? "+" : ""}
                                     {pointsFor - pointsAgainst}
                                   </span>
@@ -372,7 +373,7 @@ export default function TeamDetailPage({
                             )}
                           </div>
                           <Link href={`/tournaments/${params.tournamentId}/team-matches/${tm.id}`}>
-                            <Button variant="outline" size="sm">
+                            <Button variant="outline" size="sm" className="border border-white/10 hover:bg-white/5 text-gray-300">
                               View
                             </Button>
                           </Link>

@@ -191,7 +191,7 @@ export function ExcelImportDialog({
             <div
               onDrop={handleDrop}
               onDragOver={(e) => e.preventDefault()}
-              className="border-2 border-dashed border-gray-300 rounded-lg p-12 text-center hover:border-primary transition-colors cursor-pointer"
+              className="border-2 border-dashed border-white/20 rounded-lg p-12 text-center hover:border-emerald-500/50 transition-colors cursor-pointer"
               onClick={() => {
                 const input = document.createElement("input")
                 input.type = "file"
@@ -234,7 +234,7 @@ export function ExcelImportDialog({
 
             <div className="flex-1 overflow-auto border rounded-lg">
               <table className="w-full text-sm">
-                <thead className="bg-gray-50 sticky top-0">
+                <thead className="bg-white/5 sticky top-0">
                   <tr>
                     <th className="px-3 py-2 text-left font-medium">#</th>
                     <th className="px-3 py-2 text-left font-medium">Name</th>

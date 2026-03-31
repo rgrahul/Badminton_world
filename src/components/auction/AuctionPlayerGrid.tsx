@@ -85,12 +85,12 @@ export function AuctionPlayerGrid({ players, onReset }: AuctionPlayerGridProps) 
                         {ap.status}
                       </span>
                       {ap.player.gender && (
-                        <span className="inline-flex items-center rounded-full px-2 py-0.5 text-[10px] font-medium bg-gray-100 text-gray-700">
+                        <span className="inline-flex items-center rounded-full px-2 py-0.5 text-[10px] font-medium bg-white/10 text-gray-300">
                           {ap.player.gender}
                         </span>
                       )}
                       {ap.player.skillRating && (
-                        <span className="inline-flex items-center rounded-full px-2 py-0.5 text-[10px] font-medium bg-amber-100 text-amber-800">
+                        <span className="inline-flex items-center rounded-full px-2 py-0.5 text-[10px] font-medium bg-amber-500/20 text-amber-300">
                           {ap.player.skillRating}
                         </span>
                       )}

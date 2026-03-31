@@ -38,31 +38,31 @@ export function BracketMatchCard({
   const teamBWon = winnerTeamId && winnerTeamId === teamBId
 
   const card = (
-    <div className={`border rounded-lg overflow-hidden w-48 text-sm ${
-      teamMatchId ? "cursor-pointer hover:shadow-md transition-shadow" : ""
+    <div className={`border border-white/10 rounded-lg overflow-hidden w-48 text-sm ${
+      teamMatchId ? "cursor-pointer hover:border-white/20 transition-colors" : ""
     }`}>
       <div
         className={`px-3 py-1.5 flex items-center justify-between ${
-          teamAWon ? "bg-green-50 font-semibold" : "bg-white"
-        } border-b`}
+          teamAWon ? "bg-emerald-500/10 font-semibold text-emerald-300" : "bg-white/[0.03] text-gray-300"
+        } border-b border-white/10`}
       >
-        <span className={`truncate ${!teamAName ? "text-muted-foreground italic" : ""}`}>
+        <span className={`truncate ${!teamAName ? "text-gray-500 italic" : ""}`}>
           {teamADisplay}
         </span>
         {isCompleted && (
-          <span className="text-xs font-bold ml-2">{fixturesWonByTeamA ?? 0}</span>
+          <span className="text-xs font-bold ml-2 text-white">{fixturesWonByTeamA ?? 0}</span>
         )}
       </div>
       <div
         className={`px-3 py-1.5 flex items-center justify-between ${
-          teamBWon ? "bg-green-50 font-semibold" : "bg-white"
+          teamBWon ? "bg-emerald-500/10 font-semibold text-emerald-300" : "bg-white/[0.03] text-gray-300"
         }`}
       >
-        <span className={`truncate ${!teamBName ? "text-muted-foreground italic" : ""}`}>
+        <span className={`truncate ${!teamBName ? "text-gray-500 italic" : ""}`}>
           {teamBDisplay}
         </span>
         {isCompleted && (
-          <span className="text-xs font-bold ml-2">{fixturesWonByTeamB ?? 0}</span>
+          <span className="text-xs font-bold ml-2 text-white">{fixturesWonByTeamB ?? 0}</span>
         )}
       </div>
     </div>

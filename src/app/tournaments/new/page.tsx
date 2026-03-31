@@ -145,16 +145,15 @@ export default function NewTournamentPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-green-50 via-blue-50 to-green-50">
+    <div className="min-h-screen bg-[#0a0a0a]">
       <Header />
       <main className="container mx-auto px-4 py-4 sm:py-8 max-w-2xl">
-        <Card className="border-2 border-green-200 shadow-2xl">
-          <CardHeader className="bg-gradient-to-r from-green-50 to-blue-50">
-            <CardTitle className="text-2xl sm:text-3xl font-black bg-gradient-to-r from-green-600 to-blue-600 bg-clip-text text-transparent flex items-center gap-2">
-              <span className="text-3xl sm:text-4xl">🏆</span>
+        <Card className="border-white/10 bg-white/[0.03] shadow-2xl">
+          <CardHeader>
+            <CardTitle className="text-2xl sm:text-3xl font-black text-white flex items-center gap-2">
               Create New Tournament
             </CardTitle>
-            <CardDescription className="text-sm sm:text-base text-gray-600 font-medium">
+            <CardDescription className="text-sm sm:text-base text-gray-400 font-medium">
               {needsWizard
                 ? `Step ${step} of ${totalSteps}: ${getStepLabel(step)}`
                 : "Set up a new badminton tournament"}
@@ -166,7 +165,7 @@ export default function NewTournamentPage() {
                   <div
                     key={i}
                     className={`h-2 flex-1 rounded-full transition-colors ${
-                      i + 1 <= step ? "bg-green-500" : "bg-gray-200"
+                      i + 1 <= step ? "bg-emerald-500" : "bg-white/10"
                     }`}
                   />
                 ))}
@@ -175,8 +174,7 @@ export default function NewTournamentPage() {
           </CardHeader>
           <CardContent className="pt-6">
             {error && (
-              <div className="rounded-lg bg-red-50 border-2 border-red-200 p-4 text-sm text-red-700 font-semibold flex items-center gap-2 mb-6">
-                <span className="text-xl">⚠️</span>
+              <div className="rounded-lg bg-red-500/20 border border-red-500/20 p-4 text-sm text-red-300 font-semibold flex items-center gap-2 mb-6">
                 {error}
               </div>
             )}
@@ -185,9 +183,9 @@ export default function NewTournamentPage() {
             {step === 1 && (
               <div className="space-y-6">
                 {/* Tournament Name */}
-                <div className="space-y-2 bg-gradient-to-br from-yellow-50 to-yellow-100 p-4 rounded-lg border border-yellow-200">
-                  <Label htmlFor="name" className="text-yellow-800 font-bold flex items-center gap-1">
-                    <span>🏅</span> Tournament Name *
+                <div className="space-y-2 bg-white/5 border border-white/10 p-4 rounded-lg">
+                  <Label htmlFor="name" className="text-gray-300 font-bold flex items-center gap-1">
+                    Tournament Name *
                   </Label>
                   <Input
                     id="name"
@@ -196,14 +194,14 @@ export default function NewTournamentPage() {
                     onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                     required
                     disabled={isLoading}
-                    className="border-2 focus:border-yellow-500"
+                    className="bg-white/5 border-white/10 text-white placeholder:text-gray-500"
                   />
                 </div>
 
                 {/* Description */}
-                <div className="space-y-2 bg-gradient-to-br from-gray-50 to-gray-100 p-4 rounded-lg border border-gray-200">
-                  <Label htmlFor="description" className="text-gray-800 font-bold flex items-center gap-1">
-                    <span>📝</span> Description
+                <div className="space-y-2 bg-white/5 border border-white/10 p-4 rounded-lg">
+                  <Label htmlFor="description" className="text-gray-300 font-bold flex items-center gap-1">
+                    Description
                   </Label>
                   <Textarea
                     id="description"
@@ -212,18 +210,18 @@ export default function NewTournamentPage() {
                     onChange={(e) => setFormData({ ...formData, description: e.target.value })}
                     disabled={isLoading}
                     rows={3}
-                    className="border-2 focus:border-gray-500"
+                    className="bg-white/5 border-white/10 text-white placeholder:text-gray-500"
                   />
                 </div>
 
                 {/* Dates */}
-                <div className="bg-gradient-to-br from-blue-50 to-blue-100 p-4 rounded-lg border border-blue-200">
-                  <Label className="text-blue-800 font-bold flex items-center gap-1 mb-3">
-                    <span>📅</span> Tournament Dates
+                <div className="bg-white/5 border border-white/10 p-4 rounded-lg">
+                  <Label className="text-gray-300 font-bold flex items-center gap-1 mb-3">
+                    Tournament Dates
                   </Label>
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div className="space-y-2">
-                      <Label htmlFor="dateFrom" className="text-blue-700 font-semibold">Start Date *</Label>
+                      <Label htmlFor="dateFrom" className="text-gray-300 font-semibold">Start Date *</Label>
                       <Input
                         id="dateFrom"
                         type="date"
@@ -231,11 +229,11 @@ export default function NewTournamentPage() {
                         onChange={(e) => setFormData({ ...formData, dateFrom: e.target.value })}
                         required
                         disabled={isLoading}
-                        className="border-2 focus:border-blue-500"
+                        className="bg-white/5 border-white/10 text-white placeholder:text-gray-500"
                       />
                     </div>
                     <div className="space-y-2">
-                      <Label htmlFor="dateTo" className="text-blue-700 font-semibold">End Date *</Label>
+                      <Label htmlFor="dateTo" className="text-gray-300 font-semibold">End Date *</Label>
                       <Input
                         id="dateTo"
                         type="date"
@@ -243,19 +241,19 @@ export default function NewTournamentPage() {
                         onChange={(e) => setFormData({ ...formData, dateTo: e.target.value })}
                         required
                         disabled={isLoading}
-                        className="border-2 focus:border-blue-500"
+                        className="bg-white/5 border-white/10 text-white placeholder:text-gray-500"
                       />
                     </div>
                   </div>
                 </div>
 
                 {/* Organizer Details */}
-                <div className="space-y-4 bg-gradient-to-br from-green-50 to-green-100 p-4 rounded-lg border-2 border-green-200">
-                  <h3 className="font-bold text-green-800 flex items-center gap-2 text-lg">
-                    <span>👤</span> Organizer Details
+                <div className="space-y-4 bg-white/5 border border-white/10 p-4 rounded-lg">
+                  <h3 className="font-bold text-white flex items-center gap-2 text-lg">
+                    Organizer Details
                   </h3>
                   <div className="space-y-2">
-                    <Label htmlFor="organizerName">Organizer Name *</Label>
+                    <Label htmlFor="organizerName" className="text-gray-300">Organizer Name *</Label>
                     <Input
                       id="organizerName"
                       placeholder="Organization or person name"
@@ -263,11 +261,12 @@ export default function NewTournamentPage() {
                       onChange={(e) => setFormData({ ...formData, organizerName: e.target.value })}
                       required
                       disabled={isLoading}
+                      className="bg-white/5 border-white/10 text-white placeholder:text-gray-500"
                     />
                   </div>
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div className="space-y-2">
-                      <Label htmlFor="organizerEmail">Email</Label>
+                      <Label htmlFor="organizerEmail" className="text-gray-300">Email</Label>
                       <Input
                         id="organizerEmail"
                         type="email"
@@ -275,10 +274,11 @@ export default function NewTournamentPage() {
                         value={formData.organizerEmail}
                         onChange={(e) => setFormData({ ...formData, organizerEmail: e.target.value })}
                         disabled={isLoading}
+                        className="bg-white/5 border-white/10 text-white placeholder:text-gray-500"
                       />
                     </div>
                     <div className="space-y-2">
-                      <Label htmlFor="organizerPhone">Phone</Label>
+                      <Label htmlFor="organizerPhone" className="text-gray-300">Phone</Label>
                       <Input
                         id="organizerPhone"
                         type="tel"
@@ -286,46 +286,47 @@ export default function NewTournamentPage() {
                         value={formData.organizerPhone}
                         onChange={(e) => setFormData({ ...formData, organizerPhone: e.target.value })}
                         disabled={isLoading}
+                        className="bg-white/5 border-white/10 text-white placeholder:text-gray-500"
                       />
                     </div>
                   </div>
                 </div>
 
                 {/* Venue Details */}
-                <div className="space-y-4 bg-gradient-to-br from-purple-50 to-purple-100 p-4 rounded-lg border-2 border-purple-200">
-                  <h3 className="font-bold text-purple-800 flex items-center gap-2 text-lg">
-                    <span>📍</span> Venue Details
+                <div className="space-y-4 bg-white/5 border border-white/10 p-4 rounded-lg">
+                  <h3 className="font-bold text-white flex items-center gap-2 text-lg">
+                    Venue Details
                   </h3>
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div className="space-y-2">
-                      <Label htmlFor="venue" className="text-purple-700 font-semibold">Venue</Label>
+                      <Label htmlFor="venue" className="text-gray-300 font-semibold">Venue</Label>
                       <Input
                         id="venue"
                         placeholder="Sports Complex Name"
                         value={formData.venue}
                         onChange={(e) => setFormData({ ...formData, venue: e.target.value })}
                         disabled={isLoading}
-                        className="border-2 focus:border-purple-500"
+                        className="bg-white/5 border-white/10 text-white placeholder:text-gray-500"
                       />
                     </div>
                     <div className="space-y-2">
-                      <Label htmlFor="city" className="text-purple-700 font-semibold">City</Label>
+                      <Label htmlFor="city" className="text-gray-300 font-semibold">City</Label>
                       <Input
                         id="city"
                         placeholder="City Name"
                         value={formData.city}
                         onChange={(e) => setFormData({ ...formData, city: e.target.value })}
                         disabled={isLoading}
-                        className="border-2 focus:border-purple-500"
+                        className="bg-white/5 border-white/10 text-white placeholder:text-gray-500"
                       />
                     </div>
                   </div>
                 </div>
 
                 {/* Title Photo */}
-                <div className="space-y-2 bg-gradient-to-br from-pink-50 to-pink-100 p-4 rounded-lg border border-pink-200">
-                  <Label htmlFor="titlePhoto" className="text-pink-800 font-bold flex items-center gap-1">
-                    <span>🖼️</span> Title Photo URL
+                <div className="space-y-2 bg-white/5 border border-white/10 p-4 rounded-lg">
+                  <Label htmlFor="titlePhoto" className="text-gray-300 font-bold flex items-center gap-1">
+                    Title Photo URL
                   </Label>
                   <Input
                     id="titlePhoto"
@@ -334,15 +335,15 @@ export default function NewTournamentPage() {
                     value={formData.titlePhoto}
                     onChange={(e) => setFormData({ ...formData, titlePhoto: e.target.value })}
                     disabled={isLoading}
-                    className="border-2 focus:border-pink-500"
+                    className="bg-white/5 border-white/10 text-white placeholder:text-gray-500"
                   />
-                  <p className="text-xs text-pink-600">Optional banner image shown on the tournament page</p>
+                  <p className="text-xs text-gray-400">Optional banner image shown on the tournament page</p>
                 </div>
 
                 {/* Team Mode */}
-                <div className="space-y-2 bg-gradient-to-br from-indigo-50 to-indigo-100 p-4 rounded-lg border border-indigo-200">
-                  <Label className="text-indigo-800 font-bold flex items-center gap-1">
-                    <span>👥</span> Team Mode
+                <div className="space-y-2 bg-white/5 border border-white/10 p-4 rounded-lg">
+                  <Label className="text-gray-300 font-bold flex items-center gap-1">
+                    Team Mode
                   </Label>
                   <div
                     className="flex items-center gap-3 cursor-pointer"
@@ -350,7 +351,7 @@ export default function NewTournamentPage() {
                   >
                     <div
                       className={`relative w-12 h-6 rounded-full transition-colors ${
-                        formData.requiresTeams ? "bg-indigo-600" : "bg-gray-300"
+                        formData.requiresTeams ? "bg-emerald-500" : "bg-gray-600"
                       }`}
                     >
                       <div
@@ -359,7 +360,7 @@ export default function NewTournamentPage() {
                         }`}
                       />
                     </div>
-                    <span className="text-sm font-medium text-indigo-800">
+                    <span className="text-sm font-medium text-gray-300">
                       {formData.requiresTeams ? "Teams enabled — create and manage teams in this tournament" : "No teams — individual matches only"}
                     </span>
                   </div>
@@ -367,9 +368,9 @@ export default function NewTournamentPage() {
 
                 {/* Tournament Format (only when teams enabled) */}
                 {formData.requiresTeams && (
-                  <div className="space-y-3 bg-gradient-to-br from-teal-50 to-teal-100 p-4 rounded-lg border-2 border-teal-200">
-                    <Label className="text-teal-800 font-bold flex items-center gap-1 text-lg">
-                      <span>🎮</span> Tournament Format
+                  <div className="space-y-3 bg-white/5 border border-white/10 p-4 rounded-lg">
+                    <Label className="text-gray-300 font-bold flex items-center gap-1 text-lg">
+                      Tournament Format
                     </Label>
                     <div className="grid grid-cols-1 gap-3">
                       {([
@@ -379,26 +380,26 @@ export default function NewTournamentPage() {
                       ] as const).map((opt) => (
                         <div
                           key={opt.value}
-                          className={`p-3 rounded-lg border-2 cursor-pointer transition-all ${
+                          className={`p-3 rounded-lg border cursor-pointer transition-all ${
                             formData.format === opt.value
-                              ? "border-teal-500 bg-teal-50 shadow-md"
-                              : "border-gray-200 bg-white hover:border-teal-300"
+                              ? "border-emerald-500/50 bg-emerald-500/10 shadow-md"
+                              : "border-white/10 bg-white/[0.03] hover:border-white/20"
                           }`}
                           onClick={() => setFormData({ ...formData, format: opt.value })}
                         >
                           <div className="flex items-center gap-3">
                             <div
                               className={`w-5 h-5 rounded-full border-2 flex items-center justify-center ${
-                                formData.format === opt.value ? "border-teal-500" : "border-gray-300"
+                                formData.format === opt.value ? "border-emerald-500" : "border-gray-500"
                               }`}
                             >
                               {formData.format === opt.value && (
-                                <div className="w-3 h-3 rounded-full bg-teal-500" />
+                                <div className="w-3 h-3 rounded-full bg-emerald-500" />
                               )}
                             </div>
                             <div>
-                              <div className="font-semibold text-gray-800">{opt.label}</div>
-                              <div className="text-xs text-gray-500">{opt.desc}</div>
+                              <div className="font-semibold text-white">{opt.label}</div>
+                              <div className="text-xs text-gray-400">{opt.desc}</div>
                             </div>
                           </div>
                         </div>
@@ -408,9 +409,9 @@ export default function NewTournamentPage() {
                 )}
 
                 {/* Category */}
-                <div className="space-y-2 bg-gradient-to-br from-orange-50 to-orange-100 p-4 rounded-lg border border-orange-200">
-                  <Label htmlFor="category" className="text-orange-800 font-bold flex items-center gap-1">
-                    <span>🎯</span> Category
+                <div className="space-y-2 bg-white/5 border border-white/10 p-4 rounded-lg">
+                  <Label htmlFor="category" className="text-gray-300 font-bold flex items-center gap-1">
+                    Category
                   </Label>
                   <Input
                     id="category"
@@ -418,7 +419,7 @@ export default function NewTournamentPage() {
                     value={formData.category}
                     onChange={(e) => setFormData({ ...formData, category: e.target.value })}
                     disabled={isLoading}
-                    className="border-2 focus:border-orange-500"
+                    className="bg-white/5 border-white/10 text-white placeholder:text-gray-500"
                   />
                 </div>
               </div>
@@ -427,23 +428,23 @@ export default function NewTournamentPage() {
             {/* Step 2: League Setup (LEAGUE_KNOCKOUT only) */}
             {step === 2 && isLeague && (
               <div className="space-y-6">
-                <div className="bg-gradient-to-br from-teal-50 to-teal-100 p-4 rounded-lg border-2 border-teal-200">
-                  <h3 className="font-bold text-teal-800 flex items-center gap-2 text-lg mb-4">
-                    <span>📊</span> League Configuration
+                <div className="bg-white/5 border border-white/10 p-4 rounded-lg">
+                  <h3 className="font-bold text-white flex items-center gap-2 text-lg mb-4">
+                    League Configuration
                   </h3>
 
                   <div className="space-y-4">
                     <div className="space-y-2">
-                      <Label className="font-semibold text-teal-700">Number of Groups</Label>
+                      <Label className="font-semibold text-gray-300">Number of Groups</Label>
                       <div className="flex flex-wrap gap-2">
                         {[2, 3, 4, 6, 8].map((n) => (
                           <button
                             key={n}
                             type="button"
-                            className={`px-4 py-2 rounded-lg border-2 font-semibold transition-all ${
+                            className={`px-4 py-2 rounded-lg border font-semibold transition-all ${
                               formData.numberOfGroups === n
-                                ? "border-teal-500 bg-teal-100 text-teal-800"
-                                : "border-gray-200 bg-white hover:border-teal-300 text-gray-600"
+                                ? "border-emerald-500/50 bg-emerald-500/10 text-emerald-400"
+                                : "border-white/10 bg-white/[0.03] hover:border-white/20 text-gray-400"
                             }`}
                             onClick={() => setFormData({ ...formData, numberOfGroups: n })}
                           >
@@ -454,16 +455,16 @@ export default function NewTournamentPage() {
                     </div>
 
                     <div className="space-y-2">
-                      <Label className="font-semibold text-teal-700">Qualify Per Group</Label>
+                      <Label className="font-semibold text-gray-300">Qualify Per Group</Label>
                       <div className="flex flex-wrap gap-2">
                         {[1, 2, 3, 4].map((n) => (
                           <button
                             key={n}
                             type="button"
-                            className={`px-4 py-2 rounded-lg border-2 font-semibold transition-all ${
+                            className={`px-4 py-2 rounded-lg border font-semibold transition-all ${
                               formData.qualifyPerGroup === n
-                                ? "border-teal-500 bg-teal-100 text-teal-800"
-                                : "border-gray-200 bg-white hover:border-teal-300 text-gray-600"
+                                ? "border-emerald-500/50 bg-emerald-500/10 text-emerald-400"
+                                : "border-white/10 bg-white/[0.03] hover:border-white/20 text-gray-400"
                             }`}
                             onClick={() => setFormData({ ...formData, qualifyPerGroup: n })}
                           >
@@ -473,8 +474,8 @@ export default function NewTournamentPage() {
                       </div>
                     </div>
 
-                    <div className="mt-4 p-3 bg-white rounded-lg border border-teal-200">
-                      <div className="text-sm text-teal-700 font-medium">
+                    <div className="mt-4 p-3 bg-white/5 rounded-lg border border-white/10">
+                      <div className="text-sm text-gray-300 font-medium">
                         Total qualifiers: {formData.numberOfGroups} groups x {formData.qualifyPerGroup} per group = <strong>{formData.numberOfGroups * formData.qualifyPerGroup}</strong> teams advancing to knockout
                       </div>
                     </div>
@@ -486,11 +487,11 @@ export default function NewTournamentPage() {
             {/* Step 2 or 3: Match Format */}
             {((step === 2 && !isLeague) || (step === 3 && isLeague)) && (
               <div className="space-y-6">
-                <div className="bg-gradient-to-br from-violet-50 to-violet-100 p-4 rounded-lg border-2 border-violet-200">
-                  <h3 className="font-bold text-violet-800 flex items-center gap-2 text-lg mb-2">
-                    <span>🏸</span> Default Match Format
+                <div className="bg-white/5 border border-white/10 p-4 rounded-lg">
+                  <h3 className="font-bold text-white flex items-center gap-2 text-lg mb-2">
+                    Default Match Format
                   </h3>
-                  <p className="text-xs text-violet-600 mb-4">
+                  <p className="text-xs text-gray-400 mb-4">
                     These defaults apply to all auto-generated matches. At least one fixture type must be greater than 0.
                   </p>
 
@@ -505,19 +506,19 @@ export default function NewTournamentPage() {
                       { key: "defaultKidsDoubles", label: "Kids Doubles" },
                     ] as const).map(({ key, label }) => (
                       <div key={key} className="flex items-center justify-between">
-                        <Label className="font-medium text-violet-700">{label}</Label>
+                        <Label className="font-medium text-gray-300">{label}</Label>
                         <div className="flex items-center gap-2">
                           <button
                             type="button"
-                            className="w-8 h-8 rounded-full border-2 border-violet-300 bg-white text-violet-700 font-bold flex items-center justify-center hover:bg-violet-50"
+                            className="w-8 h-8 rounded-full border border-white/10 bg-white/5 text-gray-300 font-bold flex items-center justify-center hover:bg-white/10"
                             onClick={() => setFormData({ ...formData, [key]: Math.max(0, formData[key] - 1) })}
                           >
                             -
                           </button>
-                          <span className="w-8 text-center font-bold text-violet-800">{formData[key]}</span>
+                          <span className="w-8 text-center font-bold text-white">{formData[key]}</span>
                           <button
                             type="button"
-                            className="w-8 h-8 rounded-full border-2 border-violet-300 bg-white text-violet-700 font-bold flex items-center justify-center hover:bg-violet-50"
+                            className="w-8 h-8 rounded-full border border-white/10 bg-white/5 text-gray-300 font-bold flex items-center justify-center hover:bg-white/10"
                             onClick={() => setFormData({ ...formData, [key]: formData[key] + 1 })}
                           >
                             +
@@ -526,30 +527,30 @@ export default function NewTournamentPage() {
                       </div>
                     ))}
 
-                    <div className="border-t border-violet-200 pt-3 flex items-center justify-between">
-                      <span className="font-bold text-violet-800">Total Fixtures</span>
-                      <span className="font-bold text-violet-800 text-lg">{totalFixtures}</span>
+                    <div className="border-t border-white/10 pt-3 flex items-center justify-between">
+                      <span className="font-bold text-white">Total Fixtures</span>
+                      <span className="font-bold text-white text-lg">{totalFixtures}</span>
                     </div>
                   </div>
                 </div>
 
                 {/* Scoring Config */}
-                <div className="bg-gradient-to-br from-amber-50 to-amber-100 p-4 rounded-lg border-2 border-amber-200">
-                  <h3 className="font-bold text-amber-800 flex items-center gap-2 text-lg mb-4">
-                    <span>📐</span> Scoring Configuration
+                <div className="bg-white/5 border border-white/10 p-4 rounded-lg">
+                  <h3 className="font-bold text-white flex items-center gap-2 text-lg mb-4">
+                    Scoring Configuration
                   </h3>
                   <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                     <div className="space-y-2">
-                      <Label className="font-semibold text-amber-700">Sets (Best of)</Label>
+                      <Label className="font-semibold text-gray-300">Sets (Best of)</Label>
                       <div className="flex gap-2">
                         {[1, 3, 5].map((n) => (
                           <button
                             key={n}
                             type="button"
-                            className={`px-3 py-1.5 rounded border-2 font-semibold text-sm ${
+                            className={`px-3 py-1.5 rounded border font-semibold text-sm ${
                               formData.defaultSetsCount === n
-                                ? "border-amber-500 bg-amber-100 text-amber-800"
-                                : "border-gray-200 bg-white text-gray-600"
+                                ? "border-emerald-500/50 bg-emerald-500/10 text-emerald-400"
+                                : "border-white/10 bg-white/[0.03] text-gray-400"
                             }`}
                             onClick={() => setFormData({ ...formData, defaultSetsCount: n })}
                           >
@@ -559,25 +560,25 @@ export default function NewTournamentPage() {
                       </div>
                     </div>
                     <div className="space-y-2">
-                      <Label htmlFor="pointsToWin" className="font-semibold text-amber-700">Points to Win</Label>
+                      <Label htmlFor="pointsToWin" className="font-semibold text-gray-300">Points to Win</Label>
                       <Input
                         id="pointsToWin"
                         type="number"
                         min={1}
                         value={formData.defaultPointsToWin}
                         onChange={(e) => setFormData({ ...formData, defaultPointsToWin: parseInt(e.target.value) || 21 })}
-                        className="border-2"
+                        className="bg-white/5 border-white/10 text-white placeholder:text-gray-500"
                       />
                     </div>
                     <div className="space-y-2">
-                      <Label htmlFor="deuceCap" className="font-semibold text-amber-700">Deuce Cap</Label>
+                      <Label htmlFor="deuceCap" className="font-semibold text-gray-300">Deuce Cap</Label>
                       <Input
                         id="deuceCap"
                         type="number"
                         min={1}
                         value={formData.defaultDeuceCap}
                         onChange={(e) => setFormData({ ...formData, defaultDeuceCap: parseInt(e.target.value) || 30 })}
-                        className="border-2"
+                        className="bg-white/5 border-white/10 text-white placeholder:text-gray-500"
                       />
                     </div>
                   </div>
@@ -593,9 +594,9 @@ export default function NewTournamentPage() {
                   variant="outline"
                   onClick={handleBack}
                   disabled={isLoading}
-                  className="flex-1 border-2 hover:bg-gray-50 font-semibold"
+                  className="flex-1 border border-white/10 hover:bg-white/5 text-gray-300 font-semibold"
                 >
-                  ← Back
+                  Back
                 </Button>
               ) : (
                 <Button
@@ -603,9 +604,9 @@ export default function NewTournamentPage() {
                   variant="outline"
                   onClick={() => router.back()}
                   disabled={isLoading}
-                  className="flex-1 border-2 hover:bg-gray-50 font-semibold"
+                  className="flex-1 border border-white/10 hover:bg-white/5 text-gray-300 font-semibold"
                 >
-                  ❌ Cancel
+                  Cancel
                 </Button>
               )}
               <Button
@@ -616,13 +617,13 @@ export default function NewTournamentPage() {
                   (step === 1 && !canProceedStep1) ||
                   (((step === 2 && !isLeague) || (step === 3 && isLeague)) && !canProceedMatchFormat)
                 }
-                className="flex-1 bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 text-white shadow-lg hover:shadow-xl transition-all font-bold"
+                className="flex-1 bg-gradient-to-r from-emerald-500 to-cyan-500 text-black font-semibold hover:from-emerald-400 hover:to-cyan-400 shadow-lg hover:shadow-xl transition-all"
               >
                 {isLoading
-                  ? "Creating... ⏳"
+                  ? "Creating..."
                   : step < totalSteps
-                  ? "Next →"
-                  : "✅ Create Tournament"}
+                  ? "Next"
+                  : "Create Tournament"}
               </Button>
             </div>
           </CardContent>
