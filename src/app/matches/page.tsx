@@ -231,7 +231,7 @@ export default function MatchesPage() {
                           <div className="flex-1 min-w-0">
                             <div className="font-semibold text-sm text-white truncate flex items-center gap-1">
                               <PlayerLink name={match.sideAPlayer1} playerMap={playerMap} />
-                              {match.winningSide === "A" && <span className="text-amber-400">W</span>}
+                              {match.winningSide === "A" && <span className="text-amber-400" title="Winner">🏆</span>}
                             </div>
                           </div>
                         </div>
@@ -250,7 +250,7 @@ export default function MatchesPage() {
                           <div className="flex-1 min-w-0">
                             <div className="font-semibold text-sm text-white truncate flex items-center gap-1">
                               <PlayerLink name={match.sideBPlayer1} playerMap={playerMap} />
-                              {match.winningSide === "B" && <span className="text-amber-400">W</span>}
+                              {match.winningSide === "B" && <span className="text-amber-400" title="Winner">🏆</span>}
                             </div>
                           </div>
                         </div>
@@ -327,7 +327,7 @@ export default function MatchesPage() {
                           <div className="flex-1 min-w-0">
                             <div className="font-semibold text-sm text-white truncate flex items-center gap-1">
                               <PlayerLink name={match.sideAPlayer1} playerMap={playerMap} />
-                              {match.winningSide === "A" && <span className="text-amber-400">W</span>}
+                              {match.winningSide === "A" && <span className="text-amber-400" title="Winner">🏆</span>}
                             </div>
                           </div>
                         </div>
@@ -355,7 +355,7 @@ export default function MatchesPage() {
                           <div className="flex-1 min-w-0">
                             <div className="font-semibold text-sm text-white truncate flex items-center gap-1">
                               <PlayerLink name={match.sideBPlayer1} playerMap={playerMap} />
-                              {match.winningSide === "B" && <span className="text-amber-400">W</span>}
+                              {match.winningSide === "B" && <span className="text-amber-400" title="Winner">🏆</span>}
                             </div>
                           </div>
                         </div>
@@ -410,7 +410,7 @@ export default function MatchesPage() {
                           <div className="flex-1 min-w-0">
                             <div className="font-semibold text-sm text-white truncate flex items-center gap-1">
                               <PlayerLink name={match.sideAPlayer1} playerMap={playerMap} />
-                              {match.winningSide === "A" && <span className="text-amber-400">W</span>}
+                              {match.winningSide === "A" && <span className="text-amber-400" title="Winner">🏆</span>}
                             </div>
                           </div>
                         </div>
@@ -438,7 +438,7 @@ export default function MatchesPage() {
                           <div className="flex-1 min-w-0">
                             <div className="font-semibold text-sm text-white truncate flex items-center gap-1">
                               <PlayerLink name={match.sideBPlayer1} playerMap={playerMap} />
-                              {match.winningSide === "B" && <span className="text-amber-400">W</span>}
+                              {match.winningSide === "B" && <span className="text-amber-400" title="Winner">🏆</span>}
                             </div>
                           </div>
                         </div>
